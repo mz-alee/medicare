@@ -23,3 +23,9 @@
   background-repeat: no-repeat;
   object-fit: cover;
 }
+
+.authLeft , .authRight{
+  background-image: url("../../public/Images/authScreenBG.png");
+  background-size: cover;
+  background-position: center;
+}

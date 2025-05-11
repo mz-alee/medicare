@@ -1,10 +1,15 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import faclityImage from "../../../public/Images/facilityImage.png";
 import faclityImage2 from "../../../public/Images/facilityImage2.png";
 import faclityImage3 from "../../../public/Images/facilityImage3.png";
 import faclityImage4 from "../../../public/Images/facilityImage4.png";
+import Aos from "aos";
 const Facilities = () => {
+  useEffect(() => {
+    Aos.init({ once: false });
+  }, []);
   return (
     <div className="min-h-[100vh] py-4 mt-6 flex flex-col  gap-7 justify-center items-center">
       <div className="flex flex-col justify-center gap-2 items-center">
@@ -19,14 +24,22 @@ const Facilities = () => {
       <div className="flex  flex-col gap-6 w-[80%] ">
         {/* 1st row  */}
         <div className="flex  flex-col gap-2 md:flex-row justify-between w-full">
-          <div>
+          <div
+            data-aos="zoom-in-right"
+            data-aos-offset="100"
+            data-aos-duration="1000"
+          >
             <Image
               src={faclityImage2}
               alt="img"
               className=" md:h-[50vh] md:w-[52vw]"
             />
           </div>
-          <div>
+          <div
+            data-aos="zoom-in-left"
+            data-aos-offset="200"
+            data-aos-duration="1000"
+          >
             <Image
               src={faclityImage}
               className="md:w-[25vw] md:h-[50vh]"
@@ -39,11 +52,17 @@ const Facilities = () => {
         <div className="flex gap-2">
           <div className="flex flex-col gap-2 md:flex-row justify-between w-full">
             <Image
+              data-aos="zoom-in-right"
+              data-aos-offset="100"
+              data-aos-duration="1000"
               src={faclityImage3}
               className="md:w-[25vw] md:h-[50vh] "
               alt="img"
             />
             <Image
+              data-aos="zoom-in-left"
+              data-aos-offset="100"
+              data-aos-duration="1000"
               src={faclityImage4}
               className="md:h-[50vh] md:w-[52vw]"
               alt="img"

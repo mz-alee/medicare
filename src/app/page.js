@@ -5,6 +5,7 @@ import { useQueries, useQuery } from "@tanstack/react-query";
 import { toast, ToastContainer } from "react-toastify";
 import Navbar from "./components/Navbar";
 import LandingPage from "./LandingPage";
+import Link from 'next/link';
 
 const Home = () => {
   // const { data, isLoading, isFetched, isError, isFetching } = useQuery({

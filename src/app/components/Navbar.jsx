@@ -9,7 +9,7 @@ import { overpass, ubuntu } from './Fonts';
 const Navbar = () => {
   const [isActive, setIsActive] = useState(false);
   return (
-    <div className="fixed flex justify-between  items-center px-8 bg-[#f9f9f9] text-black min-h-[8vh] w-full text-sm md:text-[12px] lg:text-[1vw]">
+    <div className="fixed z-100 flex justify-between  items-center px-8 bg-[#f9f9f9] text-black min-h-[8vh] w-full text-sm md:text-[12px] lg:text-[1vw]">
       {/* logo */}
       <div className="logo flex w-[180px]  items-center gap-2 ">
         <Image src={Logo} alt="logo" className="w-10" />
@@ -35,9 +35,9 @@ const Navbar = () => {
       </div>
       {/* login logout button  */}
       <div className="   w-[160px] flex justify-end text-right">
-        <button className="hidden md:flex bg-[#5ca39f] rounded-full text-white text-sm md:text-[1vw] py-1 px-3 hover:bg-[#205454] cursor-pointer">
+        <Link href='/Login' className="hidden md:flex bg-[#5ca39f] rounded-full text-white text-sm md:text-[1vw] py-1 px-3 hover:bg-[#205454] cursor-pointer">
           Log In
-        </button>
+        </Link>
         <button
           onClick={() => {
             setIsActive(true);
