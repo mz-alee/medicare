@@ -13,10 +13,18 @@ const Facilities = () => {
   return (
     <div className="min-h-[100vh] py-4 mt-6 flex flex-col  gap-7 justify-center items-center">
       <div className="flex flex-col justify-center gap-2 items-center">
-        <h1 className="text-[#205454] uppercase border-b font-[500] border-[#417978] text-md md:text-[1.5vw] mb-2 w-fit ">
+        <h1
+                  data-aos="zoom-in-up"
+                  data-aos-offset="300"
+                  data-aos-duration="1000"
+         className="text-[#205454] border-b font-[600] uppercase border-[#417978] text-md md:text-[1.9vw] italic mb-2 w-fit ">
           Facilities
         </h1>
-        <p className="md:w-120 text-center">
+        <p 
+                  data-aos="zoom-in-up"
+                  data-aos-offset="300"
+                  data-aos-duration="1000"
+        className="md:w-120 text-center">
           Our Medical facilities are equipped with advance technology and modern
           infrastructure
         </p>
@@ -32,7 +40,7 @@ const Facilities = () => {
             <Image
               src={faclityImage2}
               alt="img"
-              className=" md:h-[50vh] md:w-[52vw]"
+              className=" md:h-[50vh] md:w-[52vw] rounded-3xl md:rounded-none"
             />
           </div>
           <div
@@ -56,7 +64,7 @@ const Facilities = () => {
               data-aos-offset="100"
               data-aos-duration="1000"
               src={faclityImage3}
-              className="md:w-[25vw] md:h-[50vh] "
+              className="md:w-[25vw] md:h-[50vh]   rounded-3xl"
               alt="img"
             />
             <Image
@@ -64,7 +72,7 @@ const Facilities = () => {
               data-aos-offset="100"
               data-aos-duration="1000"
               src={faclityImage4}
-              className="md:h-[50vh] md:w-[52vw]"
+              className="md:h-[50vh] md:w-[52vw] rounded-3xl"
               alt="img"
             />
           </div>

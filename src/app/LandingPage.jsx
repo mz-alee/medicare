@@ -119,7 +119,9 @@ const LandingPage = () => {
       <Services />
       <Skills />
       <FAQ />
-      <Footer />
+      <Footer
+      
+       />
     </div>
   );
 };

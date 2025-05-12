@@ -35,7 +35,12 @@ export function Accodian() {
         <Disclosure key={index} as="div" className="">
           {({ open }) => (
             <>
-              <DisclosureButton className="w-full px-4 h-13 hover:bg-green-200/20 cursor-pointer text-left text-gray-700  border border-gray-300 rounded-lg flex items-center justify-between italic font-[500]">
+              <DisclosureButton
+                data-aos="zoom-in-down"
+                data-aos-offset="100"
+                data-aos-duration="1000"
+                className="w-full px-4 h-13 hover:bg-green-200/20 cursor-pointer text-left text-gray-700  border border-gray-300 rounded-lg flex items-center justify-between italic font-[500]"
+              >
                 {item.question}
                 {open ? (
                   <svg

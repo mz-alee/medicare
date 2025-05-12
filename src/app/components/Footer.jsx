@@ -28,7 +28,13 @@ const Footer = () => {
   console.log(Links);
 
   return (
-    <div className="w-full min-h-[50vh] py-3 justify-center bg-[#306665] text-white flex flex-col gap-4 lg:flex-row lg:justify-between items-center px-30">
+    <div
+      data-aos="fade-up"
+      data-aos-offset="300"
+      data-aos-easing="linear"
+      data-aos-duration="500"
+      className="w-full min-h-[50vh] py-3 justify-center bg-[#306665] text-white flex flex-col gap-4 lg:flex-row lg:justify-between items-center px-30"
+    >
       <div className="lg:w-1/4 w-full  items-center  h-full flex flex-col justify-center gap-4  ">
         <div className="flex flex-col md:flex-row justify-center items-center  gap-3">
           <Image src={logo} alt="logo" className="w-20" />

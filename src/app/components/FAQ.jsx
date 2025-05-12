@@ -8,7 +8,12 @@ const FAQ = () => {
   return (
     <div className="min-h-[80vh]  mt-6 flex flex-col items-center gap-10 ">
       <div className="flex flex-col justify-center items-center">
-        <h1 className="text-[#205454]  border-b font-[600] uppercase border-[#417978] text-md md:text-[1.9vw] italic mb-2 w-fit ">
+        <h1
+          data-aos="zoom-in-up"
+          data-aos-offset="300"
+          data-aos-duration="1000"
+          className="text-[#205454]  border-b font-[600] uppercase border-[#417978] text-md md:text-[1.9vw] italic mb-2 w-fit "
+        >
           frequently asked questions
         </h1>
       </div>
@@ -18,7 +23,12 @@ const FAQ = () => {
           <Accodian />
         </div>
         {/* right side  */}
-        <div className="">
+        <div
+          data-aos="zoom-in-up"
+          data-aos-offset="100"
+          data-aos-duration="1000"
+          className=""
+        >
           <Image src={groupImage} alt="image" className="h-80 w-80" />
         </div>
       </div>

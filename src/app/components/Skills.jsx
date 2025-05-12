@@ -10,7 +10,7 @@ import skillGroup from "../../../public/Images/doctersImage.png";
 const skill = [
   { Image: skillIcon3, heading: "10+", statement: " years of experience" },
   { Image: skillIcon2, heading: "1000+", statement: " happy patients" },
-  { Image: skillIcon4 , heading: "70+", statement: " qualified docters" },
+  { Image: skillIcon4, heading: "70+", statement: " qualified docters" },
   { Image: skillIcon1, heading: "130+", statement: " hospital rooms" },
 ];
 
@@ -21,6 +21,9 @@ const Skills = () => {
       <div className=" lg:w-[60%] flex justify-center flex-wrap gap-4  ">
         {skill.map((items, index) => (
           <div
+            data-aos="zoom-in-down"
+            data-aos-offset="100"
+            data-aos-duration="1000"
             key={index}
             className="border border-gray-200 flex justify-center px-6 rounded-2xl  h-[180px]  lg:h-[38vh] w-[180px] lg:w-[20vw]"
           >
@@ -44,7 +47,14 @@ const Skills = () => {
       </div>
       {/* right side  */}
       <div>
-        <Image src={skillGroup} alt="docters image" className=" w-[60vw] md:w-[30vw]" />
+        <Image
+          data-aos="zoom-in-up"
+          data-aos-offset="200"
+          data-aos-duration="1000"
+          src={skillGroup}
+          alt="docters image"
+          className=" w-[60vw] md:w-[30vw]"
+        />
       </div>
     </div>
   );
