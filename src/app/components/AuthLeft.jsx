@@ -11,8 +11,8 @@ const AuthLeft = ({ buttonName, text, route }) => {
     Aos.init({ once: true });
   }, []);
   return (
-    <div className="flex flex-col w-full justify-between    gap-10 md:justify-around items-center">
-      <div className="text-white flex  items-center md:w-100 -ml-50 gap-3">
+    <div className="flex flex-col w-full justify-between    gap-10 md:justify-around items-center ">
+      <div className="text-white flex  items-center md:w-100 -ml-40 lg:-ml-50 gap-3">
         <Image src={logo} alt="logo" className="w-20" />
         <h1
           data-aos="zoom-in-up"
@@ -30,7 +30,7 @@ const AuthLeft = ({ buttonName, text, route }) => {
           data-aos="zoom-in-up"
           data-aos-offset="300"
           data-aos-duration="1000"
-          className="text-xl md:text-[1.5vw] font-[600]"
+          className="text-lg md:text-[1.5vw] font-[600]"
         >
           Welcome to MediScheduler
         </h1>
@@ -38,7 +38,7 @@ const AuthLeft = ({ buttonName, text, route }) => {
           data-aos="zoom-in-up"
           data-aos-offset="100"
           data-aos-duration="1000"
-          className="text-3xl md:text-[3.5vw] font-[900] "
+          className="text-2xl md:text-[3.5vw] font-[900] "
         >
           Your health is our highest priority
         </h1>
