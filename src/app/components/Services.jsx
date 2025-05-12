@@ -26,15 +26,15 @@ const Services = () => {
           data-aos="zoom-in-left"
           data-aos-offset="100"
           data-aos-duration="1000"
-          className="text-[#205454] border-b font-[600] uppercase border-[#417978] text-md md:text-[1.9vw] italic mb-2 w-fit "
+          className="text-[#205454] border-b font-[600] uppercase border-[#417978] text-md md:text-[1.9vw] italic mb-2   "
         >
           our services
         </h1>
         <h2
-          data-aos="zoom-in-left"
+          data-aos="zoom-in-up"
           data-aos-offset="100"
           data-aos-duration="1000"
-          className="text-[15px] italic  md:text-[1.5vw] text-center  "
+          className="text-[15px] italic    md:text-[1.5vw] text-center"
         >
           Experience exceptional healthcare with personalized, patient-centered
           services
