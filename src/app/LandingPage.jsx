@@ -14,6 +14,7 @@ import "aos/dist/aos.css";
 import FAQ from "./components/FAQ";
 import Footer from "./components/Footer";
 import Aos from "aos";
+import Link from "next/link";
 const LandingPage = () => {
   useEffect(() => {
     Aos.init({ once: false });
@@ -44,13 +45,14 @@ const LandingPage = () => {
             >
               We offers finest health care services for you
             </h1>
-            <button
+            <Link
+              href="/Signup"
               data-aos="fade-up"
               data-aos-duration="1500"
               className="border border-[#F5F5F5] text-white w-fit hover:bg-[#ffff] hover:text-[#417978] rounded-full px-4 py-2"
             >
               Register Now
-            </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ import QueryProvider from "./components/QueryProvider";
 import { Poppins } from "next/font/google";
 import Navbar from "./components/Navbar";
 import { usePathname } from "next/navigation";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
         <QueryClientProvider client={QueryProvider}>
           {!["/Login", "/Signup"].includes(path) && <Navbar />}
           {children}
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </body>
     </html>

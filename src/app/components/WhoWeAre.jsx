@@ -1,5 +1,5 @@
 "use client";
-import React, { lazy, useEffect } from "react";
+import React, { useEffect } from "react";
 import WeeklyTimetable from "./WeeklyTimetable";
 import Image from "next/image";
 import bg from "../../../public/Images/WhoWeAreBg.png";
@@ -24,7 +24,7 @@ const WhoWeAre = () => {
           data-aos="zoom-in-up"
           data-aos-offset="100"
           data-aos-duration="1000"
-          className="md:w-120 text-center"
+          className="md:w-120 text-center w-80  text-[14px] md:text-[1.2vw]"
         >
           Simplifying Management, Enhancing Care – Your Partner in Medical
           Success.

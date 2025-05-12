@@ -6,30 +6,30 @@ import AuthRight from "../components/AuthRight";
 import { overpass } from "../components/Fonts";
 const Login = () => {
   return (
-    <div className="authScreen bg-[#132928] h-screen  w-full">
+    <div className="authScreen bg-[#132928]  min-h-screen  w-full">
       <Image
         src={authScreenBg}
         alt="bg"
-        className="absolute opacity-10 left-0 w-1/2 h-screen"
+        className="hidden  md:block absolute opacity-10 left-0 w-1/2 h-screen"
       />
       <Image
         src={authScreenBg}
         alt="bg"
-        className="absolute right-0 opacity-10 w-1/2 h-screen"
+        className="hidden  md:block absolute right-0 opacity-10 w-1/2 h-screen"
       />
 
-      <div className="flex  ">
+      <div className="authLeft flex gap-10 sm:gap-15   h-[100vh]  w-full flex-col lg:flex-row items-center lg:items-start ">
         {/* left section  */}
-        <div className="z-10 flex h-[80vh]  w-1/2 ">
+        <div className="z-10 flex h-[40vh]  lg:h-[80vh]  lg:w-1/2 ">
           <AuthLeft
             route={"/Signup"}
-            buttonName={"Sign in"}
+            buttonName={"Sign up"}
             text={"if you are new here or don't have an account"}
           />
         </div>
         {/* right section  */}
-        <div className="z-10 flex   h-[10vh] md:h-screen  md:w-1/2  justify-center items-center ">
-          <div className="z-10 bg-white h-[30vh] flex justify-center items-center md:h-[95vh] w-[45vw] rounded-xl ">
+        <div className="z-10 flex w-full px-2 h-[50vh] sm:h-[30vh] lg:h-screen  md:w-1/2  justify-center items-center ">
+          <div className="z-10 px-2  bg-white py-8 w-[80vw] sm:w-[60vw] flex justify-center items-center lg:h-[95vh]  rounded-xl ">
             <form>
               <div className="flex flex-col gap-1.5 ">
                 <label
@@ -40,7 +40,7 @@ const Login = () => {
                 </label>
                 <input
                   id="email"
-                  className="border outline-none w-90 border-gray-300 text-[13px] md:text-[0.9vw] py-1 text-gray-600 rounded px-2 capitalize"
+                  className="border outline-none w-60 md:w-90 border-gray-300 text-[13px] md:text-[0.9vw] py-1 text-gray-600 rounded px-2 capitalize"
                   type="text"
                   placeholder="example@gmail.com"
                 />
@@ -52,7 +52,7 @@ const Login = () => {
                 </label>
                 <input
                   id="password"
-                  className="border outline-none w-90 border-gray-300 text-[13px] md:text-[0.9vw] py-1 text-gray-600 rounded px-2 capitalize"
+                  className="border outline-none  w-60 md:w-90 border-gray-300 text-[13px] md:text-[0.9vw] py-1 text-gray-600 rounded px-2 capitalize"
                   type="text"
                   placeholder="Password"
                 />
