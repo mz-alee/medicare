@@ -33,7 +33,7 @@
   background-image: url("../../public/Images/authScreenBG.png");
   background-size: cover;
   background-position: center;
-  background-blend-mode:soft-light;
+  background-blend-mode: soft-light;
 }
 
 @media (min-width: 767px) {
@@ -42,7 +42,11 @@
   }
 }
 
-
+.authBg{
+  background-image: url("../../public/bg.png");
+  background-position: center;
+  background-attachment: fixed;
+}
 /* .authLeft::before,
 .authRight::before {
   content: "";
@@ -57,4 +61,3 @@
   opacity: 0.5;
   z-index: -1;
 } */
-

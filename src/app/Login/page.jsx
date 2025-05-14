@@ -3,80 +3,100 @@ import React from "react";
 import authScreenBg from "../../../public/Images/authScreenBG.png";
 import AuthLeft from "../components/AuthLeft";
 import AuthRight from "../components/AuthRight";
+import logo from "../../../public/Images/Logo.png";
+
 import { overpass } from "../components/Fonts";
-import Link from 'next/link';
+import Link from "next/link";
 const Login = () => {
   return (
-    <div className="authScreen bg-[#132928]  min-h-screen  w-full">
-      <Image
-        src={authScreenBg}
-        alt="bg"
-        className="hidden  md:block absolute opacity-10 left-0 w-1/2 h-screen"
-      />
-      <Image
-        src={authScreenBg}
-        alt="bg"
-        className="hidden  md:block absolute right-0 opacity-10 w-1/2 h-screen"
-      />
-
-      <div className="authLeft flex gap-10 sm:gap-15   h-[100vh]  w-full flex-col lg:flex-row items-center lg:items-start ">
+    <div className="authBg bg-[#132928]  min-h-[110vh]  w-full">
+      <div className="text-white flex  items-center md:w-100  absolute gap-3">
+        <Image src={logo} alt="logo" className="w-20" />
+        <h1
+          data-aos="zoom-in-up"
+          data-aos-offset="300"
+          data-aos-duration="1000"
+          className="text-md md:text-[1.2vw] font-[500] italic"
+        >
+          MediScheduler
+        </h1>
+      </div>
+      <div className="  flex gap-10 sm:gap-15   min-h-[100vh]  w-full flex-col justify-center  md:flex-row items-center ">
         {/* left section  */}
-        <div className="z-10 flex h-[40vh]  lg:h-[80vh]  lg:w-1/2 ">
+        <div className="z-10 flex  md:h-[60vh]  lg:h-[80vh] 300 w-full md:w-1/2 ">
           <AuthLeft
             route={"/Signup"}
-            buttonName={"Sign up"}
+            title={"Sign up"}
             text={"if you are new here or don't have an account"}
           />
         </div>
         {/* right section  */}
-        <div className="z-10 flex w-full px-2 h-[50vh] sm:h-[30vh] lg:h-screen  md:w-1/2  justify-center items-center ">
-          <div className="z-10 px-2  bg-white py-8 w-[80vw] sm:w-[60vw] flex justify-center items-center lg:h-[95vh]  rounded-xl ">
-            <form>
-              <div className="flex flex-col gap-1.5 px-3  ">
-                <label
-                  htmlFor="email"
-                  className={`${overpass.className} text-[12px] md:text-[0.9vw] italic text-gray-700`}
-                >
-                  Email / Phone Number
-                </label>
-                <input
-                  id="email"
-                  className="border outline-none  md:w-90 border-gray-300 text-[12px] md:text-[0.9vw] py-1 text-gray-600 rounded px-2 capitalize"
-                  type="text"
-                  placeholder="example@gmail.com"
-                />
-                <label
-                  htmlFor="password"
-                  className={`${overpass.className} text-[12px] md:text-[0.9vw] italic text-gray-700`}
-                >
-                  Password
-                </label>
-                <input
-                  id="password"
-                  className="border outline-none   md:w-90 border-gray-300 text-[13px] md:text-[0.9vw] py-1 text-gray-600 rounded px-2 capitalize"
-                  type="text"
-                  placeholder="Password"
-                />
-                <div className=" lg:hidden ">
+        <div className="w-full lg:w-1/2 flex md:h-[60vh] justify-center lg:h-screen  items-center ">
+          <div className="bg-white p-6 sm:p-10 py-8 w-[80vw] md:w-[40vw]  lg:h-[90vh]  z-10 rounded-xl shadow-md ">
+            <form className="flex flex-col w-full items-center justify-center h-full gap-4">
+              <div className="flex flex-col  w-full gap-4 px-3  ">
+                <div>
+                  <label
+                    htmlFor="email"
+                    className={`${overpass.className} text-[12px] md:text-[1vw] italic text-gray-700`}
+                  >
+                    Email / Phone Number
+                  </label>
+                  <input
+                    id="email"
+                    className="border outline-none  w-full border-gray-300 text-[12px] md:text-[0.9vw] py-2 text-gray-600 rounded px-2 "
+                    type="text"
+                    placeholder="example@gmail.com"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label
+                    htmlFor="password"
+                    className={`${overpass.className} text-[12px] md:text-[1vw] italic text-gray-700`}
+                  >
+                    Password
+                  </label>
+                  <input
+                    id="password"
+                    className="border outline-none    border-gray-300 text-[13px] md:text-[0.9vw] py-2 text-gray-600 rounded px-2 "
+                    type="text"
+                    placeholder="Password"
+                  />
+                </div>
+                <div className=" lg:hidden w-full">
                   <h1
                     data-aos="zoom-in-up"
                     data-aos-offset="100"
                     data-aos-duration="1000"
-                    className="text-[12px] lg:text-[0.9vw]     "
+                    className="text-[10px] lg:text-[0.9vw]     "
                   >
-                    if you are new here or don't have an account?
-                  <Link
-                    data-aos="zoom-in-up"
-                    data-aos-offset="100"
-                    data-aos-duration="1000"
-                    href="/Signup"
-                    className=" text-blue-500 text-[12px] hover:text-[#132928]  "
-                  >
-                    Login
-                  </Link>
+                    if you don't have an account?
+                    <Link
+                      data-aos="zoom-in-up"
+                      data-aos-offset="100"
+                      data-aos-duration="1000"
+                      href="/Signup"
+                      className=" text-blue-500 ml-1 text-[10px] hover:text-[#132928]  "
+                    >
+                      sign up
+                    </Link>
                   </h1>
                 </div>
-                <button className="bg-[#1e3837] text-white mt-5 hover:text-[#132928] hover:bg-black/20 font-[600] italic text-center px-4 w-30 py-2 rounded-full">
+                <div className="flex justify-between">
+                  <div className="flex gap-1">
+                    <input type="checkbox" name="r" id="ali" />
+                    <label className="text-[11px] " for="ali">
+                      Remember me
+                    </label>
+                  </div>
+                  <Link
+                    href="/forget"
+                    className="text-[11px] underline text-[#132928] font-[500]"
+                  >
+                    Forget Password?
+                  </Link>
+                </div>
+                <button className="bg-[#1e3837] text-white lg:mt-3  hover:text-[#132928] hover:bg-black/20 font-[600] italic text-center px-4  lg:py-2 rounded-full">
                   Log In
                 </button>
               </div>
