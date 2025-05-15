@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import authScreenBg from "../../../public/Images/authScreenBG.png";
 import AuthLeft from "../components/AuthLeft";
 import AuthRight from "../components/AuthRight";
 import { overpass } from "../components/Fonts";
@@ -10,19 +9,40 @@ import "aos/dist/aos.css";
 import Link from "next/link";
 import logo from "../../../public/Images/Logo.png";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getSignupData, postData } from "../SignupApi";
+import { getSignupData, postData, verifyPostData } from "../SignupApi";
 import { useForm } from "react-hook-form";
 import SelectRole from "./SelectRole";
 import SignupForm from "./components/SignupForm";
-
+import VerifyRightSIde from "./components/VerifyRightSIde";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Pangolin } from "next/font/google";
+import { useRouter } from "next/navigation";
+const schema = yup.object().shape({
+  username: yup.string().required("Full Name is a Required Field"),
+  email: yup.string().email().required("Email is a Required Field"),
+  gender: yup.string().required("Gender is a Required Field"),
+  date_of_birth: yup.string().required("Date of Birth is a Required Field"),
+  phone_number: yup
+    .number()
+    .positive()
+    .integer()
+    .required("Phone Number is a Required Field"),
+  password: yup.string().required("Password is a Required Field").min(6),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords must match"),
+});
 const Signup = () => {
   const [pagenum, setPageNum] = useState(1);
-  const [totalPageNum, setTotalPageNum] = useState(2);
+  const [totalPageNum, setTotalPageNum] = useState(3);
+  const [type, setType] = useState("password");
+  console.log(pagenum);
 
   useEffect(() => {
     Aos.init({ once: false });
   }, []);
-
+  const router = useRouter();
   const {
     register,
     setValue,
@@ -30,6 +50,7 @@ const Signup = () => {
     getValues,
     formState: { errors },
   } = useForm({
+    resolver: yupResolver(schema),
     defaultValues: {
       select_role: "",
       username: "",
@@ -40,30 +61,25 @@ const Signup = () => {
       phone_number: "",
     },
   });
+  console.log("errorsssss", errors);
 
   const signupMutation = useMutation({
     mutationFn: (userData) => postData(userData),
     onSuccess: (data) => {
+      setPageNum(pagenum + 1)
       console.log("Signup successful:", data);
     },
     onError: (error) => {
       console.error("Signup failed:", error.response?.data || error.message);
     },
   });
+
+  const value = getValues();
+
   const onSubmit = (data) => {
     console.log(data);
-    // signupMutation.mutate(data);
-    signupMutation.mutate({
-
-    username:"ali1",
-    date_of_birth:"2000-02-24",
-    gender:"male",
-    select_role:"doctor",
-    email:"aliraza.1006724@gmail.com",
-    phone_number:"03012038477",
-    password:"Kabeder@123"
-
-    });
+    console.log("valueeeeeee", value);
+    signupMutation.mutate(data);
   };
 
   return (
@@ -84,6 +100,15 @@ const Signup = () => {
 
       {/* Main Content */}
       <div className="flex flex-col lg:flex-row items-center justify-center min-h-screen z-10 relative px-4 py-8 gap-10">
+        {/* <button
+          onClick={() => {
+            verifyMutation.mutate({
+              token: "98871",
+            });
+          }}
+        >
+          verify
+        </button> */}
         {/* Left Section */}
         <div className="w-full md:h-[60vh] lg:w-1/2 flex  justify-center items-center">
           {pagenum === 1 && (
@@ -93,6 +118,10 @@ const Signup = () => {
               setPageNum={setPageNum}
             />
           )}
+          {pagenum === 3 && (
+            <VerifyRightSIde pageNum={pagenum} setPageNum={setPageNum} />
+          )}
+
           {pagenum === 2 && (
             <AuthLeft
               route="/Login"
@@ -109,6 +138,9 @@ const Signup = () => {
             handleSubmit={handleSubmit}
             register={register}
             signupMutation={signupMutation}
+            errors={errors}
+            pageNum={pagenum}
+            setPageNum={setPageNum}
           />
         )}
       </div>

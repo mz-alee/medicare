@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import AuthLeft from "../components/AuthLeft";
 import { overpass } from "../components/Fonts";
@@ -5,8 +6,37 @@ import { FaArrowRight } from "react-icons/fa6";
 import Link from "next/link";
 import logo from "../../../public/Images/Logo.png";
 import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { resetUpdatePassword } from "../SignupApi";
+import { useRouter } from 'next/navigation';
 
 const ResetPassword = () => {
+  const router = useRouter()
+  const {
+    register,
+    setValue,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {},
+  });
+  const updateMutation = useMutation({
+    mutationFn: (data) => resetUpdatePassword(data),
+    onSuccess: (data) => {
+      router.push("/Login")
+      console.log(data);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const onSubmit = (data) => {
+    updateMutation.mutate(data)
+    console.log(data);
+  };
   return (
     <div className="authBg h-[100vh] w-full flex flex-col md:flex-row px-10">
       <div className="text-white flex  items-center md:w-100  fixed gap-3">
@@ -36,33 +66,35 @@ const ResetPassword = () => {
       {/* right side  */}
       <div className="w-full lg:w-1/2 flex justify-center items-center">
         <div className="z-10 px-2  bg-white py-8  w-[80vw] sm:w-[40vw] flex justify-center items-center lg:h-[65vh]  rounded-xl ">
-          <form className="w-full">
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
             <div className="flex flex-col w-full gap-3 px-3  ">
               <div>
                 <label
-                  htmlFor="email"
+                  htmlFor="password"
                   className={`${overpass.className} text-[12px] md:text-[1vw] italic text-gray-700`}
                 >
                   new password
                 </label>
                 <input
-                  id="email"
+                  id="password"
+                  {...register("password")}
                   className="border outline-none  w-full border-gray-300 text-[12px] md:text-[0.9vw] py-2 text-gray-600 rounded px-2"
-                  type="email "
+                  type="text"
                   placeholder="password"
                 />
               </div>
               <div>
                 <label
-                  htmlFor="email"
+                  htmlFor="confirmpassword"
                   className={`${overpass.className} text-[12px] md:text-[1vw] italic text-gray-700`}
                 >
                   confirm password
                 </label>
                 <input
-                  id="email"
+                  {...register("token")}
+                  id="confirmpassword"
                   className="border outline-none  w-full border-gray-300 text-[12px] md:text-[0.9vw] py-2 text-gray-600 rounded px-2"
-                  type="email "
+                  type="text"
                   placeholder="password"
                 />
               </div>

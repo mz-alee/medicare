@@ -1,13 +1,42 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import authScreenBg from "../../../public/Images/authScreenBG.png";
 import AuthLeft from "../components/AuthLeft";
 import AuthRight from "../components/AuthRight";
 import logo from "../../../public/Images/Logo.png";
-
 import { overpass } from "../components/Fonts";
 import Link from "next/link";
+import { useMutation } from "@tanstack/react-query";
+import { loginPostData } from "../SignupApi";
+import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 const Login = () => {
+  const router = useRouter();
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {},
+  });
+
+  const loginMutation = useMutation({
+    mutationFn: (loginUserData) => loginPostData(loginUserData),
+    onSuccess: (data) => {
+      router.push("/Dashboard");
+      toast("logged in");
+      console.log(data.data.access_token);
+    },
+  });
+
+  const onSubmit = (data) => {
+    loginMutation.mutate(data);
+    console.log(data);
+  };
   return (
     <div className="authBg bg-[#132928]  min-h-[110vh]  w-full">
       <div className="text-white flex  items-center md:w-100  absolute gap-3">
@@ -33,7 +62,10 @@ const Login = () => {
         {/* right section  */}
         <div className="w-full lg:w-1/2 flex md:h-[60vh] justify-center lg:h-screen  items-center ">
           <div className="bg-white p-6 sm:p-10 py-8 w-[80vw] md:w-[40vw]  lg:h-[90vh]  z-10 rounded-xl shadow-md ">
-            <form className="flex flex-col w-full items-center justify-center h-full gap-4">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col w-full items-center justify-center h-full gap-4"
+            >
               <div className="flex flex-col  w-full gap-4 px-3  ">
                 <div>
                   <label
@@ -43,6 +75,7 @@ const Login = () => {
                     Email / Phone Number
                   </label>
                   <input
+                    {...register("email")}
                     id="email"
                     className="border outline-none  w-full border-gray-300 text-[12px] md:text-[0.9vw] py-2 text-gray-600 rounded px-2 "
                     type="text"
@@ -57,6 +90,7 @@ const Login = () => {
                     Password
                   </label>
                   <input
+                    {...register("password")}
                     id="password"
                     className="border outline-none    border-gray-300 text-[13px] md:text-[0.9vw] py-2 text-gray-600 rounded px-2 "
                     type="text"
@@ -85,7 +119,7 @@ const Login = () => {
                 <div className="flex justify-between">
                   <div className="flex gap-1">
                     <input type="checkbox" name="r" id="ali" />
-                    <label className="text-[11px] " for="ali">
+                    <label className="text-[11px] " htmlFor="ali">
                       Remember me
                     </label>
                   </div>

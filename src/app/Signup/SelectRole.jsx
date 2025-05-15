@@ -30,9 +30,7 @@ const SelectRole = ({ setPageNum, pageNum, setValue }) => {
           </div>
         ))}
       </div>
-      <div className="w-full  flex justify-end px-2">
-        <button className="bg-[#417978] rounded-2xl px-4 py-1">Next</button>
-      </div>
+     
     </div>
   );
 };

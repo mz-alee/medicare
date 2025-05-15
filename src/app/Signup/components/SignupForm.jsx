@@ -1,77 +1,144 @@
-import { overpass } from '@/app/components/Fonts';
-import Link from 'next/link';
-import React from "react";
-const   SignupForm = ({handleSubmit,onSubmit,register ,signupMutation}) => {
+"use client";
+import { overpass } from "@/app/components/Fonts";
+import InputField from "@/app/components/InputField";
+import Link from "next/link";
+import React, { useState } from "react";
+import { FiEye } from "react-icons/fi";
+import { FiEyeOff } from "react-icons/fi";
+const SignupForm = ({
+  handleSubmit,
+  onSubmit,
+  register,
+  signupMutation,
+  errors,
+  pageNum,
+  setPageNum,
+}) => {
+  const [type, setType] = useState("password");
+
   return (
     <div className="w-full lg:w-1/2 flex justify-center items-center">
       <div className="bg-white p-6 sm:p-10 w-full max-w-[90vw] sm:max-w-[500px] lg:max-w-[600px] rounded-xl shadow-md">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          {[
-            {
-              name: "username",
-              label: "Full Name",
-              placeholder: "Mirza Ali",
-              id: 1,
-            },
-            {
-              name: "date_of_birth",
-              label: "Date of Birth",
-              placeholder: "DD/MM/YYYY",
-              id: 2,
-            },
-            {
-              name: "gender",
-              label: "Gender",
-              placeholder: "Female/Male",
-              id: 3,
-            },
-            {
-              name: "select_role",
-              label: "select role",
-              // placeholder: "Female/Male",
-              id: 4,
-            },
-            {
-              name: "email",
-              label: "Email",
-              placeholder: "example@gmail.com",
-              id: 5,
-            },
-            {
-              name: "phone_number",
-              label: " Phone Number",
-              placeholder: "number",
-              id: 6,
-            },
-            {
-              name: "password",
-              label: "Password",
-              placeholder: "Password",
-              id: 7,
-            },
-            // {
-            //   name: "confirm-password",
-            //   label: "Confirm Password",
-            //   placeholder: "Confirm Password",
-            //   id: 6,
-            // },
-          ].map(({ name, id, label, placeholder }) => (
-            <div key={id} className="flex flex-col">
-              <label
-                htmlFor={name}
-                className={`${overpass.className} italic text-gray-700 text-sm `}
-              >
-                {label}
-              </label>
-              <input
-                {...register(name)}
-                id={id}
-                type="text"
-                placeholder={placeholder}
-                className="border border-gray-300 text-[12px] lg:text-[0.8vw]  py-2 px-3 rounded outline-none text-gray-600"
+          <div className="flex flex-col">
+            <label
+              htmlFor="username"
+              className={`${overpass.className} italic text-gray-700 text-sm `}
+            >
+              Full Name
+            </label>
+
+            <InputField
+              register={register}
+              placeholder={"Mirza Ali"}
+              name="username"
+              type="text"
+            />
+            {errors.username && (
+              <p className="error">{errors.username.message}</p>
+            )}
+          </div>
+          <div className="flex flex-col">
+            <label
+              htmlFor="birthdate"
+              className={`${overpass.className} italic text-gray-700 text-sm `}
+            >
+              Date of Birth
+            </label>
+
+            <InputField
+              register={register}
+              placeholder={"Date of birth"}
+              name="date_of_birth"
+              type="date"
+            />
+            {errors.birthdate && (
+              <p className="error">{errors.birthdate.message}</p>
+            )}
+          </div>
+          <div className="flex flex-col">
+            <label
+              htmlFor="gender"
+              className={`${overpass.className} italic text-gray-700 text-sm `}
+            >
+              Gender
+            </label>
+
+            <InputField
+              register={register}
+              placeholder={"Male/Female"}
+              name="gender"
+              type="text"
+            />
+            {errors.gender && <p className="error">{errors.gender.message}</p>}
+          </div>
+          <div className="flex flex-col">
+            <label
+              htmlFor="gender"
+              className={`${overpass.className} italic text-gray-700 text-sm `}
+            >
+              Email
+            </label>
+
+            <InputField
+              register={register}
+              placeholder={"example@gmail.com"}
+              name="email"
+              type="email"
+            />
+            {errors.email && <p className="error">{errors.email.message}</p>}
+          </div>
+          <div className="flex flex-col">
+            <label
+              htmlFor="number"
+              className={`${overpass.className} italic text-gray-700 text-sm `}
+            >
+              Phone Number
+            </label>
+
+            <InputField
+              register={register}
+              placeholder={"Phone Number"}
+              name="phone_number"
+              type="number"
+            />
+            {errors.phone_number && (
+              <p className="error">{errors.phone_number.message}</p>
+            )}
+          </div>
+          <div className="flex flex-col">
+            <label
+              htmlFor="gender"
+              className={`${overpass.className} italic text-gray-700 text-sm `}
+            >
+              Create Password
+            </label>
+
+            <div className=" relative">
+              <InputField
+                register={register}
+                placeholder={"Password"}
+                name="password"
+                type={type}
               />
+              <button
+                onClick={() => {
+                  if (type === "password") {
+                    setType("text");
+                  } else {
+                    setType("password");
+                  }
+                }}
+                type="button"
+                className="cursor-pointer absolute top-2 right-3 outline-none"
+              >
+                {type === "text" ? <FiEye /> : <FiEyeOff />}
+              </button>
             </div>
-          ))}
+            {errors.password && (
+              <p className="error">{errors.password.message}</p>
+            )}
+          </div>
 
           <div className=" lg:hidden flex items-center  gap-1">
             <h1
@@ -93,6 +160,9 @@ const   SignupForm = ({handleSubmit,onSubmit,register ,signupMutation}) => {
             </Link>
           </div>
           <button
+            // onClick={() => {
+            //   setPageNum(pageNum + 1);
+            // }}
             type="submit"
             className="bg-[#1e3837] text-white hover:text-[#132928] hover:bg-black/20 font-semibold italic px-6 py-2 rounded-full transition"
           >
