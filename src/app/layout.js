@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`bg-white w-full ${poppins.className}`}>
         <QueryClientProvider client={QueryProvider}>
-          {!["/Login", "/Signup","/forget","/Resetpassword"].includes(path) && <Navbar />}
+          {["/"].includes(path) && <Navbar />}
           {children}
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>

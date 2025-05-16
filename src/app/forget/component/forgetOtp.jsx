@@ -1,7 +1,7 @@
 "use client";
 import { overpass } from "@/app/components/Fonts";
 import Otpinput from "@/app/components/Otpinput";
-import { forgetVerifyPostData } from "@/app/SignupApi";
+import { forgetVerifyPostData, ResendOtp } from "@/app/SignupApi";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -40,9 +40,17 @@ const ForgetOtp = ({ pageNum, setPageNum }) => {
       console.log("Signup successful:", data);
     },
     onError: (error) => {
-      // console.error("Signup failed:", error.response?.data || error.message);
-      console.log(error.response.data.detail);
-      
+      console.error("Signup failed:", error.response?.data || error.message);
+      toast.error(error.response.data.detail);
+    },
+  });
+  const regenerateOtp = useMutation({
+    mutationFn: (verifyData) => ResendOtp(verifyData),
+    onSuccess: (data) => {
+      console.log("Signup successful:", data);
+    },
+    onError: (error) => {
+      console.error("Signup failed:", error.response?.data || error.message);
       toast.error(error.response.data.detail);
     },
   });
@@ -75,9 +83,9 @@ const ForgetOtp = ({ pageNum, setPageNum }) => {
             verify <FaArrowRight />
           </button>
           <button
-            // onClick={()=>{
-            //   setSeconds(120)
-            // }}
+            onClick={() => {
+              regenerateOtp.mutate();
+            }}
             type="button"
             className="underline text-[14px] font-[500] text-center cursor-pointer text-[#1e3837] hover:text-[#688989] "
           >

@@ -51,3 +51,20 @@
     color: red;
     font-size: 10px;
 }
+
+.heading{
+  color: black;
+  font-size: 15px;
+  text-transform: capitalize;
+}
+
+
+.hide-scrollbar {
+  overflow: auto;
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; 
+}

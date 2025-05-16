@@ -12,6 +12,12 @@ import { loginPostData } from "../SignupApi";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import Loader from "../components/Loader";
+import * as yup from "yup";
+const loginSchema = yup.object({
+  email: yup.string().required(),
+  password: yup.string().required(),
+});
 const Login = () => {
   const router = useRouter();
   const {
@@ -27,7 +33,7 @@ const Login = () => {
   const loginMutation = useMutation({
     mutationFn: (loginUserData) => loginPostData(loginUserData),
     onSuccess: (data) => {
-      router.push("/Dashboard");
+      router.push("/doctordashboard");
       toast("logged in");
       console.log(data.data.access_token);
     },
@@ -130,8 +136,10 @@ const Login = () => {
                     Forget Password?
                   </Link>
                 </div>
-                <button className="bg-[#1e3837] text-white lg:mt-3  hover:text-[#132928] hover:bg-black/20 font-[600] italic text-center px-4  lg:py-2 rounded-full">
-                  Log In
+                <button className="bg-[#1e3837] text-white lg:mt-3  flex  items-center justify-center gap-2 hover:text-[#132928] hover:bg-black/20 font-[600] italic text-center px-4 py-1 lg:py-2 rounded-full">
+                  {loginMutation.isPending
+                    ? ("logging", (<Loader />))
+                    : "Log In"}
                 </button>
               </div>
             </form>
