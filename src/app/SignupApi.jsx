@@ -1,7 +1,7 @@
 import axios from "axios";
 // https://7f2a-119-157-190-152.ngrok-free.app/varifyotp/
 const api = axios.create({
-  baseURL: "https://4d39-119-157-190-152.ngrok-free.app",
+  baseURL: "https://6798-119-157-190-152.ngrok-free.app",
   headers: {
     "Content-Type": "application/json",
   },
