@@ -9,11 +9,13 @@ import { overpass } from "../components/Fonts";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import { loginPostData } from "../SignupApi";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Loader from "../components/Loader";
 import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { setCookie } from 'cookies-next';
 const loginSchema = yup.object({
   email: yup.string().required(),
   password: yup.string().required(),
@@ -27,6 +29,7 @@ const Login = () => {
     getValues,
     formState: { errors },
   } = useForm({
+    resolver: yupResolver(loginSchema),
     defaultValues: {},
   });
 
@@ -36,7 +39,12 @@ const Login = () => {
       router.push("/doctordashboard");
       toast("logged in");
       console.log(data.data.access_token);
+      setCookie("token",data.data.access_token);
     },
+    onError:(error)=>{
+      toast.error(error.response.data.error);
+      
+    }
   });
 
   const onSubmit = (data) => {
@@ -45,6 +53,7 @@ const Login = () => {
   };
   return (
     <div className="authBg bg-[#132928]  min-h-[110vh]  w-full">
+      <ToastContainer/>
       <div className="text-white flex  items-center md:w-100  absolute gap-3">
         <Image src={logo} alt="logo" className="w-20" />
         <h1
@@ -87,6 +96,9 @@ const Login = () => {
                     type="text"
                     placeholder="example@gmail.com"
                   />
+                  {errors.email && (
+                    <p className="error">{errors.email.message}</p>
+                  )}
                 </div>
                 <div className="flex flex-col">
                   <label
@@ -102,6 +114,9 @@ const Login = () => {
                     type="text"
                     placeholder="Password"
                   />
+                  {errors.password && (
+                    <p className="error">{errors.password.message}</p>
+                  )}
                 </div>
                 <div className=" lg:hidden w-full">
                   <h1

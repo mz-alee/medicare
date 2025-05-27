@@ -52,9 +52,9 @@ const Navbar = () => {
           className="w-full h-11 flex gap-2 items-center pl-4 border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
         >
           <Image src={dashboard} alt="dashborad icon" className=" w-5" />
-          <h1 className=" capitalize text-[13px] lg:text-[0.9vw] font-[500] text-[#282828]">
+          <Link href="/doctordashboard" className=" capitalize text-[13px] lg:text-[0.9vw] font-[500] text-[#282828]">
             Dashborad
-          </h1>
+          </Link>
         </div>
         <div
           data-aos="zoom-in-right"
@@ -72,9 +72,9 @@ const Navbar = () => {
           className="w-full h-11 flex gap-2 items-center pl-4 hover:bg-[#d8e6e5]  rounded-lg "
         >
           <Image src={profile} alt="dashborad icon" className="w-4 h-4" />
-          <h1 className=" capitalize text-[13px] lg:text-[0.9vw] text-[#282828]">
+          <Link href={{query:{name:"ali",email:"ali@gmail.com"},pathname:'/profile'}} className=" capitalize text-[13px] lg:text-[0.9vw] text-[#282828]">
             your profile
-          </h1>
+          </Link>
         </div>
         <div
           data-aos="zoom-in-right"

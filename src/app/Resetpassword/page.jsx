@@ -91,7 +91,7 @@ const ResetPassword = () => {
                   confirm password
                 </label>
                 <input
-                  {...register("token")}
+                  // {...register("token")}
                   id="confirmpassword"
                   className="border outline-none  w-full border-gray-300 text-[12px] md:text-[0.9vw] py-2 text-gray-600 rounded px-2"
                   type="text"

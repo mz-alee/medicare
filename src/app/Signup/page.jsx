@@ -18,6 +18,8 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Pangolin } from "next/font/google";
 import { useRouter } from "next/navigation";
+import { toast, ToastContainer } from 'react-toastify';
+import ModalExample from '../profile/components/Modal';
 const schema = yup.object().shape({
   username: yup.string().required("Full Name is a Required Field"),
   email: yup.string().email().required("Email is a Required Field"),
@@ -71,6 +73,8 @@ const Signup = () => {
     },
     onError: (error) => {
       console.error("Signup failed:", error.response?.data || error.message);
+      toast.error(error.response.data.non_field_errors[0]);
+      
     },
   });
 
@@ -85,7 +89,7 @@ const Signup = () => {
   return (
     <div className="authBg bg-[#132928] min-h-screen w-full relative overflow-hidden">
       {/* <SelectRole /> */}
-
+    <ToastContainer/>
       <div className="text-white flex  items-center md:w-100  absolute gap-3">
         <Image src={logo} alt="logo" className="w-20" />
         <h1
@@ -144,6 +148,7 @@ const Signup = () => {
           />
         )}
       </div>
+        <ModalExample/>
     </div>
   );
 };

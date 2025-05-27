@@ -42,7 +42,7 @@ const Navbar = () => {
           onClick={() => {
             setIsActive(true);
           }}
-          className="cursor-pointer md:hidden"
+          className="cursor-pointer hidden"
         >
           <CiMenuFries className="text-lg" />
         </button>
@@ -53,7 +53,7 @@ const Navbar = () => {
           isActive
             ? "flex duration-300 ease-in absolute top-0 right-0  h-screen w-[20vw]"
             : "hidden"
-        } duration-300 ease-in absolute top-0 right-0   h-screen w-[150px] sm:w-[200px] bg-white/10 backdrop-blur-xl`}
+        } duration-300 ease-in absolute top-0 right-0   h-screen w-[90%] sm:w-[200px] bg-white/10 backdrop-blur-xl`}
       >
         <button
           className="h-fit"

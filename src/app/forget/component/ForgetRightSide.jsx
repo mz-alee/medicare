@@ -1,9 +1,18 @@
 import { overpass } from "@/app/components/Fonts";
+import Loader from "@/app/components/Loader";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { FaArrowRight } from "react-icons/fa6";
 
-const ForgetRightSide = ({ register, handleSubmit, onSubmit }) => {
+const ForgetRightSide = ({
+  register,
+  handleSubmit,
+  onSubmit,
+  forgetMutation,
+  errors,
+}) => {
+  console.log(errors);
+
   return (
     <div className="z-10 px-2  bg-white py-8  w-[80vw] sm:w-[40vw] md:w-[35vw] flex justify-center items-center lg:h-[45vh]  rounded-xl ">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
@@ -22,13 +31,13 @@ const ForgetRightSide = ({ register, handleSubmit, onSubmit }) => {
               type="email"
               placeholder="example@gmail.com"
             />
+            {errors.email && <p className='error'> {errors.email.message}</p>}
           </div>
           <button
-          
             type="submit"
             className="bg-[#1e3837] flex items-center justify-center gap-2 text-white  hover:text-[#132928] hover:bg-black/20 font-[600] italic text-center px-4 w-full py-2 rounded-full"
           >
-            Send <FaArrowRight />
+            {forgetMutation.isPending ? <Loader /> : "send"}
           </button>
           <Link
             href="/Login"

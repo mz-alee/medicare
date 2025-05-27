@@ -9,28 +9,67 @@ import { FaArrowRight } from "react-icons/fa6";
 import ForgetRightSide from "./component/ForgetRightSide";
 import logo from "../../../public/Images/Logo.png";
 import { useMutation } from "@tanstack/react-query";
-import { forgetPostData } from "../SignupApi";
+import { forgetPostData, resetUpdatePassword } from "../SignupApi";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import ForgetOtp from "./component/forgetOtp";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import ResetPassword from "./component/resetPassword";
+import ResetPasswordRight from "./component/ResetPasswordRight";
+const forgetSchema = yup.object({
+  email: yup.string().required("email is a required field"),
+});
 const Forgetpassword = () => {
   const [pagenum, setPageNum] = useState(1);
-  const [totalPageNum, setTotalPageNum] = useState(2);
+  const [totalPageNum, setTotalPageNum] = useState(3);
+  const [OTP, setOTP] = useState(null);
   const router = useRouter();
-  const { register, handleSubmit } = useForm({
-    defaultValues: {},
-  });
+  console.log(OTP);
 
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(forgetSchema),
+    defaultValues: {
+      token: OTP,
+      password: "",
+      email:'',
+    },
+  });
+  const value = getValues();
   const forgetMutation = useMutation({
     mutationFn: (forgetData) => forgetPostData(forgetData),
     onSuccess: () => {
       setPageNum(pagenum + 1);
     },
   });
+  const updateMutation = useMutation({
+    mutationFn: (data) => resetUpdatePassword(data),
+    onSuccess: (data) => {
+      router.push("/Login");
+      console.log(data);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   const onSubmit = (data) => {
     forgetMutation.mutate(data);
     console.log(data);
   };
+  const handleReset = (data) => {
+    updateMutation.mutate(data);
+    console.log(data);
+  };
+  console.log(errors);
+  console.log("valueeeeeeees", value.email);
+
   return (
     <div className="authBg bg-[#132928]  min-h-screen  w-full">
       <div className="text-white flex  items-center md:w-100  absolute gap-3">
@@ -45,6 +84,7 @@ const Forgetpassword = () => {
         </h1>
       </div>
 
+      {/* {pagenum === 3 && <ResetPassword />} */}
       <div className="authLeft flex gap-10 sm:gap-15   h-[100vh]  w-full flex-col lg:flex-row items-center  ">
         {/* left section  */}
         <div className="z-10 flex h-[40vh] w-full  lg:h-[80vh]  lg:w-1/2 ">
@@ -63,10 +103,28 @@ const Forgetpassword = () => {
               onSubmit={onSubmit}
               handleSubmit={handleSubmit}
               register={register}
+              forgetMutation={forgetMutation}
+              errors={errors}
             />
           )}
           {pagenum === 2 && (
-            <ForgetOtp pageNum={pagenum} setPageNum={setPageNum} />
+            <ForgetOtp
+              register={register}
+              pageNum={pagenum}
+              setPageNum={setPageNum}
+              setOTP={setOTP}
+              email={value.email}
+            />
+          )}
+          {pagenum === 3 && (
+            <ResetPasswordRight
+              register={register}
+              setValue={setValue}
+              getValues={getValues}
+              handleSubmit={handleSubmit}
+              handleReset={handleReset}
+              OTP={OTP}
+            />
           )}
         </div>
       </div>

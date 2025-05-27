@@ -64,12 +64,17 @@ const SignupForm = ({
               Gender
             </label>
 
-            <InputField
+            <select className='text-[12px] border border-gray-300 p-2 rounded text-gray-500' {...register("gender")} >
+              <option value="">select gender</option>
+              <option value="male">male</option>
+              <option value="female">female</option>
+            </select>
+            {/* <InputField
               register={register}
               placeholder={"Male/Female"}
               name="gender"
               type="text"
-            />
+            /> */}
             {errors.gender && <p className="error">{errors.gender.message}</p>}
           </div>
           <div className="flex flex-col">
