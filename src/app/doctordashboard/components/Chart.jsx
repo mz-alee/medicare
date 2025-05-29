@@ -4,8 +4,8 @@ import { ChartComponent } from "./Piechart";
 const Chart = () => {
   return (
     <div
-      data-aos="zoom-in-right"
-      data-aos-duration="1800"
+      // data-aos="zoom-in-right"
+      // data-aos-duration="1800"
       className="w-full md:w-[35vw] xl:w-[17vw] bg-white h-[45vh] flex flex-col gap-1 rounded-2xl p-4"
     >
       <h1 className="heading italic font-[400] ">Chart</h1>

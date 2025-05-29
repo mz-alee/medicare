@@ -8,11 +8,11 @@ import logo from "../../../public/Images/Logo.png";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { resetUpdatePassword } from "../SignupApi";
-import { useRouter } from 'next/navigation';
+import { resetUpdatePassword } from "../Api";
+import { useRouter } from "next/navigation";
 
 const ResetPassword = () => {
-  const router = useRouter()
+  const router = useRouter();
   const {
     register,
     setValue,
@@ -25,7 +25,7 @@ const ResetPassword = () => {
   const updateMutation = useMutation({
     mutationFn: (data) => resetUpdatePassword(data),
     onSuccess: (data) => {
-      router.push("/Login")
+      router.push("/Login");
       console.log(data);
     },
     onError: (error) => {
@@ -34,7 +34,7 @@ const ResetPassword = () => {
   });
 
   const onSubmit = (data) => {
-    updateMutation.mutate(data)
+    updateMutation.mutate(data);
     console.log(data);
   };
   return (

@@ -3,8 +3,8 @@ import React from "react";
 const UpcomingEvent = () => {
   return (
     <div
-      data-aos="zoom-in-right"
-      data-aos-duration="1300"
+        // data-aos="zoom-in-right"
+        // data-aos-duration="1300"
       className="w-full lg:w-[45vw] xl:w-[49vw] bg-white min-h-[50vh] flex flex-col gap-1 rounded-2xl p-4"
     >
       <h1 className="heading italic font-[400] ">Upcoming Events</h1>

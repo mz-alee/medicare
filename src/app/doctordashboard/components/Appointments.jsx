@@ -7,8 +7,8 @@ const Appointment = () => {
 
   return (
     <div
-      data-aos="zoom-in-right"
-      data-aos-duration="1500"
+      // data-aos="zoom-in-right"
+      // data-aos-duration="1500"
       className="w-full md:w-[40vw] xl:w-[35vw] bg-white h-[45vh] flex flex-col gap-1 rounded-2xl p-4"
     >
       <div className="flex gap-3">

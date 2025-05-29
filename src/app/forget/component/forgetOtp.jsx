@@ -11,7 +11,7 @@ import { set, useForm } from "react-hook-form";
 import { FaArrowRight } from "react-icons/fa6";
 import { toast, ToastContainer } from "react-toastify";
 
-const ForgetOtp = ({ pageNum, setPageNum, setOTP,email }) => {
+const ForgetOtp = ({ pageNum, setPageNum, setOTP, email }) => {
   const [isActive, setIsActive] = useState(false);
   const [seconds, setSeconds] = useState(120);
   const router = useRouter();
@@ -26,8 +26,8 @@ const ForgetOtp = ({ pageNum, setPageNum, setOTP,email }) => {
       token: "",
     },
   });
-  console.log("emailllllllll",email);
-  
+  console.log("emailllllllll", email);
+
   // useEffect(() => {
   //   if (seconds > 0) {
   //     setTimeout(() => setSeconds(seconds - 1), 1000);
@@ -39,7 +39,7 @@ const ForgetOtp = ({ pageNum, setPageNum, setOTP,email }) => {
     mutationFn: (verifyData) => forgetVerifyPostData(verifyData),
     onSuccess: (data) => {
       setPageNum(pageNum + 1);
-      localStorage.setItem("token",value.token)
+      localStorage.setItem("token", value.token);
       // router.push("/Resetpassword");
 
       console.log("Signup successful:", data);
@@ -52,6 +52,8 @@ const ForgetOtp = ({ pageNum, setPageNum, setOTP,email }) => {
   const regenerateOtp = useMutation({
     mutationFn: (verifyData) => ResendOtp(verifyData),
     onSuccess: (data) => {
+      toast("OTP Resend Successfully");
+
       console.log("Signup successful:", data);
     },
     onError: (error) => {
@@ -86,18 +88,20 @@ const ForgetOtp = ({ pageNum, setPageNum, setOTP,email }) => {
               isActive ? "bg-[#1e3837]" : "bg-[#3a5a59] "
             } flex items-center justify-center cursor-pointer gap-2 text-white  hover:text-[#132928] hover:bg-black/20 font-[600] italic text-center px-4 w-70 py-2 rounded-full`}
           >
-            {regenerateOtp.isPending
-              ? console.log("loadinggggggggggg")
+            {verifyMutation.isPending
+              ? <Loader/>
               : `verify `}
           </button>
           <button
             onClick={() => {
-              regenerateOtp.mutate({email:email});
+              regenerateOtp.mutate({ email: email });
             }}
             type="button"
             className="underline text-[14px] font-[500] text-center cursor-pointer text-[#1e3837] hover:text-[#688989] "
           >
-            Resend
+              {regenerateOtp.isPending
+              ? "Resending OTP"
+              : `Verify `}
           </button>
         </div>
       </form>
@@ -111,7 +115,7 @@ const ForgetOtp = ({ pageNum, setPageNum, setOTP,email }) => {
             setPageNum(pageNum - 1);
           }}
         >
-          click here
+          go back
         </button>
       </div>
     </div>

@@ -9,7 +9,7 @@ import { FaArrowRight } from "react-icons/fa6";
 import ForgetRightSide from "./component/ForgetRightSide";
 import logo from "../../../public/Images/Logo.png";
 import { useMutation } from "@tanstack/react-query";
-import { forgetPostData, resetUpdatePassword } from "../SignupApi";
+import { forgetPostData, resetUpdatePassword } from "../Api";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import ForgetOtp from "./component/forgetOtp";
@@ -38,7 +38,7 @@ const Forgetpassword = () => {
     defaultValues: {
       token: OTP,
       password: "",
-      email:'',
+      email: "",
     },
   });
   const value = getValues();

@@ -8,7 +8,7 @@ import logo from "../../../../public/Images/Logo.png";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { resetUpdatePassword } from "../../SignupApi";
+import { resetUpdatePassword } from "../../Api";
 import { useRouter } from "next/navigation";
 import ResetPasswordRight from "./ResetPasswordRight";
 

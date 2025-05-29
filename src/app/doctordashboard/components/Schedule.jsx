@@ -8,8 +8,8 @@ import patient from "../../../../public/Images/docterImages/patient.svg";
 const Schedule = () => {
   return (
     <div
-      data-aos="zoom-in-right"
-      data-aos-duration="1000"
+      // data-aos="zoom-in-right"
+      // data-aos-duration="1000"
       className="w-full     lg:w-[30vw] lg:h-[50vh] xl:h-[50vh] xl:w-[30vw]   bg-white  flex flex-col gap-4  rounded-2xl p-3"
     >
       <h1 className="heading italic font-[400] ">today's schedule</h1>

@@ -1,7 +1,7 @@
 "use client";
 import { overpass } from "@/app/components/Fonts";
 import Otpinput from "@/app/components/Otpinput";
-import { verifyPostData } from "@/app/SignupApi";
+import { verifyPostData, verifyResendOtp } from "@/app/SignupApi";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -10,12 +10,13 @@ import { set, useForm } from "react-hook-form";
 import { FaArrowRight } from "react-icons/fa6";
 import { toast, ToastContainer } from "react-toastify";
 
-const VerifyRightSIde = ({ pageNum, setPageNum }) => {
+const VerifyRightSIde = ({ pageNum, setPageNum, email }) => {
   const [isActive, setIsActive] = useState(false);
   const [seconds, setSeconds] = useState(120);
   const router = useRouter();
   const {
     setValue,
+
     getValues,
     register,
     handleSubmit,
@@ -44,6 +45,13 @@ const VerifyRightSIde = ({ pageNum, setPageNum }) => {
       toast.error(error.response.data.message);
     },
   });
+  const reGenrateOtp = useMutation({
+    mutationFn: (data) => verifyResendOtp(data),
+    onSuccess: (data) => {
+      toast("OTP Resend Successfully");
+    },
+  });
+
   console.log(value);
   const onSubmit = (data) => {
     if (data.token.length == 5) {
@@ -55,6 +63,7 @@ const VerifyRightSIde = ({ pageNum, setPageNum }) => {
     }
     console.log(data);
   };
+  console.log(email);
 
   return (
     <div className="z-10 px-2 relative bg-white py-12 flex-col  w-[80vw] sm:w-[60vw] md:w-[50vw]  lg:w-[35vw] flex justify-center  items-center lg:h-[45vh]  rounded-xl ">
@@ -73,13 +82,16 @@ const VerifyRightSIde = ({ pageNum, setPageNum }) => {
             verify <FaArrowRight />
           </button>
           <button
+            onClick={() => {
+              reGenrateOtp.mutate({ email: email });
+            }}
             // onClick={()=>{
             //   setSeconds(120)
             // }}
             type="button"
-            className="underline text-[14px] font-[500] text-center cursor-pointer text-[#1e3837] "
+            className={` underline text-[14px] font-[500] text-center cursor-pointer text-[#1e3837] `}
           >
-            Resend
+            {reGenrateOtp.isPending ? "OTP Resending" : "Resend"}
           </button>
         </div>
       </form>

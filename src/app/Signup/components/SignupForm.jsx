@@ -1,6 +1,7 @@
 "use client";
 import { overpass } from "@/app/components/Fonts";
 import InputField from "@/app/components/InputField";
+import Loader from '@/app/components/Loader';
 import Link from "next/link";
 import React, { useState } from "react";
 import { FiEye } from "react-icons/fi";
@@ -30,7 +31,7 @@ const SignupForm = ({
 
             <InputField
               register={register}
-              placeholder={"Mirza Ali"}
+              placeholder={"Full Name"}
               name="username"
               type="text"
             />
@@ -52,8 +53,8 @@ const SignupForm = ({
               name="date_of_birth"
               type="date"
             />
-            {errors.birthdate && (
-              <p className="error">{errors.birthdate.message}</p>
+            {errors.date_of_birth && (
+              <p className="error">{errors.date_of_birth.message}</p>
             )}
           </div>
           <div className="flex flex-col">
@@ -171,7 +172,7 @@ const SignupForm = ({
             type="submit"
             className="bg-[#1e3837] text-white hover:text-[#132928] hover:bg-black/20 font-semibold italic px-6 py-2 rounded-full transition"
           >
-            {signupMutation.isPending ? "Signing" : "Sign Up"}
+            {signupMutation.isPending ? <Loader/> : "Sign Up"}
           </button>
         </form>
       </div>

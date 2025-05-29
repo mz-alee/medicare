@@ -1,32 +1,56 @@
 import axios from "axios";
-
+import { getCookie } from "cookies-next";
 const api = axios.create({
-  // baseURL: "https://7f2a-119-157-190-152.ngrok-free.app/signup/",
-  baseURL: "https://jsonplaceholder.typicode.com",
-    // headers: {
-    //   "Content-Type": "application/json",
-    // },
+  baseURL: "https://f959-119-154-159-245.ngrok-free.app",
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-export const getData = () => {
-  return api.get("/posts");
+export const postData = (userData) => {
+  return api.post("/signup/", userData);
 };
-export const delData = (id) => {
-  return api.delete(`/posts/${id}`);
+export const loginPostData = (loginUserData) => {
+  return api.post("/login/", loginUserData);
+};
+export const verifyPostData = (verifyData) => {
+  return api.post("/varifyotp/", verifyData);
+};
+export const ResendOtp = (verifyData) => {
+  return api.post("/password_reset/", verifyData);
+};
+export const forgetVerifyPostData = (verifyData) => {
+  return api.post("/password_reset/validate_token/", verifyData);
+};
+export const forgetPostData = (forgetData) => {
+  return api.post("/password_reset/", forgetData);
+};
+export const resetUpdatePassword = (forgetData) => {
+  return api.post("/password_reset/confirm/", forgetData);
+};
+export const verifyResendOtp = (data) => {
+  return api.post("/regenerateotp/", data);
+};
+export const profileProfessionApi = (data) => {
+  return api.post("/profession/", data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+  });
+};
+export const profilePersonalEditApi = (data, id) => {
+  return api.patch(`/userprofile/${id}/`, data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+  });
 };
 
-export const postData = (newData)=>{
-  return api.post("/posts",newData)
-}
-export const updateData = (id, newData)=>{
-  return api.patch(`/posts/${id}`,{title:"i have updated"})
-}
-
-export const signupUser = async (userData) => {
-  try {
-    const res = await api.post("/signup/", userData);
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
+export const EditProfileGetData = () => {
+  return api.get("/mainprofile/", {
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+  });
 };

@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import authScreenBg from "../../../public/Images/authScreenBG.png";
 import AuthLeft from "../components/AuthLeft";
 import AuthRight from "../components/AuthRight";
@@ -8,19 +8,22 @@ import logo from "../../../public/Images/Logo.png";
 import { overpass } from "../components/Fonts";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
-import { loginPostData } from "../SignupApi";
+import { loginPostData } from "../Api";
 import { toast, ToastContainer } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Loader from "../components/Loader";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { setCookie } from 'cookies-next';
+import { getCookie, getCookies, setCookie } from "cookies-next";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 const loginSchema = yup.object({
   email: yup.string().required(),
-  password: yup.string().required(),
+  password: yup.string().max(20).required(),
 });
 const Login = () => {
+  const [type, setType] = useState("password");
+
   const router = useRouter();
   const {
     register,
@@ -29,6 +32,7 @@ const Login = () => {
     getValues,
     formState: { errors },
   } = useForm({
+    mode: "onChange",
     resolver: yupResolver(loginSchema),
     defaultValues: {},
   });
@@ -36,15 +40,14 @@ const Login = () => {
   const loginMutation = useMutation({
     mutationFn: (loginUserData) => loginPostData(loginUserData),
     onSuccess: (data) => {
-      router.push("/doctordashboard");
+      setCookie("token", data.data.access_token);
+      setCookie("user_id", data.data.id);
       toast("logged in");
-      console.log(data.data.access_token);
-      setCookie("token",data.data.access_token);
+      router.push("/doctordashboard");
     },
-    onError:(error)=>{
+    onError: (error) => {
       toast.error(error.response.data.error);
-      
-    }
+    },
   });
 
   const onSubmit = (data) => {
@@ -53,7 +56,7 @@ const Login = () => {
   };
   return (
     <div className="authBg bg-[#132928]  min-h-[110vh]  w-full">
-      <ToastContainer/>
+      <ToastContainer />
       <div className="text-white flex  items-center md:w-100  absolute gap-3">
         <Image src={logo} alt="logo" className="w-20" />
         <h1
@@ -100,7 +103,7 @@ const Login = () => {
                     <p className="error">{errors.email.message}</p>
                   )}
                 </div>
-                <div className="flex flex-col">
+                {/* <div className="flex flex-col">
                   <label
                     htmlFor="password"
                     className={`${overpass.className} text-[12px] md:text-[1vw] italic text-gray-700`}
@@ -117,6 +120,40 @@ const Login = () => {
                   {errors.password && (
                     <p className="error">{errors.password.message}</p>
                   )}
+                </div> */}
+                <div className="flex flex-col">
+                  <label
+                    htmlFor="password"
+                    className={`${overpass.className} text-[12px] md:text-[1vw] italic text-gray-700`}
+                  >
+                    Password
+                  </label>
+                  <div className=" relative ">
+                    <input
+                      {...register("password")}
+                      id="password"
+                      className="relative border outline-none w-full   border-gray-300 text-[13px] md:text-[0.9vw] py-2 text-gray-600 rounded px-2 "
+                      type={type}
+                      placeholder="Password"
+                      maxLength={30}
+                    />
+                    {errors.password && (
+                      <p className="error">{errors.password.message}</p>
+                    )}
+                    <button
+                      onClick={() => {
+                        if (type === "password") {
+                          setType("text");
+                        } else {
+                          setType("password");
+                        }
+                      }}
+                      type="button"
+                      className="cursor-pointer absolute top-2 right-3 outline-none"
+                    >
+                      {type === "text" ? <FiEye /> : <FiEyeOff />}
+                    </button>
+                  </div>
                 </div>
                 <div className=" lg:hidden w-full">
                   <h1

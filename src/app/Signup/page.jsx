@@ -9,17 +9,15 @@ import "aos/dist/aos.css";
 import Link from "next/link";
 import logo from "../../../public/Images/Logo.png";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getSignupData, postData, verifyPostData } from "../SignupApi";
+import { getSignupData, postData, verifyPostData } from "../Api";
 import { useForm } from "react-hook-form";
 import SelectRole from "./SelectRole";
 import SignupForm from "./components/SignupForm";
 import VerifyRightSIde from "./components/VerifyRightSIde";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Pangolin } from "next/font/google";
 import { useRouter } from "next/navigation";
-import { toast, ToastContainer } from 'react-toastify';
-import ModalExample from '../profile/components/Modal';
+import { toast, ToastContainer } from "react-toastify";
 const schema = yup.object().shape({
   username: yup.string().required("Full Name is a Required Field"),
   email: yup.string().email().required("Email is a Required Field"),
@@ -27,10 +25,18 @@ const schema = yup.object().shape({
   date_of_birth: yup.string().required("Date of Birth is a Required Field"),
   phone_number: yup
     .number()
-    .positive()
-    .integer()
+    .transform((value, originalValue) =>
+      String(originalValue).trim() === "" || isNaN(value) ? null : value
+    )
     .required("Phone Number is a Required Field"),
-  password: yup.string().required("Password is a Required Field").min(6),
+  password: yup
+    .string()
+    .required("Password is a Required Field")
+    .min(6)
+    .matches(
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).*$/,
+      "Password must contain at least one uppercase letter, one number, and one special character"
+    ),
   confirmPassword: yup
     .string()
     .oneOf([yup.ref("password"), null], "Passwords must match"),
@@ -68,13 +74,12 @@ const Signup = () => {
   const signupMutation = useMutation({
     mutationFn: (userData) => postData(userData),
     onSuccess: (data) => {
-      setPageNum(pagenum + 1)
+      setPageNum(pagenum + 1);
       console.log("Signup successful:", data);
     },
     onError: (error) => {
       console.error("Signup failed:", error.response?.data || error.message);
       toast.error(error.response.data.non_field_errors[0]);
-      
     },
   });
 
@@ -85,11 +90,12 @@ const Signup = () => {
     console.log("valueeeeeee", value);
     signupMutation.mutate(data);
   };
+  console.log("valuesssssssss", value);
 
   return (
     <div className="authBg bg-[#132928] min-h-screen w-full relative overflow-hidden">
       {/* <SelectRole /> */}
-    <ToastContainer/>
+      <ToastContainer />
       <div className="text-white flex  items-center md:w-100  absolute gap-3">
         <Image src={logo} alt="logo" className="w-20" />
         <h1
@@ -123,7 +129,12 @@ const Signup = () => {
             />
           )}
           {pagenum === 3 && (
-            <VerifyRightSIde pageNum={pagenum} setPageNum={setPageNum} />
+            <VerifyRightSIde
+              email={value.email}
+              value={value}
+              pageNum={pagenum}
+              setPageNum={setPageNum}
+            />
           )}
 
           {pagenum === 2 && (
@@ -148,7 +159,6 @@ const Signup = () => {
           />
         )}
       </div>
-        <ModalExample/>
     </div>
   );
 };
