@@ -15,14 +15,10 @@ import Aos from "aos";
 import { deleteCookie } from "cookies-next";
 import { usePathname, useRouter } from "next/navigation";
 const Navbar = () => {
-  const [isActive, setisActive] = useState(false);
   const path = usePathname();
   console.log(path);
   const router = useRouter();
-  useEffect(() => {
-    // Aos.init({ once: false });
-  }, []);
-  const handleActive = () => {};
+
   return (
     <div
       data-aos="fade-right"
