@@ -1,18 +1,13 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
-import profile from "../../../../public/Images/person1.png";
 import { useSearchParams } from "next/navigation";
-import ModalEditProfile from "./components/ModalEditProfile";
-import PersonalInformationModal from "./components/ModalPersonal";
-import EditProfessionModal from "./components/EditProfessionModal";
 import { EditProfileGetData, profilePersonalEditApi } from "../../Api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast, ToastContainer } from "react-toastify";
 import { getCookie } from "cookies-next";
 import Header from "../components/Header";
 import Personalinformation from "./components/Personalinformation";
-import Achiements from './components/Achiements';
+import Achiements from "./components/Achiements";
 const Profile = () => {
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
@@ -65,10 +60,7 @@ const Profile = () => {
           />
         )}
         {pageNum === 1 && (
-          <Achiements
-            data={data}
-            profileEditMutation={profileEditMutation}
-          />
+          <Achiements data={data} profileEditMutation={profileEditMutation} />
         )}
       </div>
     </div>

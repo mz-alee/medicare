@@ -66,7 +66,7 @@ const Personalinformation = ({ data, profileEditMutation }) => {
                 full name
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw] ">
-                {data?.data?.user_details.username || "null"}
+                {data?.data?.user_details?.username ? data?.data?.user_details?.username :"null"}
               </h1>
             </div>
             <div>
@@ -74,7 +74,7 @@ const Personalinformation = ({ data, profileEditMutation }) => {
                 email
               </h3>
               <h1 className=" text-[14px] lg:text-[1vw]">
-                {data?.data?.user_details.email || "null"}
+                {data?.data?.user_details?.email || "null"}
               </h1>
             </div>
             <div>
@@ -82,7 +82,7 @@ const Personalinformation = ({ data, profileEditMutation }) => {
                 phone number
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw]">
-                {data?.data?.user_details.phone_number || "null"}
+                {data?.data?.user_details?.phone_number || "null"}
               </h1>
             </div>
           </div>
@@ -92,7 +92,7 @@ const Personalinformation = ({ data, profileEditMutation }) => {
                 Date of birth
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw]">
-                {data?.data?.user_details.date_of_birth || "null"}
+                {data?.data?.user_details?.date_of_birth || "null"}
               </h1>
             </div>
             <div>
@@ -100,7 +100,7 @@ const Personalinformation = ({ data, profileEditMutation }) => {
                 gender
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw]">
-                {data?.data?.user_details.gender || "null"}
+                {data?.data?.user_details?.gender || "null"}
               </h1>
             </div>
             <div>
@@ -108,7 +108,7 @@ const Personalinformation = ({ data, profileEditMutation }) => {
                 adress
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw]">
-                {data?.data?.user_details.address || "null"}
+                {data?.data?.user_details?.address || "null"}
               </h1>
             </div>
           </div>

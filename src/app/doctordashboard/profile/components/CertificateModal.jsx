@@ -6,48 +6,50 @@ import { IoIosClose } from "react-icons/io";
 import Modal from "react-modal";
 import { LuImagePlus } from "react-icons/lu";
 import { getCookie } from "cookies-next";
-const CertificateModal = ({
-  // btnName,
-  // handleAddseat,
-  // register,
-  // series,
-  // errors,
-  isOpen,
-  setIsOpen,
-  // profileEditMutation,
-}) => {
+import Image from "next/image";
+// import * as yup from "yup"
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const certificateSchema = yup.object({
+  certificate_title: yup
+    .string()
+    .required("Certificate Title is Required Field"),
+  organization: yup.string().required("organization  is Required Field"),
+  date_issued: yup.string().required("Date  is Required Field"),
+});
+const CertificateModal = ({ isOpen, setIsOpen, certificateMutation }) => {
+  const [file, setFile] = useState();
   const {
     handleSubmit,
+    setValue,
     register,
     formState: { errors },
   } = useForm({
-    defaultValues: {},
+    resolver: yupResolver(certificateSchema),
+    defaultValues: {
+      certificate_title: "",
+      organization: "",
+      date_issued: "",
+      certificate_attachment: null,
+    },
   });
 
   useEffect(() => {
     Modal.setAppElement("#root");
   }, []);
+  const handleImage = (e) => {
+    const data = e.target.files[0];
+    const imageURL = URL.createObjectURL(data);
+    setFile(imageURL);
+    setFile(imageURL);
+    setValue("certificate_attachment", data);
+  };
+
   const handleProfileData = (data) => {
     console.log(data);
-    
-    // profileEditMutation.mutate({
-    //   data: {
-    //     id: 8,
-    //     user_details: {
-    //       user_id: "aa4a0217-de64-4d17-bd7c-33f56a0b51a9",
-    //       username: "Adnan",
-    //       image: null,
-    //       date_of_birth: "2001-02-24",
-    //       gender: "Male",
-    //       select_role: "therapist",
-    //       email: "kab85903@gmail.com",
-    //       phone_number: "03052038478",
-    //       address: null,
-    //       about: null,
-    //     },
-    //     // id: getCookie("user_id"),
-    //   },
-    // });
+    certificateMutation.mutate(data);
+    setValue("");
   };
   return (
     <div>
@@ -98,25 +100,27 @@ const CertificateModal = ({
                     register={register}
                     placeholder="certificate name"
                     type="text"
-                    name="certificate_name"
+                    name="certificate_title"
                   />
                 </div>
-                {/* {errors.addSeat && (
-              <p className="error">{errors.addSeat.message}</p>
-            )} */}
+                {errors.certificate_title && (
+                  <p className="error">{errors.certificate_title.message}</p>
+                )}
               </div>
               <div className="w-full">
                 <div className="w-full flex flex-col ">
                   <p className=" capitalize text-[12px]">
-                    {" "}
                     issuing organization
                   </p>
                   <InputField
                     register={register}
-                    placeholder="profession"
+                    placeholder="organization"
                     type="text"
-                    name="profession"
+                    name="organization"
                   />
+                  {errors.organization && (
+                    <p className="error">{errors.organization.message}</p>
+                  )}
                 </div>
               </div>
               <div className="w-full">
@@ -125,9 +129,12 @@ const CertificateModal = ({
                   <InputField
                     register={register}
                     placeholder="date issued"
-                    type="text"
-                    name="profession"
+                    type="date"
+                    name="date_issued"
                   />
+                  {errors.date_issued && (
+                    <p className="error">{errors.date_issued.message}</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -136,17 +143,40 @@ const CertificateModal = ({
                 htmlFor="profile"
                 className="border-dashed hover:bg-gray-100 bg-gray-50 cursor-pointer border rounded-lg flex flex-col items-center justify-center gap-2 border-gray-300 h-30  w-full"
               >
-                <LuImagePlus className="text-lg" />
-                <p className="text-[12px]">
-                  click or drag and drop to upload your file
-                </p>
-                <p className="text-gray-500 text-[12px]">PNG,JPG,SVG</p>
-                
+                {!file && (
+                  <>
+                    <LuImagePlus className="text-lg" />
+                    <p className="text-[12px]">
+                      click or drag and drop to upload your file
+                    </p>
+                    <p className="text-gray-500 text-[12px]">PNG,JPG,SVG</p>
+                  </>
+                )}
+
+                {file && (
+                  <div className="bg-gray-400 rounded-full overflow-hidden w-25 h-25 flex justify-center items-center">
+                    <Image
+                      src={file}
+                      alt="srf"
+                      width={60}
+                      height={60}
+                      className="object-fit "
+                    />
+                  </div>
+                )}
               </label>
-              <input {...register("image")} type="file" name="" id="profile" className="hidden" />
+              <input
+                // {...register("certificate_attachment")}
+                type="file"
+                accept="image/*"
+                onChange={handleImage}
+                name="certificate_attachment"
+                id="profile"
+                className="hidden"
+              />
             </div>
             {/* btns  */}
-            <div className=" flex gap-2 ">
+            <div className="mt-4 flex gap-2 ">
               <button
                 onClick={() => {
                   setIsOpen(false);

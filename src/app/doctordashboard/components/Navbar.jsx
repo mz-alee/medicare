@@ -23,7 +23,7 @@ const Navbar = () => {
     <div
       data-aos="fade-right"
       data-aos-duration="500"
-      className="  md:relative  w-50  md:w-50 lg:w-[20vw] xl:w-[17vw] h-screen bg-[#f9f9f9] md:flex flex-col justify-between py-4 items-center px-3  "
+      className="  md:relative  w-50  md:w-50 lg:w-[20vw] xl:w-[14vw] h-screen bg-[#f9f9f9] md:flex flex-col justify-between py-4 items-center px-3  "
     >
       <div>
         <div

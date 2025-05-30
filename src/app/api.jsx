@@ -3,9 +3,12 @@ import { getCookie } from "cookies-next";
 const api = axios.create({
   baseURL: "https://f959-119-154-159-245.ngrok-free.app",
   headers: {
-    "Content-Type": "application/json",
+    "Content-Type": "multipart/form-data",
+    // "Content-Type": "    application/json",
   },
 });
+
+// auth screens
 
 export const postData = (userData) => {
   return api.post("/signup/", userData);
@@ -31,6 +34,9 @@ export const resetUpdatePassword = (forgetData) => {
 export const verifyResendOtp = (data) => {
   return api.post("/regenerateotp/", data);
 };
+
+// docter profile
+
 export const profileProfessionApi = (data) => {
   return api.post("/profession/", data, {
     headers: {
@@ -40,6 +46,51 @@ export const profileProfessionApi = (data) => {
 };
 export const profilePersonalEditApi = (data, id) => {
   return api.patch(`/userprofile/${id}/`, data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+  });
+};
+
+// docter achievements
+
+export const certificatePostApi = (data) => {
+  return api.post(`/certification/`, data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+  });
+};
+export const certificateDelApi = (id) => {
+  return api.delete(`/certification/${id}/`, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+  });
+};
+export const publicationPostApi = (data) => {
+  return api.post(`/publication/`, data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+  });
+};
+export const publicationDelApi = (id) => {
+  return api.delete(`/publication/${id}/`, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+  });
+};
+export const AwardPostApi = (data) => {
+  return api.post(`/awards/`, data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+  });
+};
+export const AwardDelApi = (id) => {
+  return api.delete(`/awards/${id}/`, {
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,
     },
