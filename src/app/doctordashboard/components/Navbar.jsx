@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import logo from "../../../../public/Images/Logo.png";
-import person from "../../../../public/Images/person1.png";
+import profile from "../../../../public/Images/docterImages/profile.svg";
 import dashboard from "../../../../public/Images/docterImages/dashboard.svg";
 import setting from "../../../../public/Images/docterImages/setting.svg";
-import profile from "../../../../public/Images/docterImages/profile.svg";
+import person from "../../../../public/Images/empty.webp";
 import appointment from "../../../../public/Images/docterImages/appointment.svg";
 import staff from "../../../../public/Images/docterImages/staff.svg";
 import chat from "../../../../public/Images/docterImages/chat.svg";
@@ -12,11 +12,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { BiLogOut } from "react-icons/bi";
 import Aos from "aos";
-import { deleteCookie } from "cookies-next";
+import { deleteCookie, getCookie } from "cookies-next";
 import { usePathname, useRouter } from "next/navigation";
 const Navbar = () => {
   const path = usePathname();
-  console.log(path);
   const router = useRouter();
 
   return (
@@ -31,7 +30,7 @@ const Navbar = () => {
           data-aos-duration="1000"
           className="flex items-center justify-center gap-2 py-1   w-full "
         >
-          <Image src={logo} alt="logo" className="w-14 h-14" />
+          <Image src={logo} alt="logo" className="w-14  h-14" />
           <h1 className="font-[600] capitalize text-sm lg:text-md ">
             medi scheduler
           </h1>
@@ -42,10 +41,16 @@ const Navbar = () => {
           data-aos-duration="1000"
           className="bg-white shadow-2xl  gap-2 rounded-2xl h-17 flex  items-center px-3 w-full"
         >
-          <Image src={person} alt="person" className="w-12 h-12" />
+          <div className="overflow-hidden h-14 w-14 rounded-full">
+            <Image src={person} alt="person" className="w-14 h-14" />
+          </div>
           <div>
-            <h1 className="italic capitalize text-[#282828]">Mirza Ali</h1>
-            <h1 className="text-[13px] text-[#417978] capitalize">doctor</h1>
+            <div className="italic capitalize text-[14px] w-20 overflow-hidden h-7  text-[#282828]">
+              <h1>{getCookie("username")}</h1>
+            </div>
+            <h1 className="text-[13px] text-[#417978] capitalize">
+              {getCookie("role")}
+            </h1>
           </div>
         </div>
         {/* Links  */}
@@ -117,6 +122,11 @@ const Navbar = () => {
       <button
         onClick={() => {
           deleteCookie("token");
+          deleteCookie("user_id");
+          deleteCookie("username");
+          deleteCookie("role");
+          deleteCookie("professional_id");
+          
           router.push("/Login");
         }}
         className="text-red-600  cursor-pointer  italic font-[500] flex items-center gap-2"

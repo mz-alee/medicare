@@ -22,17 +22,7 @@ const DoctorDashboard = () => {
 
   return (
     <>
-      {/* <div className="flex h-screen w-full  bg-[#f9f9f9] "> */}
-      {/* <Navbar /> */}
-      {/* header  */}
-      {/* <div className="w-full  overflow-y-scroll px-6"> */}
-      {/* <Header name="Dashboard" /> */}
-      {/* content  */}
-      {/* <div className="  flex-col md:flex-row gap-3 py-4 flex-wrap md:justify-between  flex items-center md:items-start "> */}
       <Dashboard />
-      {/* </div> */}
-      {/* </div> */}
-      {/* </div> */}
     </>
   );
 };

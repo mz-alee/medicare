@@ -1,7 +1,7 @@
 "use client";
 import { overpass } from "@/app/components/Fonts";
 import Otpinput from "@/app/components/Otpinput";
-import { verifyPostData, verifyResendOtp } from "@/app/SignupApi";
+import { verifyPostData, verifyResendOtp } from "../../Api";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { set, useForm } from "react-hook-form";
 import { FaArrowRight } from "react-icons/fa6";
 import { toast, ToastContainer } from "react-toastify";
+import Loader from "@/app/components/Loader";
 
 const VerifyRightSIde = ({ pageNum, setPageNum, email }) => {
   const [isActive, setIsActive] = useState(false);
@@ -79,7 +80,7 @@ const VerifyRightSIde = ({ pageNum, setPageNum, email }) => {
               isActive ? "bg-[#1e3837]" : "bg-[#3a5a59] "
             } flex items-center justify-center cursor-pointer gap-2 text-white  hover:text-[#132928] hover:bg-black/20 font-[600] italic text-center px-4 w-70 py-2 rounded-full`}
           >
-            verify <FaArrowRight />
+            {verifyMutation.isPending ? <Loader /> : "verify"}
           </button>
           <button
             onClick={() => {

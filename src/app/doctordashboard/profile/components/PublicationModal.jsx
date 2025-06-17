@@ -8,12 +8,16 @@ import { LuImagePlus } from "react-icons/lu";
 import { getCookie } from "cookies-next";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Image from "next/image";
+import Loader from "@/app/components/Loader";
 const publishSchema = yup.object({
   publication_title: yup.string().required("publish Title is Required Field"),
   journal: yup.string().required("journal is Required Field"),
   publish_date: yup.string().required("Date  is Required Field"),
 });
 const PublicationModal = ({ isOpen, setIsOpen, publishingMutation }) => {
+  const [imageFile, setImageFile] = useState(null);
+
   const {
     handleSubmit,
     getValues,
@@ -32,6 +36,7 @@ const PublicationModal = ({ isOpen, setIsOpen, publishingMutation }) => {
   const handleImage = (e) => {
     const file = e.target.files[0];
     const imageURL = URL.createObjectURL(file);
+    setImageFile(imageURL);
     setValue("certificate_attachment", file);
   };
 
@@ -52,7 +57,7 @@ const PublicationModal = ({ isOpen, setIsOpen, publishingMutation }) => {
             zIndex: 1000,
           },
           content: {
-            height: "72vh",
+            height: "76vh",
             width: "350px",
             top: "50%",
             left: "50%",
@@ -130,11 +135,27 @@ const PublicationModal = ({ isOpen, setIsOpen, publishingMutation }) => {
                 htmlFor="profile"
                 className="border-dashed hover:bg-gray-100 bg-gray-50 cursor-pointer border rounded-lg flex flex-col items-center justify-center gap-2 border-gray-300 h-30  w-full"
               >
-                <LuImagePlus className="text-lg" />
-                <p className="text-[12px]">
-                  click or drag and drop to upload your file
-                </p>
-                <p className="text-gray-500 text-[12px]">PNG,JPG,SVG</p>
+                {!imageFile && (
+                  <>
+                    <LuImagePlus className="text-lg" />
+                    <p className="text-[12px]">
+                      click or drag and drop to upload your file
+                    </p>
+                    <p className="text-gray-500 text-[12px]">PNG,JPG,SVG</p>
+                  </>
+                )}
+
+                {imageFile && (
+                  <div className="bg-gray-400 rounded-full overflow-hidden w-25 h-25 flex justify-center items-center">
+                    <Image
+                      src={imageFile}
+                      alt="srf"
+                      width={60}
+                      height={60}
+                      className="object-fit "
+                    />
+                  </div>
+                )}
               </label>
               <input
                 {...register("publication_attachment")}
@@ -142,11 +163,11 @@ const PublicationModal = ({ isOpen, setIsOpen, publishingMutation }) => {
                 onChange={handleImage}
                 name="publication_attachment"
                 id="profile"
-                // className="hidden"
+                className="hidden"
               />
             </div>
             {/* btns  */}
-            <div className=" flex mt-4 gap-2 ">
+            <div className=" flex gap-2 ">
               <button
                 onClick={() => {
                   setIsOpen(false);
@@ -159,7 +180,7 @@ const PublicationModal = ({ isOpen, setIsOpen, publishingMutation }) => {
                 type="submit"
                 className="bg-[#132928]  text-[12px] lg:text-[0.8w] cursor-pointer hover:bg-[#375f5d] rounded-2xl w-37 px-3 py-1 text-white"
               >
-                Save Changes
+                {publishingMutation.isPending ? <Loader /> : "Save Changes"}
               </button>
             </div>
           </form>

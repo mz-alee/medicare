@@ -1,10 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { EditProfileGetData, profilePersonalEditApi } from "../../Api";
+import { ProfileGetData, profilePersonalEditApi } from "../../Api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast, ToastContainer } from "react-toastify";
-import { getCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import Header from "../components/Header";
 import Personalinformation from "./components/Personalinformation";
 import Achiements from "./components/Achiements";
@@ -16,33 +16,22 @@ const Profile = () => {
   const [isProfessionalOpen, setProfessionalIsOpen] = useState(false);
   const [pageNum, setPageNum] = useState(0);
   const [userData, setUserData] = useState();
-  console.log(name);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["profileData"],
-    queryFn: EditProfileGetData,
+    queryKey: ["profiledata"],
+    queryFn: ProfileGetData,
     onSuccess: (data) => {
-      setUserData(data);
-      console.log(data);
       toast("data fetch successfully");
     },
+    retry: "false",
     onError: (error) => {
       console.error(error);
     },
   });
-  console.log(data?.data.profession_details);
+  setCookie("professional_id", data?.data?.profession_details?.id);
 
-  console.log("tokennn", getCookie("token"));
-  const profileEditMutation = useMutation({
-    mutationFn: ({ data, id }) => profilePersonalEditApi(data, id),
-    onSuccess: () => {
-      toast("Profile updated successfully");
-    },
-    onError: (error) => {
-      console.error("Profile update failed:", error);
-      toast.error("Failed to update profile");
-    },
-  });
+  console.log("profile dataaaaaaaaaa", data?.data);
+
   return (
     <div>
       <Header
@@ -56,11 +45,15 @@ const Profile = () => {
         {pageNum === 0 && (
           <Personalinformation
             data={data}
-            profileEditMutation={profileEditMutation}
+            // profileEditMutation={profileEditMutation}
           />
         )}
         {pageNum === 1 && (
-          <Achiements data={data} profileEditMutation={profileEditMutation} />
+          <Achiements
+            profiledata={data}
+            // profileEditMutation={profileEditMutation}
+            isLoading={isLoading}
+          />
         )}
       </div>
     </div>

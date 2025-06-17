@@ -2,7 +2,7 @@
 import { overpass } from "@/app/components/Fonts";
 import Loader from "@/app/components/Loader";
 import Otpinput from "@/app/components/Otpinput";
-import { forgetVerifyPostData, ResendOtp } from "@/app/SignupApi";
+import { forgetVerifyPostData, ResendOtp } from "@/app/Api";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

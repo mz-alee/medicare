@@ -1,7 +1,12 @@
+import Loader from "@/app/components/Loader";
+import moment from "moment";
 import React from "react";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { VscReport } from "react-icons/vsc";
-const AllAppointments = () => {
+const AllAppointments = ({ data, isLoading }) => {
+  console.log(data?.data?.results);
+  console.log(moment(data?.data?.date_time, "YYYY-MM-DD HH:mm:ss"));
+
   return (
     <>
       <div className="header flex flex-wrap gap-3 items-center ">
@@ -21,64 +26,160 @@ const AllAppointments = () => {
           completed appointments
         </button>
       </div>
-      <div className=" overflow-x-auto hide-scrollbar  rounded-2xl mt-4 w-full h-[80vh]">
-        <div
-        // data-aos="zoom-in-right"
-        // data-aos-duration="1300"
-        >
-          <div className="  ">
-            <table className="min-w-full  table-auto border-collapse text-left">
-              <thead className="">
-                <tr>
-                  <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
-                    Date
-                  </th>
-                  <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
-                    Time
-                  </th>
-                  <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
-                    patient name
-                  </th>
-                  <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
-                    diagnosis summary
-                  </th>
-                  <th className="px-3 text-center py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
-                    contact/report
-                  </th>
-                  <th className="px-4  py-2 text-sm lg:text-[0.9vw] font-medium text-gray-700">
-                    status
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {Array.from({ length: 10 }).map((items, index) => (
-                  <tr
-                    key={index}
-                    className="border-b hover:bg-black/10 cursor-default text-[10px] lg:text-[0.9vw]  border-gray-200"
-                  >
-                    <td className="px-4 py-2  text-gray-600">02/12/2012</td>
-                    <td className="px-4 py-2  text-gray-600">8:00 AM</td>
-                    <td className="px-4 py-2   flex items-center gap-1">
-                      <span className="block border border-gray-600 w-7 h-7 rounded-full"></span>
-                      kabeer
-                    </td>
-                    <td className="px-4 py-2  text-gray-600">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Sunt, voluptatum.
-                    </td>
-                    <td className="px-4 py-2   flex text-lg justify-center gap-6 text-gray-600">
-                      <IoChatbubbleEllipsesOutline className="hover:text-purple-600" />{" "}
-                      <VscReport className="text-blue-600 hover:text-red-600" />
-                    </td>
-                    <td className="px-4 py-2  text-green-600">Done</td>
+      {/* {data?.data?.result ? (
+        <p className="text-center my-auto mt-50 text-gray-700 text-[13px] lg:text-[1vw] ">
+          no appointments
+        </p>
+      ) : (
+        <div className="relative bg-amber-100 overflow-x-auto hide-scrollbar  rounded-2xl mt-4 w-full h-[80vh]">
+          <div
+          // data-aos="zoom-in-right"
+          // data-aos-duration="1300"
+          >
+            <div className="  w-full  h-screen  ">
+              <table className="min-w-full h-full  table-auto border-collapse text-left">
+                <thead className="">
+                  <tr>
+                    <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
+                      Date
+                    </th>
+                    <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
+                      Time
+                    </th>
+                    <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
+                      patient name
+                    </th>
+                    <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
+                      diagnosis summary
+                    </th>
+                    <th className="px-3 text-center py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
+                      contact/report
+                    </th>
+                    <th className="px-4 py-2 text-sm lg:text-[0.9vw] font-medium text-gray-700">
+                      status
+                    </th>
                   </tr>
-                ))}
-                {/* Add more rows as needed */}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className=" w-full h-full">
+                  {true ? (
+                    <div className='absolute mt-[50%]'>
+                      <Loader />
+                    </div>
+                  ) : (
+                    data?.data?.results.map((items, index) => (
+                      <tr
+                        key={index}
+                        className="border-b hover:bg-black/10 cursor-default text-[10px] lg:text-[0.9vw]  border-gray-200"
+                      >
+                        <td className="px-4 py-2  text-gray-600">
+                          {moment(items.date_time).format("MMMM Do YYYY")}
+                        </td>
+                        <td className="px-4 py-2  text-gray-600">
+                          {moment(items.date_time).format("LT")}
+                        </td>
+                        <td className="px-4 py-2   flex items-center gap-1">
+                          <span className="block border border-gray-600 w-7 h-7 rounded-full"></span>
+                          {items.patient}
+                        </td>
+                        <td className="px-4 py-2  text-gray-600">
+                          {items.note}
+                        </td>
+                        <td className="px-4 py-2   flex text-lg justify-center gap-6 text-gray-600">
+                          <IoChatbubbleEllipsesOutline className="hover:text-purple-600" />{" "}
+                          <VscReport className="text-blue-600 hover:text-red-600" />
+                        </td>
+                        <td
+                          className={`
+                        ${
+                          items.status === "cancelled"
+                            ? "text-red-600 "
+                            : "text-green-400"
+                        }  px-4 py-2 `}
+                        >
+                          {items.status}
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
+      )} */}
+      {isLoading ? (
+        <div className="my-auto mt-50">
+          <Loader />
+        </div>
+      ) : data?.data?.results?.length === 0 ? (
+        <p className="text-center my-auto mt-50 text-gray-700 text-[13px] lg:text-[1vw]">
+          no appointments
+        </p>
+      ) : (
+        <div className="overflow-x-auto hide-scrollbar rounded-2xl mt-4 w-full h-[80vh]">
+          <div>
+            <div className="w-full h-screen">
+              <table className="min-w-full h-full table-auto border-collapse text-left">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
+                      Date
+                    </th>
+                    <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
+                      Time
+                    </th>
+                    <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
+                      Patient Name
+                    </th>
+                    <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
+                      Diagnosis Summary
+                    </th>
+                    <th className="px-3 text-center py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
+                      Contact/Report
+                    </th>
+                    <th className="px-4 py-2 text-sm lg:text-[0.9vw] font-medium text-gray-700">
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data?.data?.results.map((items, index) => (
+                    <tr
+                      key={index}
+                      className="border-b hover:bg-black/10 cursor-default text-[10px] lg:text-[0.9vw] border-gray-200"
+                    >
+                      <td className="px-4 py-2 text-gray-600">
+                        {moment(items.date_time).format("MMMM Do YYYY")}
+                      </td>
+                      <td className="px-4 py-2 text-gray-600">
+                        {moment(items.date_time).format("LT")}
+                      </td>
+                      <td className="px-4 py-2 flex items-center gap-1">
+                        <span className="block border border-gray-600 w-7 h-7 rounded-full"></span>
+                        {items.patient}
+                      </td>
+                      <td className="px-4 py-2 text-gray-600">{items.note}</td>
+                      <td className="px-4 py-2 flex text-lg justify-center gap-6 text-gray-600">
+                        <IoChatbubbleEllipsesOutline className="hover:text-purple-600" />
+                        <VscReport className="text-blue-600 hover:text-red-600" />
+                      </td>
+                      <td
+                        className={`${
+                          items.status === "cancelled"
+                            ? "text-red-600"
+                            : "text-green-400"
+                        } px-4 py-2`}
+                      >
+                        {items.status}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { FaRegEdit } from "react-icons/fa";
 import CertificateModal from "./CertificateModal";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   AwardDelApi,
   AwardPostApi,
@@ -16,17 +16,21 @@ import { toast } from "react-toastify";
 import PublicationModal from "./PublicationModal";
 import AwardModal from "./AwardModal";
 import * as yup from "yup";
-const Achiements = ({ profiledata }) => {
+import Loader from "@/app/components/Loader";
+const Achiements = ({ profiledata, isLoading }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isPublicationOpen, setIsPublicationOpen] = useState(false);
   const [isAwardOpen, setIsAwardOpen] = useState(false);
   const [certificateData, setCertificateData] = [
-    profiledata.data.certificate_details,
+    profiledata?.data?.certificate_details,
   ];
+  const queryClient = useQueryClient();
   const certificateMutation = useMutation({
     mutationFn: (data) => certificatePostApi(data),
     onSuccess: (data) => {
       toast("certificate uploaded successfully");
+      queryClient.invalidateQueries(["certificate"]);
+      setIsOpen(false);
     },
     onError: (error) => {
       console.log(error);
@@ -37,6 +41,8 @@ const Achiements = ({ profiledata }) => {
     onSuccess: (data) => {
       toast("publish uploaded successfully");
       console.log("alskdjflkasjdfklaj", data);
+      queryClient.invalidateQueries(["publish"]);
+      setIsPublicationOpen(false);
     },
     onError: (error) => {
       console.log(error);
@@ -46,6 +52,8 @@ const Achiements = ({ profiledata }) => {
     mutationFn: (data) => AwardPostApi(data),
     onSuccess: (data) => {
       toast("Award uploaded successfully");
+      queryClient.invalidateQueries(["awards"]);
+      setIsAwardOpen(false);
     },
     onError: (error) => {
       console.log(error);
@@ -55,6 +63,7 @@ const Achiements = ({ profiledata }) => {
     mutationFn: (data) => certificateDelApi(data),
     onSuccess: () => {
       toast("certificate deleted successfully");
+      queryClient.invalidateQueries(["certificate"]);
     },
     onError: (error) => {
       console.log(error);
@@ -64,6 +73,7 @@ const Achiements = ({ profiledata }) => {
     mutationFn: (data) => publicationDelApi(data),
     onSuccess: () => {
       toast("certificate deleted successfully");
+      queryClient.invalidateQueries(["certificate"]);
     },
     onError: (error) => {
       console.log(error);
@@ -72,6 +82,8 @@ const Achiements = ({ profiledata }) => {
   const awardDel = useMutation({
     mutationFn: (data) => AwardDelApi(data),
     onSuccess: () => {
+      queryClient.invalidateQueries(["certificate"]);
+
       toast("certificate deleted successfully");
     },
     onError: (error) => {
@@ -79,8 +91,7 @@ const Achiements = ({ profiledata }) => {
     },
   });
 
-  console.log("profiledata", profiledata.data.award_details);
-
+  console.log("profiledata", profiledata);
   return (
     <>
       <div id="root">
@@ -101,7 +112,7 @@ const Achiements = ({ profiledata }) => {
           setIsOpen={setIsAwardOpen}
         />
       </div>
-      <div className="w-full  flex flex-col gap-3 py-2">
+      <div className="w-full  flex flex-col  gap-3 py-2">
         <div className=" border border-gray-200  gap-2 flex-col rounded-2xl w-full flex items-center py-2 px-8 min-h-28">
           <div className="flex justify-between w-full border-b border-gray-400 pb-2 items-center">
             <h1>Certifications</h1>
@@ -114,40 +125,50 @@ const Achiements = ({ profiledata }) => {
               + Upload
             </button>
           </div>
-          {certificateData?.map((items, index) => {
-            return (
-              <div
-                key={index}
-                className="w-full flex justify-between border-b border-gray-400 pb-2 "
-              >
-                <div className="flex gap-2 items-center">
-                  <p className="w-15 text-[9px]   lg:w-30  lg:text-[0.9vw] text-gray-700">
-                    {items.date_issued}
-                  </p>
-                  <p className="w-15 text-[9px] lg:w-30  lg:text-[0.9vw] text-gray-700">
-                    status
-                  </p>
-                  <p className="w-15 text-[9px]   lg:w-30  lg:text-[0.9vw] text-gray-700">
-                    {items.certificate_title}
-                  </p>
+          {isLoading ? (
+            <div className=" my-auto mx-auto">
+              <Loader />
+            </div>
+          ) : (
+            certificateData?.map((items, index) => {
+              return (
+                <div
+                  key={index}
+                  className="w-full flex justify-between border-b border-gray-400 pb-2 "
+                >
+                  <div className="flex gap-2 items-center">
+                    <p className="w-15 text-[9px]   lg:w-30  lg:text-[0.9vw] text-gray-700">
+                      {items.date_issued}
+                    </p>
+                    <p className="w-15 text-[9px] lg:w-30  lg:text-[0.9vw] text-gray-700">
+                      status
+                    </p>
+                    <p className="w-15 text-[9px]   lg:w-30  lg:text-[0.9vw] text-gray-700">
+                      {items.certificate_title}
+                    </p>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <button type="button">
+                      <FaRegEdit className="hover:text-blue-400" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        console.log(items.id);
+                        certificateDel.mutate(items.id);
+                      }}
+                    >
+                      <AiFillDelete className="hover:text-red-600" />
+                    </button>
+                  </div>
                 </div>
-                <div className="flex gap-2 items-center">
-                  <button type="button">
-                    <FaRegEdit className="hover:text-blue-400" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      console.log(items.id);
-                      certificateDel.mutate(items.id);
-                    }}
-                  >
-                    <AiFillDelete className="hover:text-red-600" />
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+              );
+            }) || (
+              <p className="text-center my-auto text-gray-600 capitalize text-[12px] lg:text-[0.9vw]">
+                no certificate
+              </p>
+            )
+          )}
         </div>
 
         {/* personal information  */}
@@ -163,40 +184,50 @@ const Achiements = ({ profiledata }) => {
               + Upload
             </button>
           </div>
-          {profiledata?.data?.publication_details?.map((items, index) => {
-            return (
-              <div
-                key={index}
-                className="w-full flex justify-between border-b border-gray-400 pb-2 "
-              >
-                <div className="flex gap-2 items-center">
-                  <p className="w-15 text-[9px]   lg:w-30  lg:text-[0.9vw] text-gray-700">
-                    {items.publish_date || "null"}
-                  </p>
-                  <p className="w-15 text-[9px]   lg:w-30  lg:text-[0.9vw] text-gray-700">
-                    status
-                  </p>
-                  <p className="w-15 text-[9px]   lg:w-30  lg:text-[0.9vw] text-gray-700">
-                    {items.publication_title || "null"}
-                  </p>
+          {isLoading ? (
+            <div className=" my-auto mx-auto">
+              <Loader />
+            </div>
+          ) : (
+            profiledata?.data?.publication_details?.map((items, index) => {
+              return (
+                <div
+                  key={index}
+                  className="w-full flex justify-between border-b border-gray-400 pb-2 "
+                >
+                  <div className="flex gap-2 items-center">
+                    <p className="w-15 text-[9px]   lg:w-30  lg:text-[0.9vw] text-gray-700">
+                      {items.publish_date || "null"}
+                    </p>
+                    <p className="w-15 text-[9px]   lg:w-30  lg:text-[0.9vw] text-gray-700">
+                      status
+                    </p>
+                    <p className="w-15 text-[9px]   lg:w-30  lg:text-[0.9vw] text-gray-700">
+                      {items.publication_title || "null"}
+                    </p>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <button>
+                      <FaRegEdit className="hover:text-blue-400" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        console.log(items.id);
+                        publishDel.mutate(items.id);
+                      }}
+                    >
+                      <AiFillDelete className="hover:text-red-600" />
+                    </button>
+                  </div>
                 </div>
-                <div className="flex gap-2 items-center">
-                  <button>
-                    <FaRegEdit className="hover:text-blue-400" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      console.log(items.id);
-                      publishDel.mutate(items.id);
-                    }}
-                  >
-                    <AiFillDelete className="hover:text-red-600" />
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+              );
+            }) || (
+              <p className="text-center my-auto text-gray-600 capitalize text-[12px] lg:text-[0.9vw]">
+                no publication
+              </p>
+            )
+          )}
         </div>
         <div className="border border-gray-200 rounded-2xl flex flex-col gap-4  py-2 min-h-60  px-8 w-full">
           <div className="flex justify-between w-full border-b border-gray-400 pb-2 items-center">
@@ -210,38 +241,48 @@ const Achiements = ({ profiledata }) => {
               + Upload
             </button>
           </div>
-          {profiledata?.data?.award_details?.map((items, index) => {
-            return (
-              <div
-                key={index}
-                className="w-full flex justify-between border-b border-gray-400 pb-2 "
-              >
-                <div className="flex gap-2 items-center">
-                  <p className="w-15 text-[9px]   lg:w-30  lg:text-[0.9vw] text-gray-700">
-                    {items.receive_date || "null"}
-                  </p>
-                  <p className="w-15 text-[9px] lg:w-30  lg:text-[0.9vw] text-gray-700">
-                    status
-                  </p>
-                  <p className="w-15 text-[9px]   lg:w-30  lg:text-[0.9vw] text-gray-700">
-                    {items.award_name || "null"}
-                  </p>
+          {isLoading ? (
+            <div className=" my-auto mx-auto">
+              <Loader />
+            </div>
+          ) : (
+            profiledata?.data?.award_details?.map((items, index) => {
+              return (
+                <div
+                  key={index}
+                  className="w-full flex justify-between border-b border-gray-400 pb-2 "
+                >
+                  <div className="flex gap-2 items-center">
+                    <p className="w-15 text-[9px]   lg:w-30  lg:text-[0.9vw] text-gray-700">
+                      {items.receive_date || "null"}
+                    </p>
+                    <p className="w-15 text-[9px] lg:w-30  lg:text-[0.9vw] text-gray-700">
+                      status
+                    </p>
+                    <p className="w-15 text-[9px]   lg:w-30  lg:text-[0.9vw] text-gray-700">
+                      {items.award_name || "null"}
+                    </p>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <button>
+                      <FaRegEdit className="hover:text-blue-400" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        awardDel.mutate(items.id);
+                      }}
+                    >
+                      <AiFillDelete className="hover:text-red-600" />
+                    </button>
+                  </div>
                 </div>
-                <div className="flex gap-2 items-center">
-                  <button>
-                    <FaRegEdit className="hover:text-blue-400" />
-                  </button>
-                  <button
-                    onClick={() => {
-                      awardDel.mutate(items.id);
-                    }}
-                  >
-                    <AiFillDelete className="hover:text-red-600" />
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+              );
+            }) || (
+              <p className="text-center my-auto text-gray-600 capitalize text-[12px] lg:text-[0.9vw]">
+                no award
+              </p>
+            )
+          )}
         </div>
       </div>
     </>

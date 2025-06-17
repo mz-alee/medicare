@@ -1,5 +1,6 @@
 "use client";
 import InputField from "@/app/components/InputField";
+import Loader from "@/app/components/Loader";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosClose } from "react-icons/io";
@@ -13,18 +14,35 @@ const PersonalInformationModal = ({
   isOpen,
   setIsOpen,
   title,
+  profileEditMutation,
 }) => {
   const {
+    handleSubmit,
     register,
     formState: { errors },
   } = useForm({
-    defaultValues: {},
+    defaultValues: {
+      username: "",
+      phone_number: "",
+    },
   });
 
   useEffect(() => {
     Modal.setAppElement("#root");
   }, []);
 
+  const handlePersonalProfile = (data) => {
+    console.log(data);
+    profileEditMutation.mutate(data)
+    // profileEditMutation.mutate({
+    //   address: null,
+    //   date_of_birth: "2025-06-02T00:00:00Z",
+    //   gender: "Male",
+    //   image: null,
+    //   phone_number: "930290239",
+    //   username: "mirzaa",
+    // });
+  };
   return (
     <div>
       <Modal
@@ -49,112 +67,139 @@ const PersonalInformationModal = ({
           },
         }}
       >
-        <div className={`flex flex-col gap-3 text-sm   `}>
-          <div>
-            <IoIosClose
-              onClick={() => {
-                setIsOpen(false);
-              }}
-              className="text-2xl"
-            />
-          </div>
-          <h2 className="capitalize font-[500] text-[15px] lg:text-[1.1vw]   text-center ">
-            Personal Information
-          </h2>
-          {/* select option  */}
-          <div className='flex flex-col gap-1'>
-            <div className="w-full">
-              <div className="w-full flex flex-col gap-1 items-start">
-                <p className=" capitalize text-[13px]">Full Name</p>
-                <InputField
-                  register={register}
-                  placeholder="Full Name"
-                  type="text"
-                  name="fullname"
-                />
-                {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
-              </div>
+        <form onSubmit={handleSubmit(handlePersonalProfile)}>
+          <div className={`flex flex-col gap-3 text-sm   `}>
+            <div>
+              <IoIosClose
+                onClick={() => {
+                  setIsOpen(false);
+                }}
+                className="text-2xl"
+              />
             </div>
-            {/* seat numbers  */}
-            <div className="w-full">
-              <div className="w-full flex flex-col gap-1 items-start">
-                <p className=" capitalize text-[13px]"> email</p>
-                <InputField
-                  register={register}
-                  placeholder="email"
-                  type="text"
-                  name="email"
-                />
+            <h2 className="capitalize font-[500] text-[15px] lg:text-[1.1vw]   text-center ">
+              Personal Information
+            </h2>
+            {/* select option  */}
+            <div className="flex flex-col gap-1">
+              <div className="w-full">
+                <div className="w-full flex flex-col gap-1 items-start">
+                  <p className=" capitalize text-[12px] lg:text-[0.9vw] italic">
+                    Full Name
+                  </p>
+                  <InputField
+                    register={register}
+                    placeholder="Full Name"
+                    type="text"
+                    name="username"
+                  />
+                  {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
+                </div>
               </div>
-              {/* {errors.addSeat && (
+              {/* <div className="w-full">
+                <div className="w-full flex flex-col gap-1 items-start">
+                  <p className=" capitalize text-[13px]"> email</p>
+                  <InputField
+                    register={register}
+                    placeholder="email"
+                    type="text"
+                    name="email"
+                  />
+                </div>
+                {errors.addSeat && (
               <p className="error">{errors.addSeat.message}</p>
-            )} */}
-            </div>
-            {/* Availability  */}
-            <div className="w-full">
-              <div className="w-full flex flex-col gap-1 items-start">
-                <p className=" capitalize text-[13px]"> Phone Number</p>
-                <InputField
-                  register={register}
-                  placeholder="Phone Number"
-                  type="text"
-                  name="Phone Number"
-                />
+            )}
+              </div> */}
+              <div className="w-full">
+                <div className="w-full flex flex-col gap-1 items-start">
+                  <p className=" capitalize text-[12px] lg:text-[0.9vw] italic">
+                    {" "}
+                    Phone Number
+                  </p>
+                  <InputField
+                    register={register}
+                    placeholder="Phone Number"
+                    type="number"
+                    name="Phone_number"
+                  />
+                </div>
               </div>
-            </div>
-            {/* series  */}
-            <div className="w-full">
-              <div className="w-full flex flex-col gap-1 items-start">
-                <p className=" capitalize text-[13px]"> Date of Birth</p>
-                <InputField
-                  register={register}
-                  placeholder="Date of Birth"
-                  type="date"
-                  name="birthdate"
-                />
-                {/* {errors.category && (
+              <div className="w-full">
+                <div className="w-full flex flex-col gap-1 items-start">
+                  <p className=" capitalize text-[12px] lg:text-[0.9vw] italic">
+                    {" "}
+                    Date of Birth
+                  </p>
+                  <InputField
+                    register={register}
+                    placeholder="Date of Birth"
+                    type="date"
+                    name="birthdate"
+                  />
+                  {/* {errors.category && (
                 <p className="error">{errors.category.message}</p>
               )} */}
+                </div>
               </div>
-            </div>
-            <div className="w-full">
-              <div className="w-full  flex flex-col gap-1 items-start">
-                <p className=" capitalize text-[13px]"> Gender</p>
-                <select
-                  className="border border-gray-300 rounded p-1 text-[12px] text-gray-600 w-full"
-                  name=""
-                  id=""
-                >
-                  <option value="">Select Gender Type </option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                </select>
-                {/* {errors.category && (
+              <div className="w-full">
+                <div className="w-full  flex flex-col gap-1 items-start">
+                  <p className=" capitalize text-[12px] lg:text-[0.9vw] italic">
+                    {" "}
+                    Gender
+                  </p>
+                  <select
+                    className="border border-gray-300 rounded p-1 text-[12px] text-gray-600 w-full"
+                    name=""
+                    id=""
+                  >
+                    <option value="">Select Gender Type </option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                  {/* {errors.category && (
                 <p className="error">{errors.category.message}</p>
               )} */}
+                </div>
+              </div>
+              <div className="w-full">
+                <div className="w-full flex flex-col gap-1 items-start">
+                  <p className=" capitalize text-[12px] lg:text-[0.9vw] italic">
+                    {" "}
+                    address
+                  </p>
+                  <InputField
+                    register={register}
+                    placeholder="address"
+                    type="text"
+                    name="address"
+                  />
+                  {/* {errors.category && (
+                <p className="error">{errors.category.message}</p>
+              )} */}
+                </div>
               </div>
             </div>
+            {/* btns  */}
+            <div className=" flex justify-between">
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                }}
+                className=" text-gray-500 text-[12px] lg:text-[0.8w] rounded-2xl border border-gray-500 w-37 px-3 py-1 hover:text-black/80"
+              >
+                Discard
+              </button>
+              <button
+                type="submit"
+                // onClick={handleAddseat}
+                className="bg-[#132928] text-[12px] lg:text-[0.8w] cursor-pointer hover:bg-[#375f5d] rounded-2xl w-37 px-3 py-1 text-white"
+              >
+                {profileEditMutation.isLoading ? <Loader /> : "Save Changes"}
+              </button>
+            </div>
           </div>
-          {/* btns  */}
-          <div className=" flex justify-between">
-            <button
-              onClick={() => {
-                setIsOpen(false);
-              }}
-              className=" text-gray-500 text-[12px] lg:text-[0.8w] rounded-2xl border border-gray-500 w-37 px-3 py-1 hover:text-black/80"
-            >
-              Discard
-            </button>
-            <button
-              type="submit"
-              // onClick={handleAddseat}
-              className="bg-[#132928] text-[12px] lg:text-[0.8w] cursor-pointer hover:bg-[#375f5d] rounded-2xl w-37 px-3 py-1 text-white"
-            >
-              Save Changes
-            </button>
-          </div>
-        </div>
+        </form>
       </Modal>
     </div>
   );

@@ -17,7 +17,6 @@ const poppins = Poppins({
 
 export default function RootLayout({ children }) {
   const path = usePathname();
-  console.log(path);
 
   return (
     <html lang="en">

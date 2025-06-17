@@ -10,6 +10,8 @@ import Image from "next/image";
 // import * as yup from "yup"
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-toastify";
+import Loader from "@/app/components/Loader";
 
 const certificateSchema = yup.object({
   certificate_title: yup
@@ -23,6 +25,7 @@ const CertificateModal = ({ isOpen, setIsOpen, certificateMutation }) => {
   const {
     handleSubmit,
     setValue,
+    reset,
     register,
     formState: { errors },
   } = useForm({
@@ -42,15 +45,18 @@ const CertificateModal = ({ isOpen, setIsOpen, certificateMutation }) => {
     const data = e.target.files[0];
     const imageURL = URL.createObjectURL(data);
     setFile(imageURL);
-    setFile(imageURL);
     setValue("certificate_attachment", data);
   };
 
   const handleProfileData = (data) => {
     console.log(data);
     certificateMutation.mutate(data);
-    setValue("");
   };
+useEffect(()=>{
+  if( certificateMutation.isSuccess ){
+    
+  }
+},[])  
   return (
     <div>
       <Modal
@@ -63,8 +69,8 @@ const CertificateModal = ({ isOpen, setIsOpen, certificateMutation }) => {
             zIndex: 1000,
           },
           content: {
-            height: "72vh",
-            width: "350px",
+            height: "75vh",
+            width: "390px",
             top: "50%",
             left: "50%",
             right: "auto",
@@ -75,7 +81,7 @@ const CertificateModal = ({ isOpen, setIsOpen, certificateMutation }) => {
           },
         }}
       >
-        <div className={`flex flex-col gap-2 text-sm   `}>
+        <div className={`flex flex-col gap-1 text-sm   `}>
           <form
             className="flex flex-col gap-3"
             onSubmit={handleSubmit(handleProfileData)}
@@ -176,7 +182,7 @@ const CertificateModal = ({ isOpen, setIsOpen, certificateMutation }) => {
               />
             </div>
             {/* btns  */}
-            <div className="mt-4 flex gap-2 ">
+            <div className=" w-full justify-center flex gap-2 ">
               <button
                 onClick={() => {
                   setIsOpen(false);
@@ -189,7 +195,7 @@ const CertificateModal = ({ isOpen, setIsOpen, certificateMutation }) => {
                 type="submit"
                 className="bg-[#132928]  text-[12px] lg:text-[0.8w] cursor-pointer hover:bg-[#375f5d] rounded-2xl w-37 px-3 py-1 text-white"
               >
-                Save Changes
+                {certificateMutation.isPending ? <Loader /> : "Save Changes"}
               </button>
             </div>
           </form>

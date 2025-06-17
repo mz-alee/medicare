@@ -28,24 +28,27 @@ const ModalEditProfile = ({
     Modal.setAppElement("#root");
   }, []);
   const handleProfileData = (data) => {
-    profileEditMutation.mutate({
-      data: {
-        id: 8,
-        user_details: {
-          user_id: "aa4a0217-de64-4d17-bd7c-33f56a0b51a9",
-          username: "Adnan",
-          image: null,
-          date_of_birth: "2001-02-24",
-          gender: "Male",
-          select_role: "therapist",
-          email: "kab85903@gmail.com",
-          phone_number: "03052038478",
-          address: null,
-          about: null,
-        },
-        // id: getCookie("user_id"),
-      },
-    });
+    console.log(data);
+    
+    profileEditMutation.mutate(data);
+    // profileEditMutation.mutate({
+    //   data: {
+    //     id: 8,
+        // user_details: {
+    //       user_id: "aa4a0217-de64-4d17-bd7c-33f56a0b51a9",
+    //       username: "Adnan",
+    //       image: null,
+    //       date_of_birth: "2001-02-24",
+    //       gender: "Male",
+    //       select_role: "therapist",
+    //       email: "kab85903@gmail.com",
+    //       phone_number: "03052038478",
+    //       address: null,
+    //       about: null,
+    //     },
+    //     // id: getCookie("user_id"),
+    //   },
+    // });
   };
   return (
     <div>
@@ -59,7 +62,7 @@ const ModalEditProfile = ({
             zIndex: 1000,
           },
           content: {
-            height: "55vh",
+            height: "345px",
             width: "350px",
             top: "50%",
             left: "50%",
@@ -71,10 +74,11 @@ const ModalEditProfile = ({
           },
         }}
       >
-        <div className={`flex flex-col gap-3 text-sm   `}>
-          <form 
-          className='flex flex-col gap-3'
-          onSubmit={handleSubmit(handleProfileData)}>
+        <div className={`flex flex-col gap-2 text-sm   `}>
+          <form
+            className="flex flex-col gap-3"
+            onSubmit={handleSubmit(handleProfileData)}
+          >
             <div>
               <IoIosClose
                 type="button"

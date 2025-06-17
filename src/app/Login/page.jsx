@@ -40,9 +40,31 @@ const Login = () => {
   const loginMutation = useMutation({
     mutationFn: (loginUserData) => loginPostData(loginUserData),
     onSuccess: (data) => {
+      console.log("login dataaaaaa", data);
+      console.log(data.data.role);
       setCookie("token", data.data.access_token);
+      setCookie("username", data.data.username);
+      setCookie("role", data.data.role);
       setCookie("user_id", data.data.id);
+      if (data.data.role === "therapist") {
+        router.push("/therapistdashboard");
+        return;
+      }
+      if (data.data.role === "patient") {
+        router.push("/patientdashboard");
+        return;
+      }
+      if (data.data.role === "doctor") {
+        router.push("/doctordashboard");
+        return;
+      }
+      if (data.data.role === "staff") {
+        router.push("/staffdashboard");
+        return;
+      }
+
       toast("logged in");
+
       router.push("/doctordashboard");
     },
     onError: (error) => {

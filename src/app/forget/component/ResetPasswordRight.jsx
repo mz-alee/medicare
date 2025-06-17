@@ -1,7 +1,7 @@
 "use client";
 import { overpass } from "@/app/components/Fonts";
-import Loader from '@/app/components/Loader';
-import { resetUpdatePassword } from "@/app/SignupApi";
+import Loader from "@/app/components/Loader";
+import { resetUpdatePassword } from "@/app/Api";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
@@ -13,11 +13,17 @@ import { toast, ToastContainer } from "react-toastify";
 import * as yup from "yup";
 
 const confirmPasswordSchema = yup.object({
-  password: yup.string().required("Password is a Required Field"),
-  confirmPassword: yup.string().oneOf(
-    [yup.ref("password"), null],
-    "Passwords must match"
-  ).required("Confirm Password is a Required Field")
+  password: yup
+    .string()
+    .required("Password is a Required Field")
+    .matches(
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).*$/,
+      "Password must contain at least one uppercase letter, one number, and one special character"
+    ),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords must match")
+    .required("Confirm Password is a Required Field"),
 });
 const ResetPasswordRight = () => {
   const code = localStorage.getItem("token");
@@ -93,7 +99,7 @@ const ResetPasswordRight = () => {
             )}
           </div>
           <button className="bg-[#1e3837] flex items-center justify-center gap-2 text-white mt-5 hover:text-[#132928] hover:bg-black/20 font-[600] italic text-center px-4 w-full py-2 rounded-full">
-            {updateMutation.isPending?<Loader/> :" Send"}
+            {updateMutation.isPending ? <Loader /> : " Send"}
           </button>
           <Link
             href="/Login"

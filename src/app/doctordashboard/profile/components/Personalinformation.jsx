@@ -7,18 +7,35 @@ import EditProfessionModal from "./EditProfessionModal";
 import profile from "../../../../../public/Images/person1.png";
 import { FaRegEdit } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
-const Personalinformation = ({ data, profileEditMutation }) => {
+import { getCookie } from "cookies-next";
+import { useMutation } from "@tanstack/react-query";
+import { profilePersonalEditApi } from "@/app/Api";
+import { toast, ToastContainer } from "react-toastify";
+const Personalinformation = ({ data }) => {
   const [isprofile, setisprofile] = useState(false);
   const [isPersonalOpen, setisPersonalIsOpen] = useState(false);
   const [isProfessionalOpen, setProfessionalIsOpen] = useState(false);
+  const profileEditMutation = useMutation({
+    mutationFn: ({ data }) => profilePersonalEditApi(data),
+    onSuccess: (data) => {
+      console.log("dataaaaaaa", data);
+
+      toast("Profile updated successfully");
+    },
+    onError: (error) => {
+      console.error("Profile update failed:", error);
+      toast.error("Failed to update profile");
+    },
+  });
   return (
-    <div className="w-full  flex flex-col gap-3 ">
-      <div className="bg-white justify-between rounded-2xl w-full flex items-center px-8 h-28">
-        <div className="flex gap-4 items-center">
+    <div className="w-full  flex flex-col py-3 gap-3 ">
+      <ToastContainer />
+      <div className="bg-white justify-between flex-wrap gap-2 rounded-2xl w-full flex items-center px-8 py-2 min-h-28">
+        <div className="flex gap-4 items-center ">
           <Image src={profile} alt="profile image " className="w-20 h-20" />
-          <div className="">
+          <div className="text-[14px] lg:text-[1vw]">
             <h1>{data?.data?.user_details.username}</h1>
-            <p className="text-[13px] lg:text-[0.9vw]">job title</p>
+            <p className="text-[13px] lg:text-[0.9vw]">{getCookie("role")}</p>
           </div>
         </div>
         <button
@@ -56,6 +73,7 @@ const Personalinformation = ({ data, profileEditMutation }) => {
             <PersonalInformationModal
               isOpen={isPersonalOpen}
               setIsOpen={setisPersonalIsOpen}
+              profileEditMutation={profileEditMutation}
             />
           </div>
         </div>
@@ -66,7 +84,9 @@ const Personalinformation = ({ data, profileEditMutation }) => {
                 full name
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw] ">
-                {data?.data?.user_details?.username ? data?.data?.user_details?.username :"null"}
+                {data?.data?.user_details?.username
+                  ? data?.data?.user_details?.username
+                  : "null"}
               </h1>
             </div>
             <div>
@@ -130,6 +150,7 @@ const Personalinformation = ({ data, profileEditMutation }) => {
           <EditProfessionModal
             isOpen={isProfessionalOpen}
             setIsOpen={setProfessionalIsOpen}
+            data={data}
           />
         </div>
         <div className="flex flex-wrap w-1/2 justify-between  h-full   gap-3 ">
@@ -139,7 +160,7 @@ const Personalinformation = ({ data, profileEditMutation }) => {
                 profession
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw] w-50">
-                {data?.data.profession_details.profession || "null"}
+                {data?.data?.profession_details?.profession || "null"}
               </h1>
             </div>
             <div>
@@ -147,7 +168,7 @@ const Personalinformation = ({ data, profileEditMutation }) => {
                 specialization
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw] w-50">
-                {data?.data.profession_details.specialization || "null"}
+                {data?.data?.profession_details?.specialization || "null"}
               </h1>
             </div>
             <div>
@@ -155,7 +176,7 @@ const Personalinformation = ({ data, profileEditMutation }) => {
                 clinic/hospital
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw] w-50">
-                {data?.data.profession_details.clinic_name || "null"}
+                {data?.data?.profession_details?.clinic_name || "null"}
               </h1>
             </div>
           </div>
@@ -165,7 +186,7 @@ const Personalinformation = ({ data, profileEditMutation }) => {
                 clinic/hospital adress
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw] w-50">
-                {data?.data.profession_details.clinic_address || "null"}
+                {data?.data?.profession_details?.clinic_address || "null"}
               </h1>
             </div>
             <div>
@@ -173,7 +194,7 @@ const Personalinformation = ({ data, profileEditMutation }) => {
                 your note
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw] w-50">
-                {data?.data.profession_details.your_note || "null"}
+                {data?.data?.profession_details?.your_note || "null"}
               </h1>
             </div>
           </div>
