@@ -46,6 +46,8 @@ const Login = () => {
       setCookie("username", data.data.username);
       setCookie("role", data.data.role);
       setCookie("user_id", data.data.id);
+      setCookie("user_image", data.data.image);
+
       if (data.data.role === "therapist") {
         router.push("/therapistdashboard");
         return;

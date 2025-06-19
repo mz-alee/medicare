@@ -17,7 +17,7 @@ const DoctorDashboard = () => {
       duration: 800,
       once: false,
     });
-    Aos.refresh(); // <-- important
+    Aos.refresh(); 
   }, []);
 
   return (

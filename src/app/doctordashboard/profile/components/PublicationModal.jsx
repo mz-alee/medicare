@@ -15,7 +15,13 @@ const publishSchema = yup.object({
   journal: yup.string().required("journal is Required Field"),
   publish_date: yup.string().required("Date  is Required Field"),
 });
-const PublicationModal = ({ isOpen, setIsOpen, publishingMutation }) => {
+const PublicationModal = ({
+  isOpen,
+  setIsOpen,
+  publishingMutation,
+  PublishingEditMutation,
+  isEdit,
+}) => {
   const [imageFile, setImageFile] = useState(null);
 
   const {
@@ -41,8 +47,12 @@ const PublicationModal = ({ isOpen, setIsOpen, publishingMutation }) => {
   };
 
   const handleProfileData = (data) => {
-    publishingMutation.mutate(data);
-    console.log(data);
+    if (isEdit === "upload") {
+      publishingMutation.mutate(data);
+    } else {
+      data.id = isEdit.id;
+      PublishingEditMutation.mutate(data);
+    }
   };
 
   return (

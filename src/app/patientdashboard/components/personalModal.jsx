@@ -6,6 +6,8 @@ import { IoIosClose } from "react-icons/io";
 import Modal from "react-modal";
 import { LuImagePlus } from "react-icons/lu";
 import { getCookie } from "cookies-next";
+import Image from "next/image";
+import Loader from "@/app/components/Loader";
 const ModalEditProfile = ({
   // btnName,
   // handleAddseat,
@@ -14,38 +16,35 @@ const ModalEditProfile = ({
   // errors,
   isOpen,
   setIsOpen,
-  profileEditMutation,
+  PatientProfileEdit,
+  data
 }) => {
+  const [file, setFile] = useState();
+
   const {
     handleSubmit,
+    setValue,
     register,
     formState: { errors },
   } = useForm({
-    defaultValues: {},
+    defaultValues: {
+      image: "",
+    },
   });
 
   useEffect(() => {
     Modal.setAppElement("#root");
   }, []);
+  const handleImage = (e) => {
+    const img = e.target.files[0];
+    const imageURL = URL.createObjectURL(img);
+    setValue("image", img);
+    setFile(imageURL);
+    console.log(img);
+  };
+
   const handleProfileData = (data) => {
-    profileEditMutation.mutate({
-      data: {
-        id: 8,
-        user_details: {
-          user_id: "aa4a0217-de64-4d17-bd7c-33f56a0b51a9",
-          username: "Adnan",
-          image: null,
-          date_of_birth: "2001-02-24",
-          gender: "Male",
-          select_role: "therapist",
-          email: "kab85903@gmail.com",
-          phone_number: "03052038478",
-          address: null,
-          about: null,
-        },
-        // id: getCookie("user_id"),
-      },
-    });
+    PatientProfileEdit.mutate(data);
   };
   return (
     <div>
@@ -71,7 +70,9 @@ const ModalEditProfile = ({
           },
         }}
       >
-        <div className={`flex flex-col justify-between  h-full gap-3 text-sm   `}>
+        <div
+          className={`flex flex-col justify-between  h-full gap-3 text-sm   `}
+        >
           <form
             className="flex flex-col justify-between  h-full gap-3"
             onSubmit={handleSubmit(handleProfileData)}
@@ -93,13 +94,35 @@ const ModalEditProfile = ({
                 htmlFor="profile"
                 className="border-dashed hover:bg-gray-100 bg-gray-50 cursor-pointer border rounded-lg flex flex-col items-center justify-center gap-2 border-gray-300 h-30  w-full"
               >
-                <LuImagePlus className="text-lg" />
-                <p className="text-[12px]">
-                  click or drag and drop to upload your file
-                </p>
-                <p className="text-gray-500 text-[12px]">PNG,JPG,SVG</p>
+                {!file && (
+                  <>
+                    <LuImagePlus className="text-lg" />
+                    <p className="text-[12px]">
+                      click or drag and drop to upload your file
+                    </p>
+                    <p className="text-gray-500 text-[12px]">PNG,JPG,SVG</p>
+                  </>
+                )}
+
+                {file && (
+                  <div className="bg-gray-400 rounded-full overflow-hidden w-25 h-25 flex justify-center items-center">
+                    <Image
+                      src={file}
+                      alt="srf"
+                      width={60}
+                      height={60}
+                      className="object-fit "
+                    />
+                  </div>
+                )}
               </label>
-              <input type="file" name="" id="profile" className="hidden" />
+              <input
+                type="file"
+                name=""
+                id="profile"
+                onChange={handleImage}
+                className="hidden"
+              />
             </div>
             <div className="flex flex-col gap-1">
               <div className="w-full">
@@ -110,6 +133,7 @@ const ModalEditProfile = ({
                     placeholder="username"
                     type="text"
                     name="username"
+                    values={data?.data?.user_details?.username}
                   />
                 </div>
                 {/* {errors.addSeat && (
@@ -131,7 +155,7 @@ const ModalEditProfile = ({
                 type="submit"
                 className="bg-[#132928]  text-[12px] lg:text-[0.8w] cursor-pointer hover:bg-[#375f5d] rounded-2xl w-37 px-3 py-1 text-white"
               >
-                Save Changes
+                {PatientProfileEdit.isPending ? <Loader /> : "Save Changes"}
               </button>
             </div>
           </form>

@@ -16,14 +16,11 @@ const awardSchema = yup.object({
   receive_date: yup.string().required("Date  is Required Field"),
 });
 const AwardModal = ({
-  // btnName,
-  // handleAddseat,
-  // register,
-  // series,
-  // errors,
   isOpen,
   setIsOpen,
   AwardMutation,
+  AwardEditMutation,
+  isEdit,
 }) => {
   const [file, setFile] = useState();
   const {
@@ -53,8 +50,12 @@ const AwardModal = ({
   };
 
   const handleProfileData = (data) => {
-    console.log(data);
-    AwardMutation.mutate(data);
+    if (isEdit === "upload") {
+      AwardMutation.mutate(data);
+    } else {
+      data.id = isEdit.id;
+      AwardEditMutation.mutate(data);
+    }
     setTimeout(() => {
       reset();
     }, 1000);
@@ -97,7 +98,7 @@ const AwardModal = ({
                 className="text-2xl"
               />
               <h2 className="capitalize font-[500] text-[16px] lg:text-[1.3vw]   text-center ">
-                Award
+                {isEdit === "upload" ? "Award " : "Edit Award"}
               </h2>
             </div>
             <div className="flex flex-col gap-3">
@@ -196,7 +197,11 @@ const AwardModal = ({
                 type="submit"
                 className="bg-[#132928]  text-[12px] lg:text-[0.8w] cursor-pointer hover:bg-[#375f5d] rounded-2xl w-37 px-3 py-1 text-white"
               >
-                {AwardMutation.isPending ? <Loader /> : "Save Changes"}
+                {AwardEditMutation.isPending || AwardMutation.isPending ? (
+                  <Loader />
+                ) : (
+                  "Save Changes"
+                )}
               </button>
             </div>
           </form>

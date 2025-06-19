@@ -14,10 +14,25 @@ import { BiLogOut } from "react-icons/bi";
 import Aos from "aos";
 import { deleteCookie, getCookie } from "cookies-next";
 import { usePathname, useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { ProfileGetData } from "@/app/Api";
 const Navbar = () => {
   const path = usePathname();
   const router = useRouter();
 
+  // const { data, isLoading, isError } = useQuery({
+  //   queryKey: ["profiledata"],
+  //   queryFn: ProfileGetData,
+  //   onSuccess: (data) => {
+  //     toast("data fetch successfully");
+  //   },
+  //   retry: "false",
+  //   onError: (error) => {
+  //     console.error(error);
+  //   },
+  // });
+  // console.log(data);
+  
   return (
     <div
       data-aos="fade-right"
@@ -126,7 +141,7 @@ const Navbar = () => {
           deleteCookie("username");
           deleteCookie("role");
           deleteCookie("professional_id");
-          
+
           router.push("/Login");
         }}
         className="text-red-600  cursor-pointer  italic font-[500] flex items-center gap-2"

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosClose } from "react-icons/io";
 import Modal from "react-modal";
-const AppointmentModal = ({
+const ReminderModal = ({
   // btnName,
   // handleAddseat,
   // register,
@@ -40,7 +40,7 @@ const AppointmentModal = ({
           },
           content: {
             minheight: "500px",
-            width: "380px",
+            width: "350px",
             top: "50%",
             left: "50%",
             right: "auto",
@@ -51,7 +51,7 @@ const AppointmentModal = ({
           },
         }}
       >
-        <div className={`flex flex-col gap-2 text-sm `}>
+        <div className={`flex flex-col  text-sm `}>
           <div>
             <IoIosClose
               onClick={() => {
@@ -60,20 +60,20 @@ const AppointmentModal = ({
               className="text-2xl"
             />
           </div>
-          <h2 className="capitalize font-[500] text-[15px] lg:text-[1.1vw]   text-center ">
-            new appointment
+          <h2 className="capitalize mb-3 font-[500] text-[15px] lg:text-[1.1vw]   text-center ">
+            appointment reminder
           </h2>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2">
             <div className="w-full">
               <div className="w-full flex flex-col gap-1 items-start">
                 <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                  patient name
+                  Doctor name
                 </p>
                 <InputField
                   register={register}
-                  placeholder="patient name"
+                  placeholder="Doctor Name"
                   type="text"
-                  name="patient_name"
+                  name="Doctor_name"
                 />
                 {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
               </div>
@@ -81,22 +81,20 @@ const AppointmentModal = ({
             <div className="w-full">
               <div className="w-full flex flex-col gap-1 items-start">
                 <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                  {" "}
-                  Phone number
+                  location
                 </p>
                 <InputField
                   register={register}
-                  placeholder="phone number"
-                  type="number"
-                  name="phone_number"
+                  placeholder="location"
+                  type="text"
+                  name="location"
                 />
               </div>
               {/* {errors.addSeat && (
               <p className="error">{errors.addSeat.message}</p>
             )} */}
             </div>
-            <div className="flex gap-3 justify-center">
-              <div className="w-1/2">
+              <div className="w-full">
                 <div className="w-full  flex flex-col gap-1 items-start">
                   <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
                     Date
@@ -111,33 +109,8 @@ const AppointmentModal = ({
                 <p className="error">{errors.category.message}</p>
               )} */}
                 </div>
-                <div className="w-full py-2 px-2 flex flex-col justify-center gap-3 ">
-                  <h1 className="capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    appointment type
-                  </h1>
-                  <button
-                    onClick={() => setSelectedBtn("regular")}
-                    className={`${
-                      selectedBtn === "regular"
-                        ? "bg-[#498382] text-white"
-                        : "bg-gray-100"
-                    } capitalize rounded text-[12px] text-gray-600 italic lg:text-[0.9vw] cursor-pointer h-10 w-full flex items-center justify-center`}
-                  >
-                    regular check up
-                  </button>
-                  <button
-                    onClick={() => setSelectedBtn("urgent")}
-                    className={`${
-                      selectedBtn === "urgent"
-                        ? "bg-[#498382] text-white"
-                        : "bg-gray-100"
-                    } capitalize rounded text-[12px] text-gray-600 italic lg:text-[0.9vw] cursor-pointer h-10 w-full flex items-center justify-center`}
-                  >
-                    urgent check up
-                  </button>
-                </div>
               </div>
-              <div className="w-1/2">
+              <div className='w-full'>
                 <div className="w-full  flex flex-col gap-1 items-start">
                   <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
                     Time
@@ -152,34 +125,10 @@ const AppointmentModal = ({
                 <p className="error">{errors.category.message}</p>
               )} */}
                 </div>
-                <div className="h-50 w-full flex flex-col gap-1 py-1 ">
-                  <h1 className="text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    available time slots
-                  </h1>
-                  {/* slots */}
-                  <div className="w-full flex gap-1 justify-between flex-wrap">
-                    {Array.from({ length: 8 }).map((items, index) => {
-                      return (
-                        <button
-                          onClick={() => {
-                            setIndx(index);
-                          }}
-                          key={index}
-                          className={`${
-                            indx === index ? "bg-[#498382] text-white " : "bg-gray-100 "
-                          } rounded  text-[12px] text-gray-600 italic lg:text-[0.9vw] cursor-pointer h-10 w-18 flex items-center justify-center`}
-                        >
-                          9:00am
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
           {/* btns  */}
-          <div className=" flex justify-between">
+          <div className=" flex mt-4 justify-between">
             <button
               onClick={() => {
                 setIsOpen(false);
@@ -193,7 +142,7 @@ const AppointmentModal = ({
               // onClick={handleAddseat}
               className="bg-[#132928] text-[12px] lg:text-[0.8w] cursor-pointer hover:bg-[#375f5d] rounded-2xl w-37 px-3 py-1 text-white"
             >
-              Save Changes
+              Add
             </button>
           </div>
         </div>
@@ -202,4 +151,4 @@ const AppointmentModal = ({
   );
 };
 
-export default AppointmentModal;
+export default ReminderModal;

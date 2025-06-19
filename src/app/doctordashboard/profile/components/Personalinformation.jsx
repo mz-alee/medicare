@@ -4,35 +4,55 @@ import React, { useState } from "react";
 import ModalEditProfile from "./ModalEditProfile";
 import PersonalInformationModal from "./ModalPersonal";
 import EditProfessionModal from "./EditProfessionModal";
-import profile from "../../../../../public/Images/person1.png";
+import profile from "../../../../../public/Images/empty.webp";
 import { FaRegEdit } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { getCookie } from "cookies-next";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { profilePersonalEditApi } from "@/app/Api";
 import { toast, ToastContainer } from "react-toastify";
+import moment from "moment";
 const Personalinformation = ({ data }) => {
   const [isprofile, setisprofile] = useState(false);
   const [isPersonalOpen, setisPersonalIsOpen] = useState(false);
   const [isProfessionalOpen, setProfessionalIsOpen] = useState(false);
+  const queryClient = useQueryClient();
   const profileEditMutation = useMutation({
-    mutationFn: ({ data }) => profilePersonalEditApi(data),
+    mutationFn: (data) => profilePersonalEditApi(data),
     onSuccess: (data) => {
       console.log("dataaaaaaa", data);
-
+      queryClient.invalidateQueries(["profile"]);
+      setisPersonalIsOpen(false);
+      setisprofile(false);
       toast("Profile updated successfully");
     },
     onError: (error) => {
-      console.error("Profile update failed:", error);
-      toast.error("Failed to update profile");
+      console.error("Profile update failed:", error.response.data.username[0]);
+      toast.error(error.response.data.username[0]);
     },
   });
+
   return (
     <div className="w-full  flex flex-col py-3 gap-3 ">
       <ToastContainer />
       <div className="bg-white justify-between flex-wrap gap-2 rounded-2xl w-full flex items-center px-8 py-2 min-h-28">
         <div className="flex gap-4 items-center ">
-          <Image src={profile} alt="profile image " className="w-20 h-20" />
+          <Image
+            src={data?.data?.user_details?.image || profile}
+            alt="profile image"
+            width={80}
+            height={80}
+            className="w-20 h-20  rounded-full"
+          />
+          {/* {data?.data?.user_details?.image && (
+            <Image
+              src={data.data.user_details.image || profile}
+              alt="profile image"
+              width={80}
+              height={80}
+              className="w-20 h-20  rounded-full"
+            />
+          )} */}
           <div className="text-[14px] lg:text-[1vw]">
             <h1>{data?.data?.user_details.username}</h1>
             <p className="text-[13px] lg:text-[0.9vw]">{getCookie("role")}</p>
@@ -43,7 +63,7 @@ const Personalinformation = ({ data }) => {
             setisprofile(true);
             console.log("profile edit");
           }}
-          className="border hover:bg-gray-900 hover:text-white flex items-center gap-1 border-gray-500 rounded-2xl px-5 py-1 text-gray-500 text-[13px]"
+          className="border hover:bg-[#41797a] cursor-pointer hover:text-white flex items-center gap-1 border-gray-500 rounded-2xl px-5 py-1 text-gray-500 text-[13px]"
         >
           Edit
           <FiEdit />
@@ -53,6 +73,7 @@ const Personalinformation = ({ data }) => {
         profileEditMutation={profileEditMutation}
         isOpen={isprofile}
         setIsOpen={setisprofile}
+        data={data}
       />
       {/* personal information  */}
       <div className="bg-white rounded-2xl flex flex-col gap-4  py-2 min-h-60 shadow px-8 w-full">
@@ -64,7 +85,7 @@ const Personalinformation = ({ data }) => {
             onClick={() => {
               setisPersonalIsOpen(true);
             }}
-            className="border hover:bg-gray-900 flex items-center gap-1 hover:text-white border-gray-500 rounded-2xl px-5 py-1 text-gray-500 w-fit text-[13px]"
+            className="border hover:bg-[#41797a] cursor-pointer flex items-center gap-1 hover:text-white border-gray-500 rounded-2xl px-5 py-1 text-gray-500 w-fit text-[13px]"
           >
             Edit
             <FiEdit />
@@ -74,6 +95,7 @@ const Personalinformation = ({ data }) => {
               isOpen={isPersonalOpen}
               setIsOpen={setisPersonalIsOpen}
               profileEditMutation={profileEditMutation}
+              data={data}
             />
           </div>
         </div>
@@ -112,7 +134,9 @@ const Personalinformation = ({ data }) => {
                 Date of birth
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw]">
-                {data?.data?.user_details?.date_of_birth || "null"}
+                {moment(data?.data?.user_details?.date_of_birth).format(
+                  "MMMM DD YYYY"
+                ) || "null"}
               </h1>
             </div>
             <div>
@@ -143,7 +167,7 @@ const Personalinformation = ({ data }) => {
             onClick={() => {
               setProfessionalIsOpen(true);
             }}
-            className="border hover:bg-gray-900 hover:text-white flex items-center gap-1 border-gray-500 rounded-2xl px-5 py-1 text-gray-500 w-fit text-[13px]"
+            className="border hover:bg-[#41797a] cursor-pointer hover:text-white flex items-center gap-1 border-gray-500 rounded-2xl px-5 py-1 text-gray-500 w-fit text-[13px]"
           >
             Edit <FiEdit className="text-md" />
           </button>

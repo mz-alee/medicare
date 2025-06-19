@@ -20,7 +20,13 @@ const certificateSchema = yup.object({
   organization: yup.string().required("organization  is Required Field"),
   date_issued: yup.string().required("Date  is Required Field"),
 });
-const CertificateModal = ({ isOpen, setIsOpen, certificateMutation }) => {
+const CertificateModal = ({
+  isOpen,
+  setIsOpen,
+  certificateMutation,
+  isEdit,
+  certificateEditMutation,
+}) => {
   const [file, setFile] = useState();
   const {
     handleSubmit,
@@ -49,14 +55,20 @@ const CertificateModal = ({ isOpen, setIsOpen, certificateMutation }) => {
   };
 
   const handleProfileData = (data) => {
+    if (isEdit === "upload") {
+      certificateMutation.mutate(data);
+    } else {
+      const alldata = data.id = isEdit.id
+      console.log("all dataa",alldata);
+      
+      certificateEditMutation.mutate(data);
+    }
     console.log(data);
-    certificateMutation.mutate(data);
   };
-useEffect(()=>{
-  if( certificateMutation.isSuccess ){
-    
-  }
-},[])  
+  useEffect(() => {
+    if (certificateMutation.isSuccess) {
+    }
+  }, []);
   return (
     <div>
       <Modal

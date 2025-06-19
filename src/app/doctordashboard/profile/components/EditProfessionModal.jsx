@@ -42,7 +42,7 @@ const EditProfessionModal = ({
       setIsOpen(false);
     },
     onError: (error) => {
-      console.log("professional error",error);
+      console.log("professional error", error);
     },
   });
   const handleData = (data) => {
@@ -99,7 +99,7 @@ const EditProfessionModal = ({
                     placeholder="Profession"
                     type="text"
                     name="profession"
-                    data={data?.data?.profession_details?.profession}
+                    values={data?.data?.profession_details?.profession}
                   />
                   {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
                 </div>
@@ -110,7 +110,7 @@ const EditProfessionModal = ({
                   <InputField
                     register={register}
                     placeholder="specialization"
-                    data={data?.data?.profession_details?.specialization}
+                    values={data?.data?.profession_details?.specialization}
                     type="text"
                     name="specialization"
                   />
@@ -127,7 +127,7 @@ const EditProfessionModal = ({
                     placeholder="Clinic/Hospital"
                     type="text"
                     name="clinic_name"
-                    data={data?.data?.profession_details?.clinic_name}
+                    values={data?.data?.profession_details?.clinic_name}
                   />
                 </div>
               </div>
@@ -142,7 +142,7 @@ const EditProfessionModal = ({
                     placeholder="Clinic/Hospital address"
                     type="text"
                     name="clinic_address"
-                    data={data?.data?.profession_details?.clinic_address}
+                    values={data?.data?.profession_details?.clinic_address}
                   />
                 </div>
               </div>

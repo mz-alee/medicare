@@ -1,10 +1,10 @@
 import axios from "axios";
 import { getCookie } from "cookies-next";
 const api = axios.create({
-  baseURL: "https://25dd-119-157-176-164.ngrok-free.app",
+  baseURL: "https://fc3e-110-39-164-238.ngrok-free.app",
   headers: {
-    // "Content-Type": "multipart/form-data",
-    "Content-Type": "application/json",
+    "Content-Type": "multipart/form-data",
+    // "Content-Type": "application/json",
     "ngrok-skip-browser-warning": "true",
   },
 });
@@ -52,13 +52,9 @@ export const profileProfessionApi = (data) => {
     },
   });
 };
-// export const profilePersonalEditApi = (data) => {
-//   return api.patch(`/userprofile/${getCookie("user_id")}/`, data, {
-//     headers: {
-//       Authorization: `Bearer ${getCookie("token")}`,
-//     },
-//   });
-// };
+
+// personal profile edit api
+
 export const profilePersonalEditApi = (data) => {
   console.log("data(())))))", data);
 
@@ -78,6 +74,13 @@ export const certificatePostApi = (data) => {
     },
   });
 };
+export const certificateEditApi = (data) => {
+  return api.patch(`/certification/${data.id}/`, data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+  });
+};
 export const certificateDelApi = (id) => {
   return api.delete(`/certification/${id}/`, {
     headers: {
@@ -87,6 +90,13 @@ export const certificateDelApi = (id) => {
 };
 export const publicationPostApi = (data) => {
   return api.post(`/publication/`, data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+  });
+};
+export const PublicationEditApi = (data) => {
+  return api.patch(`/publication/${data.id}/`, data, {
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,
     },
@@ -106,6 +116,13 @@ export const AwardPostApi = (data) => {
     },
   });
 };
+export const AwardEditApi = (data) => {
+  return api.patch(`/awards/${data.id}/`, data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+  });
+};
 export const AwardDelApi = (id) => {
   return api.delete(`/awards/${id}/`, {
     headers: {
@@ -113,20 +130,6 @@ export const AwardDelApi = (id) => {
     },
   });
 };
-
-// export const ProfileGetData = () => {
-//   try {
-//     return api.get("/mainprofile/", {
-//       withCredentials: true,
-//       headers: {
-//         Authorization: `Bearer ${getCookie("token")} `,
-//         "ngrok-skip-browser-warning": "true",
-//       },
-//     });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
 
 export const ProfileGetData = () => {
   console.log("first");
@@ -145,5 +148,57 @@ export const AppointmentsData = () => {
       Authorization: `Bearer ${getCookie("token")} `,
     },
     withCredentials: true,
+  });
+};
+
+// patient api
+
+// appointments create api
+export const AppointmentCreate = () => {
+  return api.post("/appointments/", {
+    header: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+  });
+};
+// export const PatientEmergencyPost = (data) => {
+//   console.log("daataaaaaaaaaaaa",data);
+
+//   return api.post(`/emrgency_contact/`, data, {
+//     header: {
+//       Authorization: `Bearer ${getCookie("token")}`,
+//     },
+//     withCredentials:true,
+//   });
+// };
+export const PatientEmergencyPost = (data) => {
+  return api.post(`/emrgency_contact/`, data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+      "Content-Type": "application/json",
+    },
+    withCredentials: true,
+  });
+};
+
+// patient profile api
+
+export const PatientProfile = () => {
+  console.log("first");
+  return api.get("/patientprofile/", {
+    // credentials: "include",
+    headers: {
+      Authorization: `Bearer ${getCookie("token")} `,
+    },
+    withCredentials: true,
+  });
+};
+
+export const PatientprofileEditApi = (data) => {
+
+  return api.patch(`/userprofile/${getCookie("user_id")}/`, data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
   });
 };

@@ -1,6 +1,7 @@
 "use client";
 import InputField from "@/app/components/InputField";
 import Loader from "@/app/components/Loader";
+import moment from "moment";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosClose } from "react-icons/io";
@@ -13,19 +14,18 @@ const PersonalInformationModal = ({
   // errors,
   isOpen,
   setIsOpen,
-  title,
   profileEditMutation,
+  data,
 }) => {
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      username: "",
-      phone_number: "",
-    },
+    defaultValues: {},
   });
+
+  // console.log("real data******", data?.data?.user_details);
 
   useEffect(() => {
     Modal.setAppElement("#root");
@@ -33,15 +33,7 @@ const PersonalInformationModal = ({
 
   const handlePersonalProfile = (data) => {
     console.log(data);
-    profileEditMutation.mutate(data)
-    // profileEditMutation.mutate({
-    //   address: null,
-    //   date_of_birth: "2025-06-02T00:00:00Z",
-    //   gender: "Male",
-    //   image: null,
-    //   phone_number: "930290239",
-    //   username: "mirzaa",
-    // });
+    profileEditMutation.mutate(data);
   };
   return (
     <div>
@@ -92,23 +84,21 @@ const PersonalInformationModal = ({
                     placeholder="Full Name"
                     type="text"
                     name="username"
+                    values={data?.data?.user_details?.username}
+                  />
+
+                  <InputField
+                    register={register}
+                    placeholder="Profession"
+                    type="text"
+                    name="profession"
+                    values={data?.data?.profession_details?.profession}
                   />
                   {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
                 </div>
               </div>
               {/* <div className="w-full">
-                <div className="w-full flex flex-col gap-1 items-start">
-                  <p className=" capitalize text-[13px]"> email</p>
-                  <InputField
-                    register={register}
-                    placeholder="email"
-                    type="text"
-                    name="email"
-                  />
-                </div>
-                {errors.addSeat && (
-              <p className="error">{errors.addSeat.message}</p>
-            )}
+            
               </div> */}
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
@@ -120,7 +110,8 @@ const PersonalInformationModal = ({
                     register={register}
                     placeholder="Phone Number"
                     type="number"
-                    name="Phone_number"
+                    name="phone_number"
+                    values={data?.data?.user_details?.phone_number}
                   />
                 </div>
               </div>
@@ -134,7 +125,10 @@ const PersonalInformationModal = ({
                     register={register}
                     placeholder="Date of Birth"
                     type="date"
-                    name="birthdate"
+                    name="date_of_birth"
+                    values={moment(
+                      data?.data?.user_details?.date_of_birth
+                    ).format("MM DD YYYY")}
                   />
                   {/* {errors.category && (
                 <p className="error">{errors.category.message}</p>
@@ -152,7 +146,9 @@ const PersonalInformationModal = ({
                     name=""
                     id=""
                   >
-                    <option value="">Select Gender Type </option>
+                    <option value={data?.data?.user_details?.gender || ""}>
+                      {data?.data?.user_details?.gender || "select your gender"}{" "}
+                    </option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
@@ -173,6 +169,7 @@ const PersonalInformationModal = ({
                     placeholder="address"
                     type="text"
                     name="address"
+                    values={data?.data?.user_details?.address}
                   />
                   {/* {errors.category && (
                 <p className="error">{errors.category.message}</p>
@@ -195,7 +192,7 @@ const PersonalInformationModal = ({
                 // onClick={handleAddseat}
                 className="bg-[#132928] text-[12px] lg:text-[0.8w] cursor-pointer hover:bg-[#375f5d] rounded-2xl w-37 px-3 py-1 text-white"
               >
-                {profileEditMutation.isLoading ? <Loader /> : "Save Changes"}
+                {profileEditMutation.isPending ? <Loader /> : "Save Changes"}
               </button>
             </div>
           </div>

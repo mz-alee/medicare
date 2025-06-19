@@ -6,9 +6,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast, ToastContainer } from "react-toastify";
 import { getCookie } from "cookies-next";
 import { AppointmentsData } from "@/app/Api";
-import PateintAppointments from "./PatientAppointments";
-import PateintInfo from "./PatientInfo";
-import PatientHeader from "../components/PatientHeader";
+import PateintAppointments from './components/patientappointments';
+import StaffHeader from '../components/staffheader';
 const Appointments = () => {
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
@@ -31,7 +30,7 @@ const Appointments = () => {
 
   return (
     <div>
-      <PatientHeader
+      <StaffHeader
         name="Patient Listing"
         links={["All Appointments", "patient info"]}
         setPageNum={setPageNum}
@@ -46,7 +45,7 @@ const Appointments = () => {
             // profileEditMutation={profileEditMutation}
           />
         )}
-        {pageNum === 1 && <PateintInfo data={[]} isLoading={isLoading} />}
+        {/* {pageNum === 1 && <PateintInfo data={[]} isLoading={isLoading} />} */}
       </div>
     </div>
   );

@@ -14,13 +14,25 @@ import { BiLogOut } from "react-icons/bi";
 import Aos from "aos";
 import { deleteCookie, getCookie } from "cookies-next";
 import { usePathname, useRouter } from "next/navigation";
-const Navbar = () => {
+import { useQuery } from "@tanstack/react-query";
+import { ProfileGetData } from "@/app/Api";
+const StaffNavbar = () => {
   const path = usePathname();
   const router = useRouter();
-  console.log("image", getCookie("user_image"));
-  const imageSrc = getCookie("user_image")
-    ? `http://fc3e-110-39-164-238.ngrok-free.app${getCookie("user_image")}`
-    : person;
+
+  // const { data, isLoading, isError } = useQuery({
+  //   queryKey: ["profiledata"],
+  //   queryFn: ProfileGetData,
+  //   onSuccess: (data) => {
+  //     toast("data fetch successfully");
+  //   },
+  //   retry: "false",
+  //   onError: (error) => {
+  //     console.error(error);
+  //   },
+  // });
+  // console.log(data);
+
   return (
     <div
       data-aos="fade-right"
@@ -45,14 +57,7 @@ const Navbar = () => {
           className="bg-white shadow-2xl  gap-2 rounded-2xl h-17 flex  items-center px-3 w-full"
         >
           <div className="overflow-hidden h-14 w-14 rounded-full">
-            {/* <Image src={getCookie("user_image")} width={100} height={100} alt="person" className="w-14 h-14" /> */}
-            <Image
-              src={imageSrc}
-              width={100}
-              height={100}
-              alt="person"
-              className="w-14 h-14 rounded-full"
-            />
+            <Image src={person} alt="person" className="w-14 h-14" />
           </div>
           <div>
             <div className="italic capitalize text-[14px] w-20 overflow-hidden h-7  text-[#282828]">
@@ -66,11 +71,11 @@ const Navbar = () => {
         {/* Links  */}
         <div className="flex w-full flex-col gap-2 justify-center items-center py-2">
           <Link
-            href="/patientdashboard"
+            href="/staffdashboard"
             data-aos="zoom-in-right"
             data-aos-duration="1000"
             className={`${
-              path === "/patientdashboard" &&
+              path === "/staffdashboard" &&
               "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
             }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
           >
@@ -78,9 +83,9 @@ const Navbar = () => {
             Dashborad
           </Link>
           <Link
-            href="/patientdashboard/appointments"
+            href="/staffdashboard/staffappointments"
             className={`${
-              path === "/patientdashboard/appointments" &&
+              path === "/staffdashboard/staffappointments" &&
               "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
             }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
           >
@@ -88,45 +93,44 @@ const Navbar = () => {
             Appointments
           </Link>
           <Link
-            href="/patientdashboard/patientreminder"
+            href="/staffdashboard/staffprofile"
             className={`${
-              path === "/patientdashboard/patientreminder" &&
-              "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
-            }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
-          >
-            <Image src={staff} alt="dashborad icon" className=" w-5" />
-            reminders
-          </Link>
-          <Link
-            href="/patientdashboard/profile"
-            className={`${
-              path === "/patientdashboard/profile" &&
+              path === "/staffdashboard/staffprofile" &&
               "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
             }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
           >
             <Image src={profile} alt="dashborad icon" className=" w-5" />
             profile
           </Link>
-
           <Link
-            href="/patientdashboard/patientdiagnosis"
+            href="/staffdashboard/patientdetails"
             className={`${
-              path === "/patientdashboard/patientdiagnosis" &&
+              path === "/staffdashboard/patientdetails" &&
+              "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
+            }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
+          >
+            <Image src={staff} alt="dashborad icon" className=" w-5" />
+            patient details
+          </Link>
+          <Link
+            href="/staffdashboard/patientreports"
+            className={`${
+              path === "/staffdashboard/patientreports" &&
               "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
             }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
           >
             <Image src={chat} alt="dashborad icon" className=" w-5" />
-            diagnosis
+            patient reports
           </Link>
           <Link
-            href="/patientdashboard/patientreports"
+            href="/staffdashboard/patientlistings"
             className={`${
-              path === "/patientdashboard/patientreports" &&
+              path === "/staffdashboard/patientlistings" &&
               "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
             }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
           >
             <Image src={setting} alt="dashborad icon" className=" w-5" />
-            reports
+            patient listings
           </Link>
         </div>
       </div>
@@ -136,8 +140,8 @@ const Navbar = () => {
           deleteCookie("user_id");
           deleteCookie("username");
           deleteCookie("role");
-          deleteCookie("proffesional_id");
-          deleteCookie('user_image')
+          deleteCookie("professional_id");
+
           router.push("/Login");
         }}
         className="text-red-600  cursor-pointer  italic font-[500] flex items-center gap-2"
@@ -148,4 +152,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default StaffNavbar;
