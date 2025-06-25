@@ -5,27 +5,42 @@ import { useSearchParams } from "next/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast, ToastContainer } from "react-toastify";
 import { getCookie } from "cookies-next";
-import { AppointmentsData } from "@/app/Api";
+import {
+  AppointmentGetApi,
+  DoctorsListDataAPi,
+  TimeSlotGetAPi,
+} from "@/app/Api";
 import PateintAppointments from "./PatientAppointments";
 import PateintInfo from "./PatientInfo";
 import PatientHeader from "../components/PatientHeader";
+import moment from "moment";
 const Appointments = () => {
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
   const [pageNum, setPageNum] = useState(0);
   const [userData, setUserData] = useState();
   const [Appointments, setApointments] = useState();
-  console.log(name);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["appointments"],
-    queryFn: AppointmentsData,
+    queryKey: ["doctor data"],
+    queryFn: DoctorsListDataAPi,
     retry: false,
     onSuccess: (data) => {
-      console.log(data);
+      // console.log(data);
     },
     onError: (error) => {
       console.log(error);
+    },
+  });
+  const { data: appointmentData, isLoading: appointmentLoading } = useQuery({
+    queryKey: ["appointment_data"],
+    queryFn: AppointmentGetApi,
+    retry: false,
+    onSuccess: (data) => {
+      // console.log(data);
+    },
+    onError: (error) => {
+      console.log("appointment get api error", error);
     },
   });
 
@@ -41,12 +56,18 @@ const Appointments = () => {
       <div>
         {pageNum === 0 && (
           <PateintAppointments
-            data={[]}
-            isLoading={isLoading}
+            data={data}
+            appointmentData={appointmentData}
+            isLoading={appointmentLoading}
             // profileEditMutation={profileEditMutation}
           />
         )}
-        {pageNum === 1 && <PateintInfo data={[]} isLoading={isLoading} />}
+        {pageNum === 1 && (
+          <PateintInfo
+            appointmentData={appointmentData}
+            isLoading={appointmentLoading}
+          />
+        )}
       </div>
     </div>
   );

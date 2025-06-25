@@ -8,6 +8,7 @@ import { LuImagePlus } from "react-icons/lu";
 import { getCookie } from "cookies-next";
 import Image from "next/image";
 import Loader from "@/app/components/Loader";
+import { PatientprofileEditApi } from "@/app/Api";
 const ModalEditProfile = ({
   // btnName,
   // handleAddseat,
@@ -17,7 +18,7 @@ const ModalEditProfile = ({
   isOpen,
   setIsOpen,
   PatientProfileEdit,
-  data
+  data,
 }) => {
   const [file, setFile] = useState();
 
@@ -28,9 +29,10 @@ const ModalEditProfile = ({
     formState: { errors },
   } = useForm({
     defaultValues: {
-      image: "",
+      image: null,
     },
   });
+  console.log(file);
 
   useEffect(() => {
     Modal.setAppElement("#root");
@@ -38,13 +40,21 @@ const ModalEditProfile = ({
   const handleImage = (e) => {
     const img = e.target.files[0];
     const imageURL = URL.createObjectURL(img);
-    setValue("image", img);
+    setValue("image", data.data.user_details.image || img);
     setFile(imageURL);
     console.log(img);
   };
 
   const handleProfileData = (data) => {
-    PatientProfileEdit.mutate(data);
+    if (value.image === null) {
+      PatientProfileEdit.mutate(data);
+    }
+    // if (file) {
+    // } else {
+    //   PatientProfileEdit.mutate({ username: value.username });
+    // }
+
+    // PatientProfileEdit.mutate({ username: data.username });
   };
   return (
     <div>
@@ -94,7 +104,7 @@ const ModalEditProfile = ({
                 htmlFor="profile"
                 className="border-dashed hover:bg-gray-100 bg-gray-50 cursor-pointer border rounded-lg flex flex-col items-center justify-center gap-2 border-gray-300 h-30  w-full"
               >
-                {!file && (
+                {!data?.data?.user_details?.image && (
                   <>
                     <LuImagePlus className="text-lg" />
                     <p className="text-[12px]">
@@ -103,18 +113,15 @@ const ModalEditProfile = ({
                     <p className="text-gray-500 text-[12px]">PNG,JPG,SVG</p>
                   </>
                 )}
-
-                {file && (
-                  <div className="bg-gray-400 rounded-full overflow-hidden w-25 h-25 flex justify-center items-center">
-                    <Image
-                      src={file}
-                      alt="srf"
-                      width={60}
-                      height={60}
-                      className="object-fit "
-                    />
-                  </div>
-                )}
+                <div className="bg-gray-400 rounded-full overflow-hidden w-25 h-25 flex justify-center items-center">
+                  <Image
+                    src={!file ? data?.data?.user_details?.image : file}
+                    alt="srf"
+                    width={60}
+                    height={60}
+                    className="object-fit "
+                  />
+                </div>
               </label>
               <input
                 type="file"

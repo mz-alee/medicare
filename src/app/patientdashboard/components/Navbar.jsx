@@ -17,10 +17,10 @@ import { usePathname, useRouter } from "next/navigation";
 const Navbar = () => {
   const path = usePathname();
   const router = useRouter();
-  console.log("image", getCookie("user_image"));
-  const imageSrc = getCookie("user_image")
-    ? `http://fc3e-110-39-164-238.ngrok-free.app${getCookie("user_image")}`
-    : person;
+  // console.log("image", getCookie("user_image"));
+  // const imageSrc = getCookie("user_image")
+  //   ? `https://9000-119-157-176-164.ngrok-free.app${getCookie("user_image")}`
+  //   : person;
   return (
     <div
       data-aos="fade-right"
@@ -47,7 +47,7 @@ const Navbar = () => {
           <div className="overflow-hidden h-14 w-14 rounded-full">
             {/* <Image src={getCookie("user_image")} width={100} height={100} alt="person" className="w-14 h-14" /> */}
             <Image
-              src={imageSrc}
+              src={profile}
               width={100}
               height={100}
               alt="person"
@@ -64,86 +64,88 @@ const Navbar = () => {
           </div>
         </div>
         {/* Links  */}
-        <div className="flex w-full flex-col gap-2 justify-center items-center py-2">
-          <Link
-            href="/patientdashboard"
-            data-aos="zoom-in-right"
-            data-aos-duration="1000"
-            className={`${
-              path === "/patientdashboard" &&
-              "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
-            }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
-          >
-            <Image src={dashboard} alt="dashborad icon" className=" w-5" />
-            Dashborad
-          </Link>
-          <Link
-            href="/patientdashboard/appointments"
-            className={`${
-              path === "/patientdashboard/appointments" &&
-              "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
-            }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
-          >
-            <Image src={appointment} alt="dashborad icon" className=" w-5" />
-            Appointments
-          </Link>
-          <Link
-            href="/patientdashboard/patientreminder"
-            className={`${
-              path === "/patientdashboard/patientreminder" &&
-              "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
-            }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
-          >
-            <Image src={staff} alt="dashborad icon" className=" w-5" />
-            reminders
-          </Link>
-          <Link
-            href="/patientdashboard/profile"
-            className={`${
-              path === "/patientdashboard/profile" &&
-              "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
-            }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
-          >
-            <Image src={profile} alt="dashborad icon" className=" w-5" />
-            profile
-          </Link>
+        <div className="flex w-full  flex-col gap-2 justify-center items-center py-2">
+          <div className="w-full flex flex-col justify-baseline h-[400px]">
+            <Link
+              href="/patientdashboard"
+              data-aos="zoom-in-right"
+              data-aos-duration="1000"
+              className={`${
+                path === "/patientdashboard" &&
+                "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
+              }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
+            >
+              <Image src={dashboard} alt="dashborad icon" className=" w-5" />
+              Dashborad
+            </Link>
+            <Link
+              href="/patientdashboard/appointments"
+              className={`${
+                path === "/patientdashboard/appointments" &&
+                "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
+              }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
+            >
+              <Image src={appointment} alt="dashborad icon" className=" w-5" />
+              Appointments
+            </Link>
+            <Link
+              href="/patientdashboard/patientreminder"
+              className={`${
+                path === "/patientdashboard/patientreminder" &&
+                "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
+              }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
+            >
+              <Image src={staff} alt="dashborad icon" className=" w-5" />
+              reminders
+            </Link>
+            <Link
+              href="/patientdashboard/profile"
+              className={`${
+                path === "/patientdashboard/profile" &&
+                "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
+              }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
+            >
+              <Image src={profile} alt="dashborad icon" className=" w-5" />
+              profile
+            </Link>
 
-          <Link
-            href="/patientdashboard/patientdiagnosis"
-            className={`${
-              path === "/patientdashboard/patientdiagnosis" &&
-              "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
-            }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
+            <Link
+              href="/patientdashboard/patientdiagnosis"
+              className={`${
+                path === "/patientdashboard/patientdiagnosis" &&
+                "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
+              }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
+            >
+              <Image src={chat} alt="dashborad icon" className=" w-5" />
+              diagnosis
+            </Link>
+            <Link
+              href="/patientdashboard/patientreports"
+              className={`${
+                path === "/patientdashboard/patientreports" &&
+                "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
+              }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
+            >
+              <Image src={setting} alt="dashborad icon" className=" w-5" />
+              reports
+            </Link>
+          </div>
+          <button
+            onClick={() => {
+              deleteCookie("token");
+              deleteCookie("user_id");
+              deleteCookie("username");
+              deleteCookie("role");
+              deleteCookie("proffesional_id");
+              deleteCookie("user_image");
+              router.push("/Login");
+            }}
+            className="text-red-600   cursor-pointer  italic font-[500] flex items-center gap-2"
           >
-            <Image src={chat} alt="dashborad icon" className=" w-5" />
-            diagnosis
-          </Link>
-          <Link
-            href="/patientdashboard/patientreports"
-            className={`${
-              path === "/patientdashboard/patientreports" &&
-              "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
-            }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
-          >
-            <Image src={setting} alt="dashborad icon" className=" w-5" />
-            reports
-          </Link>
+            <BiLogOut className="text-xl" /> Log out
+          </button>
         </div>
       </div>
-      <button
-        onClick={() => {
-          deleteCookie("token");
-          deleteCookie("user_id");
-          deleteCookie("username");
-          deleteCookie("role");
-          deleteCookie("proffesional_id");
-          deleteCookie('user_image')
-          router.push("/Login");
-        }}
-        className="text-red-600  cursor-pointer  italic font-[500] flex items-center gap-2"
-      >
-        <BiLogOut className="text-xl" /> Log out
-      </button>
     </div>
   );
 };

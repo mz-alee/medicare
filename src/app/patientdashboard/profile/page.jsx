@@ -5,21 +5,22 @@ import profile from "../../../../public/Images/person1.png";
 import { FaRegEdit } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { deleteCookie, getCookie } from "cookies-next";
-import ModalEditProfile from "../components/personalModal";
+import ModalEditProfile from "../components/ProfileEditModal";
 import EmergencyModal from "../components/emergencyModal";
 import PatientHeader from "../components/PatientHeader";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   PatientEmergencyPost,
   PatientProfile,
   PatientprofileEditApi,
 } from "@/app/Api";
 import { toast, ToastContainer } from "react-toastify";
-const Personalinformation = () => {
+import PersonalInformationModal from "../components/PersonalInformationModal";
+const Patientprofile = () => {
   const [isprofile, setisprofile] = useState(false);
   const [isPersonalOpen, setisPersonalIsOpen] = useState(false);
   const [isEmergencyOpen, setisEmergencyOpen] = useState(false);
-  // const data = [];
+  const queryClient = useQueryClient();
   const { data, isLoading } = useQuery({
     queryKey: ["patientprofile"],
     queryFn: PatientProfile,
@@ -36,25 +37,31 @@ const Personalinformation = () => {
   const PatientEmergency = useMutation({
     mutationFn: (data) => PatientEmergencyPost(data),
     onSuccess: (data) => {
+      queryClient.invalidateQueries(["patient emergency"]);
       setisEmergencyOpen(false);
       toast("Emergency Contact Edit Successfully");
       console.log(data);
     },
     onError: (error) => {
       console.log("patient profile emerygency contact edit error", error);
+      toast.error("Emergency details changes failed");
     },
   });
   const PatientProfileEdit = useMutation({
     mutationFn: (data) => PatientprofileEditApi(data),
     onSuccess: (data) => {
       toast("Profile Edit Successfully");
+      queryClient.invalidateQueries(["profile edit"]);
       setisprofile(false);
+      setisPersonalIsOpen(false);
       console.log(data);
     },
     onError: (error) => {
+      toast.error("profile changes failed");
       console.log("patient profile emerygency contact edit error", error);
     },
   });
+
   return (
     <>
       <PatientHeader name="patient Profile" />
@@ -70,8 +77,10 @@ const Personalinformation = () => {
               className="w-20 rounded-full h-20"
             />
             <div className="text-[14px] lg:text-[1vw]">
-              <h1>{data?.data?.user_details.username}</h1>
-              <p className="text-[13px] lg:text-[0.9vw]">{getCookie("role")}</p>
+              <h1>{data?.data?.user_details?.username}</h1>
+              <p className="text-[13px] lg:text-[0.9vw]">
+                {getCookie("role") || "null"}
+              </p>
             </div>
           </div>
           <button
@@ -107,10 +116,12 @@ const Personalinformation = () => {
               <FiEdit />
             </button>
             <div id="root">
-              {/* <PersonalInformationModal
-              isOpen={isPersonalOpen}
-              setIsOpen={setisPersonalIsOpen}
-            /> */}
+              <PersonalInformationModal
+                PatientProfileEdit={PatientProfileEdit}
+                isOpen={isPersonalOpen}
+                setIsOpen={setisPersonalIsOpen}
+                data={data}
+              />
             </div>
           </div>
           <div className="flex flex-wrap w-1/2  justify-between  h-full   gap-3 ">
@@ -242,4 +253,4 @@ const Personalinformation = () => {
     </>
   );
 };
-export default Personalinformation;
+export default Patientprofile;

@@ -13,7 +13,7 @@ const PatientHeader = ({ name, links, setPageNum, pageNum }) => {
     <div
       data-aos="fade-up"
       data-aos-duration="1000"
-      className="w-full flex flex-col gap-2 py-6 "
+      className="w-full flex  flex-col gap-2 py-2 "
     >
       <div className="flex flex-col md:flex-row  justify-between w-full">
         <div className="flex justify-between items-center ">

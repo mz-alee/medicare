@@ -18,7 +18,6 @@ const Home = () => {
       [name]: value,
     }));
   };
-
   return (
     <div className="w-full  min-h-screen  ">
       <ToastContainer />

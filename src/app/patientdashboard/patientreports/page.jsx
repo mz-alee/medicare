@@ -7,9 +7,22 @@ import { LuFileText } from "react-icons/lu";
 import { CiViewBoard } from "react-icons/ci";
 import { FiDownload } from "react-icons/fi";
 import { IoMdShareAlt } from "react-icons/io";
-const PatientReports = ({ data, isLoading }) => {
+import { useQuery } from "@tanstack/react-query";
+import { PatientReportData } from "@/app/Api";
+const PatientReports = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["pateint reports"],
+    queryFn: PatientReportData,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      console.log("patient reports api error", error);
+    },
+  });
   console.log(data?.data?.results);
-  console.log(moment(data?.data?.date_time, "YYYY-MM-DD HH:mm:ss"));
+  console.log("10 + 20"  + 10 + 10);
+
   return (
     <>
       <PatientHeader name="Lab Reports" />
@@ -94,18 +107,23 @@ const PatientReports = ({ data, isLoading }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {Array.from({ length: 15 }).map((items, index) => (
-                    <tr className="border-b hover:bg-black/10    cursor-pointer text-[10px] lg:text-[0.9vw] border-gray-200">
+                  {data?.data?.results.map((items, index) => (
+                    <tr
+                      key={items.id}
+                      className="border-b hover:bg-black/10    cursor-pointer text-[10px] lg:text-[0.9vw] border-gray-200"
+                    >
                       <td className="px-4 py-2 flex  text-gray-600">
-                        jun 19 2025
-                        {/* {moment(items.date_time).format("MMMM Do YYYY")} */}
+                        {moment(items.date).format("MMMM Do YYYY")}
                       </td>
-                      <td className="px-4 py-2 text-gray-600">Sugar Test</td>
+                      <td className="px-4 py-2 text-gray-600">
+                        {items.test_name || "null"}
+                      </td>
                       <td className="px-4 py-2 flex h-full  items-center gap-1 ">
-                        ABC Lab
-                        {/* {items.patient} */}
+                        {items.laboratory || "null"}
                       </td>
-                      <td className="px-4 py-2  text-gray-600">Normal</td>
+                      <td className="px-4 py-2  text-gray-600">
+                        {items.results || "null"}
+                      </td>
 
                       <td className="px-4 py-2 w-20">
                         <div className="flex items-center gap-2">

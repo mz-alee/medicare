@@ -1,10 +1,14 @@
 "use client";
+import { Datepicker } from "@/app/components/Datepicker";
 import InputField from "@/app/components/InputField";
+import { Timepicker } from "@/app/components/Timepicker";
+import dayjs from "dayjs";
+import moment from "moment";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosClose } from "react-icons/io";
 import Modal from "react-modal";
-const ReminderModal = ({
+const MedicationReminderModal = ({
   // btnName,
   // handleAddseat,
   // register,
@@ -13,34 +17,43 @@ const ReminderModal = ({
   isOpen,
   setIsOpen,
   title,
-  PatientReminder,
-
+  MedicationReminder,
 }) => {
-  const [selectedBtn, setSelectedBtn] = useState("");
-  const [indx, setIndx] = useState(null);
+  const [dateValue, setDateValue] = useState(new Date());
+  const [timeValue, setTimeValue] = useState(moment());
   const {
     handleSubmit,
     reset,
+    setValue,
+    getValues,
     register,
     formState: { errors },
   } = useForm({
     defaultValues: {},
   });
-
+  const value = getValues();
   useEffect(() => {
     Modal.setAppElement("#root");
   }, []);
   const handleData = (data) => {
-    PatientReminder.mutate(data);
-
-    console.log("react hook form data", data);
+    const combinedDateTime = moment(dateValue).set({
+      hour: moment(timeValue).hour(),
+      minute: moment(timeValue).minute(),
+      second: 0,
+      millisecond: 0,
+    });
+    const momentDate = moment(combinedDateTime).format(
+      "YYYY-MM-DDTHH:mm:ss[Z]"
+    );
+    data.date_time = momentDate;
+    data.appointment = 6;
+    MedicationReminder.mutate(data);
   };
   useEffect(() => {
-    if (PatientReminder.isSuccess) {
+    if (MedicationReminder.isSuccess) {
       reset();
     }
-    console.log("/////// reset ");
-  }, [PatientReminder.isSuccess]);
+  }, [MedicationReminder.isSuccess]);
   return (
     <div>
       <Modal
@@ -75,20 +88,20 @@ const ReminderModal = ({
             />
           </div>
           <form onSubmit={handleSubmit(handleData)}>
-            <h2 className="capitalize mb-3 font-[500] text-[15px] lg:text-[1.1vw]   text-center ">
-              appointment reminder
+            <h2 className="italic capitalize mb-3 font-[500] text-[15px] lg:text-[1.1vw]   text-center ">
+              medication reminder
             </h2>
             <div className="flex  flex-col gap-2">
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
                   <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    Doctor name
+                    Medicine name
                   </p>
                   <InputField
                     register={register}
-                    placeholder="Doctor Name"
+                    placeholder="Medicine Name"
                     type="text"
-                    name="Doctor_name"
+                    name="medicine_name"
                   />
                   {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
                 </div>
@@ -96,13 +109,13 @@ const ReminderModal = ({
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
                   <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    Appointment key
+                    Dosage MG
                   </p>
                   <InputField
                     register={register}
-                    placeholder="Appointment Key"
-                    type="number"
-                    name="appointment"
+                    placeholder="Dosage MG"
+                    type="text"
+                    name="dosage_type"
                   />
                   {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
                 </div>
@@ -110,14 +123,15 @@ const ReminderModal = ({
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
                   <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    location
+                    date
                   </p>
-                  <InputField
+                  <Datepicker value={dateValue} setValue={setDateValue} />
+                  {/* <InputField
                     register={register}
-                    placeholder="Location"
-                    type="text"
-                    name="location"
-                  />
+                    placeholder="date"
+                    type="date"
+                    name="date"
+                  /> */}
                 </div>
                 {/* {errors.addSeat && (
               <p className="error">{errors.addSeat.message}</p>
@@ -126,30 +140,15 @@ const ReminderModal = ({
               <div className="w-full">
                 <div className="w-full  flex flex-col gap-1 items-start">
                   <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    Date
+                    time
                   </p>
-                  <InputField
-                    register={register}
-                    placeholder="Date"
-                    type="date"
-                    name="date"
-                  />
-                  {/* {errors.category && (
-                <p className="error">{errors.category.message}</p>
-              )} */}
-                </div>
-              </div>
-              <div className="w-full">
-                <div className="w-full  flex flex-col gap-1 items-start">
-                  <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    Time
-                  </p>
-                  <InputField
+                  <Timepicker value={timeValue} setValue={setTimeValue} />
+                  {/* <InputField
                     register={register}
                     placeholder="Time"
-                    type="number"
+                    type="time"
                     name="time"
-                  />
+                  /> */}
                   {/* {errors.category && (
                 <p className="error">{errors.category.message}</p>
               )} */}
@@ -181,4 +180,4 @@ const ReminderModal = ({
   );
 };
 
-export default ReminderModal;
+export default MedicationReminderModal;

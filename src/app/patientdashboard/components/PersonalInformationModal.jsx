@@ -1,10 +1,12 @@
 "use client";
 import InputField from "@/app/components/InputField";
+import Loader from "@/app/components/Loader";
+import moment from "moment";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosClose } from "react-icons/io";
 import Modal from "react-modal";
-const ReminderModal = ({
+const PersonalInformationModal = ({
   // btnName,
   // handleAddseat,
   // register,
@@ -12,35 +14,27 @@ const ReminderModal = ({
   // errors,
   isOpen,
   setIsOpen,
-  title,
-  PatientReminder,
-
+  PatientProfileEdit,
+  data,
 }) => {
-  const [selectedBtn, setSelectedBtn] = useState("");
-  const [indx, setIndx] = useState(null);
   const {
     handleSubmit,
-    reset,
     register,
     formState: { errors },
   } = useForm({
     defaultValues: {},
   });
 
+  // console.log("real data******", data?.data?.user_details);
+
   useEffect(() => {
     Modal.setAppElement("#root");
   }, []);
-  const handleData = (data) => {
-    PatientReminder.mutate(data);
 
-    console.log("react hook form data", data);
+  const handlePersonalProfile = (data) => {
+    console.log(data);
+    PatientProfileEdit.mutate(data);
   };
-  useEffect(() => {
-    if (PatientReminder.isSuccess) {
-      reset();
-    }
-    console.log("/////// reset ");
-  }, [PatientReminder.isSuccess]);
   return (
     <div>
       <Modal
@@ -65,74 +59,69 @@ const ReminderModal = ({
           },
         }}
       >
-        <div className={`flex flex-col  text-sm `}>
-          <div>
-            <IoIosClose
-              onClick={() => {
-                setIsOpen(false);
-              }}
-              className="text-2xl"
-            />
-          </div>
-          <form onSubmit={handleSubmit(handleData)}>
-            <h2 className="capitalize mb-3 font-[500] text-[15px] lg:text-[1.1vw]   text-center ">
-              appointment reminder
+        <form onSubmit={handleSubmit(handlePersonalProfile)}>
+          <div className={`flex flex-col gap-3 text-sm   `}>
+            <div>
+              <IoIosClose
+                onClick={() => {
+                  setIsOpen(false);
+                }}
+                className="text-2xl"
+              />
+            </div>
+            <h2 className="capitalize font-[500] text-[15px] lg:text-[1.1vw]   text-center ">
+              Personal Information
             </h2>
-            <div className="flex  flex-col gap-2">
+            {/* select option  */}
+            <div className="flex flex-col gap-1">
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
-                  <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    Doctor name
+                  <p className=" capitalize text-[12px] lg:text-[0.9vw] italic">
+                    Full Name
                   </p>
                   <InputField
                     register={register}
-                    placeholder="Doctor Name"
+                    placeholder="Full Name"
                     type="text"
-                    name="Doctor_name"
+                    name="username"
+                    values={data?.data?.user_details?.username}
                   />
+
                   {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
                 </div>
               </div>
+              {/* <div className="w-full">
+            
+              </div> */}
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
-                  <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    Appointment key
+                  <p className=" capitalize text-[12px] lg:text-[0.9vw] italic">
+                    {" "}
+                    Phone Number
                   </p>
                   <InputField
                     register={register}
-                    placeholder="Appointment Key"
+                    placeholder="Phone Number"
                     type="number"
-                    name="appointment"
+                    name="phone_number"
+                    values={data?.data?.user_details?.phone_number}
                   />
-                  {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
                 </div>
               </div>
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
-                  <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    location
+                  <p className=" capitalize text-[12px] lg:text-[0.9vw] italic">
+                    {" "}
+                    Date of Birth
                   </p>
                   <InputField
                     register={register}
-                    placeholder="Location"
-                    type="text"
-                    name="location"
-                  />
-                </div>
-                {/* {errors.addSeat && (
-              <p className="error">{errors.addSeat.message}</p>
-            )} */}
-              </div>
-              <div className="w-full">
-                <div className="w-full  flex flex-col gap-1 items-start">
-                  <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    Date
-                  </p>
-                  <InputField
-                    register={register}
-                    placeholder="Date"
+                    placeholder="Date of Birth"
                     type="date"
-                    name="date"
+                    name="date_of_birth"
+                    values={moment(
+                      data?.data?.user_details?.date_of_birth
+                    ).format("MM DD YYYY")}
                   />
                   {/* {errors.category && (
                 <p className="error">{errors.category.message}</p>
@@ -141,14 +130,39 @@ const ReminderModal = ({
               </div>
               <div className="w-full">
                 <div className="w-full  flex flex-col gap-1 items-start">
-                  <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    Time
+                  <p className=" capitalize text-[12px] lg:text-[0.9vw] italic">
+                    {" "}
+                    Gender
+                  </p>
+                  <select
+                    className="border border-gray-300 rounded p-1 text-[12px] text-gray-600 w-full"
+                    name=""
+                    id=""
+                  >
+                    <option value={data?.data?.user_details?.gender || ""}>
+                      {data?.data?.user_details?.gender || "select your gender"}{" "}
+                    </option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                  {/* {errors.category && (
+                <p className="error">{errors.category.message}</p>
+              )} */}
+                </div>
+              </div>
+              <div className="w-full">
+                <div className="w-full flex flex-col gap-1 items-start">
+                  <p className=" capitalize text-[12px] lg:text-[0.9vw] italic">
+                    {" "}
+                    address
                   </p>
                   <InputField
                     register={register}
-                    placeholder="Time"
-                    type="number"
-                    name="time"
+                    placeholder="address"
+                    type="text"
+                    name="address"
+                    values={data?.data?.user_details?.address}
                   />
                   {/* {errors.category && (
                 <p className="error">{errors.category.message}</p>
@@ -157,7 +171,7 @@ const ReminderModal = ({
               </div>
             </div>
             {/* btns  */}
-            <div className=" flex mt-4 justify-between">
+            <div className=" flex justify-between">
               <button
                 onClick={() => {
                   setIsOpen(false);
@@ -171,14 +185,14 @@ const ReminderModal = ({
                 // onClick={handleAddseat}
                 className="bg-[#132928] text-[12px] lg:text-[0.8w] cursor-pointer hover:bg-[#375f5d] rounded-2xl w-37 px-3 py-1 text-white"
               >
-                Add
+                {PatientProfileEdit.isPending ? <Loader /> : "Save Changes"}
               </button>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </Modal>
     </div>
   );
 };
 
-export default ReminderModal;
+export default PersonalInformationModal;

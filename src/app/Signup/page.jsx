@@ -78,7 +78,7 @@ const Signup = () => {
       console.log("Signup successful:", data);
     },
     onError: (error) => {
-      console.error("Signup failed:", error.response?.data || error.message);
+      console.error("Signup failed:", error);
       toast.error(error.response.data.non_field_errors[0]);
     },
   });

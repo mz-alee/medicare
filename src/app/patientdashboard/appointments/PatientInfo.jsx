@@ -2,7 +2,9 @@ import Loader from "@/app/components/Loader";
 import React from "react";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { VscReport } from "react-icons/vsc";
-const PateintInfo = ({ data, isLoading }) => {
+const PateintInfo = ({ appointmentData, isLoading }) => {
+  console.log(appointmentData);
+
   return (
     <>
       <div className="header flex flex-wrap gap-3 items-center ">
@@ -26,12 +28,12 @@ const PateintInfo = ({ data, isLoading }) => {
         <div className="my-auto mt-50">
           <Loader />
         </div>
-      ) : data?.data?.results?.length === 0 ? (
+      ) : !appointmentData?.data?.results ? (
         <p className="text-center my-auto mt-50 text-gray-700 text-[13px] lg:text-[1vw]">
           no record found
         </p>
       ) : (
-        <div className=" overflow-x-auto hide-scrollbar  rounded-2xl mt-4 w-full h-[80vh]">
+        <div className=" overflow-x-auto hide-scrollbar  rounded-2xl mt-4 w-full min-h-[70vh]">
           <div
           // data-aos="zoom-in-right"
           // data-aos-duration="1300"
@@ -67,37 +69,42 @@ const PateintInfo = ({ data, isLoading }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.data?.results.map((items, index) => (
-                    <tr
-                      key={index}
-                      className="border-b hover:bg-black/10 cursor-default text-[10px] lg:text-[0.9vw]  border-gray-200"
-                    >
-                      <td className="px-4 py-2   flex items-center gap-1">
-                        <span className="block border border-gray-600 w-7 h-7 rounded-full"></span>
-                        {items.patient}
-                      </td>
-                      <td className="px-4 py-2  text-gray-600">{items.age}</td>
-                      <td className="px-4 py-2  text-gray-600">
-                        {items.gender}
-                      </td>
-                      <td className="px-4 py-2  text-gray-600">
-                        {items.phone_number}
-                      </td>
-                      <td className="px-4 py-2  text-gray-600">
-                        {items.email}
-                      </td>
-                      <td className="px-4 py-2  text-gray-600">
-                        {items.blood_group}
-                      </td>
-                      <td className="px-4 py-2  text-gray-600">
-                        {items.marital_status}
-                      </td>
-                      <td className="px-4 py-2  flex text-lg justify-center  gap-6 text-gray-600">
-                        <IoChatbubbleEllipsesOutline className="hover:text-purple-600" />
-                        <VscReport className="text-blue-600 hover:text-red-600" />
-                      </td>
-                    </tr>
-                  ))}
+                  {appointmentData &&
+                    appointmentData?.data?.results.map((items, index) => (
+                      <tr
+                        key={index}
+                        className="border-b hover:bg-black/10 cursor-default text-[10px] lg:text-[0.9vw]  border-gray-200"
+                      >
+                        <td className="px-4 capitalize py-2   flex items-center gap-1">
+                          <span className=" text-white border-none bg-[#41797a] flex justify-center items-center w-7 h-7 rounded-full">
+                            {items.patient.charAt(0)}
+                          </span>
+                          {items.patient}
+                        </td>
+                        <td className="px-4 py-2  text-gray-600">
+                          {items.age}
+                        </td>
+                        <td className="px-4 py-2  text-gray-600">
+                          {items.gender}
+                        </td>
+                        <td className="px-4 py-2  text-gray-600">
+                          {items.phone_number}
+                        </td>
+                        <td className="px-4 py-2  text-gray-600">
+                          {items.email}
+                        </td>
+                        <td className="px-4 py-2  text-gray-600">
+                          {items.blood_group}
+                        </td>
+                        <td className="px-4 py-2  text-gray-600">
+                          {items.marital_status}
+                        </td>
+                        <td className="px-4 py-2  flex text-lg justify-center  gap-6 text-gray-600">
+                          <IoChatbubbleEllipsesOutline className="hover:text-purple-600" />
+                          <VscReport className="text-blue-600 hover:text-red-600" />
+                        </td>
+                      </tr>
+                    ))}
                   {/* Add more rows as needed */}
                 </tbody>
               </table>

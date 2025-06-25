@@ -1,17 +1,29 @@
-"use client"
+"use client";
 import Loader from "@/app/components/Loader";
 import moment from "moment";
 import React, { useState } from "react";
 import { MdCancelPresentation } from "react-icons/md";
 import { PiCalendarCheckLight } from "react-icons/pi";
-import ToggleBtn from '../../components/ToggleBtn';
+import ToggleBtn from "../../components/ToggleBtn";
 import { FaRegEdit } from "react-icons/fa";
-const PatientMedication = ({ data, isLoading }) => {
-  console.log(data?.data?.results);
-  console.log(moment(data?.data?.date_time, "YYYY-MM-DD HH:mm:ss"));
-  // const [appointmentModal, setAppointmentModal] = useState(false);
+import MedicationReminderModal from "./MedicationReminderModal";
+const PatientMedication = ({
+  data,
+  isLoading,
+  MedicationReminder,
+  medicationModalOpen,
+  setMedicationModalOpen,
+  MedicationReminderDelete,
+}) => {
   return (
     <>
+      <div id="root">
+        <MedicationReminderModal
+          isOpen={medicationModalOpen}
+          setIsOpen={setMedicationModalOpen}
+          MedicationReminder={MedicationReminder}
+        />
+      </div>
       <div className="w-full flex justify-between  items-center ">
         {/* <div className="header flex flex-wrap gap-3 items-center ">
           <button className="border border-gray-400 rounded-lg hover:bg-[#41797a] md:text-[0.8vw] hover:text-white px-6 text-[8px] text-gray-400 capitalize p-0.5">
@@ -53,11 +65,10 @@ const PatientMedication = ({ data, isLoading }) => {
             >
               <option value="">Medicine</option>
             </select>
-          
           </div>
-            <button className="cursor-pointer border-none rounded-2xl px-6  text-[8px]  md:text-[0.8vw] bg-[#41797a] text-white capitalize p-1">
-              search
-            </button>
+          <button className="cursor-pointer border-none rounded-2xl px-6  text-[8px]  md:text-[0.8vw] bg-[#41797a] text-white capitalize p-1">
+            search
+          </button>
           <select
             className=" border border-gray-300 text-gray-600 capitalize outline-none px-1  w-25 rounded "
             name=""
@@ -67,20 +78,31 @@ const PatientMedication = ({ data, isLoading }) => {
           </select>
         </div>
       </div>
-      {isLoading ? (
-        <div className="my-auto  mt-50">
-          <Loader />
-        </div>
-      ) : data?.data?.results?.length === 0 ? (
-        <p className="text-center my-auto mt-50 text-gray-700 text-[13px] lg:text-[1vw]">
-          no appointments
-        </p>
-      ) : (
-        <div className=" hide-scrollbar overflow-h-scroll bg-white py-1 rounded-2xl h-[80vh] mt-4 w-full ">
-          <h1 className="px-4 py-2 lg:text-[1.1vw] italic capitalize text-sm font-medium text-gray-900">
-            medications reminder
+
+      <div className=" hide-scrollbar overflow-h-scroll bg-white py-1 rounded-2xl h-[80vh] mt-4 w-full ">
+        <div className="flex justify-between items-center px-4 w-full">
+          <h1 className=" py-2 lg:text-[1.1vw] italic capitalize text-sm font-medium text-gray-900">
+            medication reminder
           </h1>
-          <div>
+          <button
+            onClick={() => {
+              setMedicationModalOpen(true);
+            }}
+            className="cursor-pointer border-none rounded-2xl px-4  text-[10px]  md:text-[1.2vw] lg:text-[0.9vw]  bg-[#132928] text-white capitalize py-0.5"
+          >
+            + add reminder
+          </button>
+        </div>
+        <div>
+          {isLoading ? (
+            <div className="my-auto  mt-50">
+              <Loader />
+            </div>
+          ) : data?.data?.length === 0 ? (
+            <p className="text-center my-auto mt-50 text-gray-700 text-[13px] lg:text-[1vw]">
+              no reminder
+            </p>
+          ) : (
             <div className="w-full ">
               <table className="min-w-full h-full table-auto border-collapse text-left">
                 <thead>
@@ -109,48 +131,60 @@ const PatientMedication = ({ data, isLoading }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {Array.from({ length: 15 }).map((items, index) => (
-                    <tr className="border-b hover:bg-black/10  cursor-pointer text-[10px] lg:text-[0.9vw] border-gray-200">
-                      <td className="px-4 py-2  text-gray-600">
-                        jun 19 2025
-                        {/* {moment(items.date_time).format("MMMM Do YYYY")} */}
-                      </td>
-                      <td className="px-4 py-2 text-gray-600">
-                        paracetamol
-                        {/* {moment(items.date_time).format("LT")} */}
-                      </td>
-                      <td className="px-4 py-2 flex h-full  items-center gap-1 ">
-                        500mg
-                        {/* {items.patient} */}
-                      </td>
-                      <td className="px-4 py-2  text-gray-600"> 9:00am</td>
-                      <td className="px-4 py-2 flex text-lg justify-center gap-6 text-gray-600">
-                        <ToggleBtn />
-                        {/* <IoChatbubbleEllipsesOutline className="hover:text-purple-600" />
-                        <VscReport className="text-blue-600 hover:text-red-600" /> */}
-                      </td>
-                      <td
-                        className="text-green-400 px-4 py-2"
-                        // className={`${
-                        //   items.status === "cancelled"
-                        //     ? "text-red-600"
-                        //     : "text-green-400"
-                        // } px-4 py-2`}
+                  {data?.data &&
+                    data?.data.length &&
+                    data?.data.map((items, index) => (
+                      <tr
+                        key={items.id}
+                        className="border-b hover:bg-black/10  cursor-pointer text-[10px] lg:text-[0.9vw] border-gray-200"
                       >
-                        done
-                      </td>
-                      <td className="px-4 py-2 flex  text-lg justify-center items-center gap-6 text-gray-600">
-                        <FaRegEdit className="cursor-pointer text-black font-bold  hover:text-gray-600" />
-                        <MdCancelPresentation className="text-red-400   cursor-pointer hover:text-red-600" />
-                      </td>
-                    </tr>
-                  ))}
+                        <td className="px-4 py-2  text-gray-600">
+                          {moment(items.date_time).format("MM DD YYYY")}
+                          {/* {moment(items.date_time).format("MMMM Do YYYY")} */}
+                        </td>
+                        <td className="px-4 py-2 text-gray-600">
+                          {items.medicine_name}
+                          {/* {moment(items.date_time).format("LT")} */}
+                        </td>
+                        <td className="px-4 py-2 flex h-full  items-center gap-1 ">
+                          {items.dosage}
+                        </td>
+                        <td className="px-4 py-2  text-gray-600">
+                          {moment(items.date_time).format("hh mm")}
+                        </td>
+                        <td className="px-4 py-2 flex text-lg justify-center gap-6 text-gray-600">
+                          <ToggleBtn />
+                          {/* <IoChatbubbleEllipsesOutline className="hover:text-purple-600" />
+                        <VscReport className="text-blue-600 hover:text-red-600" /> */}
+                        </td>
+                        <td
+                          className="text-green-400 px-4 py-2"
+                          // className={`${
+                          //   items.status === "cancelled"
+                          //     ? "text-red-600"
+                          //     : "text-green-400"
+                          // } px-4 py-2`}
+                        >
+                          done
+                        </td>
+                        <td className="px-4 py-2 flex  text-lg justify-center items-center gap-6 text-gray-600">
+                          <FaRegEdit className="cursor-pointer text-black font-bold  hover:text-gray-600" />
+                          <button
+                            onClick={() => {
+                              MedicationReminderDelete.mutate(items.id);
+                            }}
+                          >
+                            <MdCancelPresentation className="text-red-400   cursor-pointer hover:text-red-600" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </>
   );
 };

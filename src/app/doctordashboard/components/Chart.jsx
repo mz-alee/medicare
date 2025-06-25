@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { ChartComponent } from "./Piechart";
-const Chart = () => {
+const Chart = ({data}) => {
   return (
     <div
       // data-aos="zoom-in-right"
@@ -37,7 +37,7 @@ const Chart = () => {
             </p>
           </div>
         </div>
-        <ChartComponent />
+        <ChartComponent data={data} />
       </div>
     </div>
   );

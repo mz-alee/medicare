@@ -16,6 +16,7 @@ import { deleteCookie, getCookie } from "cookies-next";
 import { usePathname, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { ProfileGetData } from "@/app/Api";
+import Skeleton from "react-loading-skeleton";
 const StaffNavbar = () => {
   const path = usePathname();
   const router = useRouter();
@@ -60,11 +61,17 @@ const StaffNavbar = () => {
             <Image src={person} alt="person" className="w-14 h-14" />
           </div>
           <div>
-            <div className="italic capitalize text-[14px] w-20 overflow-hidden h-7  text-[#282828]">
-              <h1>{getCookie("username")}</h1>
+            <div className="italic capitalize text-[14px] w-20   text-[#282828]">
+              <h1>
+                {getCookie("username") || (
+                  <Skeleton count={1} height={15} width={90} />
+                )}
+              </h1>
             </div>
-            <h1 className="text-[13px] text-[#417978] capitalize">
-              {getCookie("role")}
+            <h1 className="text-[13px] text-[#4b83d1] capitalize">
+              {getCookie("role") || (
+                <Skeleton count={1} height={15} width={90} />
+              )}
             </h1>
           </div>
         </div>
@@ -111,6 +118,16 @@ const StaffNavbar = () => {
           >
             <Image src={staff} alt="dashborad icon" className=" w-5" />
             patient details
+          </Link>
+          <Link
+            href="/staffdashboard/chat"
+            className={`${
+              path === "/staffdashboard/chat" &&
+              "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
+            }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
+          >
+            <Image src={staff} alt="dashborad icon" className=" w-5" />
+            chat
           </Link>
           <Link
             href="/staffdashboard/patientreports"

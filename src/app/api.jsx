@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getCookie } from "cookies-next";
 const api = axios.create({
-  baseURL: "https://fc3e-110-39-164-238.ngrok-free.app",
+  baseURL: "https://2a63-119-154-199-121.ngrok-free.app",
   headers: {
     "Content-Type": "multipart/form-data",
     // "Content-Type": "application/json",
@@ -131,9 +131,19 @@ export const AwardDelApi = (id) => {
   });
 };
 
+// doctors api
+
 export const ProfileGetData = () => {
   console.log("first");
   return api.get("/mainprofile/", {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+export const DoctorsDashboardApi = () => {
+  return api.get("/doctor_dashboard/", {
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,
     },
@@ -154,23 +164,37 @@ export const AppointmentsData = () => {
 // patient api
 
 // appointments create api
-export const AppointmentCreate = () => {
-  return api.post("/appointments/", {
-    header: {
+export const AppointmentCreate = (data) => {
+  return api.post("/appointments/", data, {
+    headers: {
       Authorization: `Bearer ${getCookie("token")}`,
     },
+    withCredentials: true,
   });
 };
-// export const PatientEmergencyPost = (data) => {
-//   console.log("daataaaaaaaaaaaa",data);
+export const AppointmentGetApi = () => {
+  return api.get("/appointments/", {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+export const TimeSlotGetAPi = (data) => {
+  console.log(data.date);
 
-//   return api.post(`/emrgency_contact/`, data, {
-//     header: {
-//       Authorization: `Bearer ${getCookie("token")}`,
-//     },
-//     withCredentials:true,
-//   });
-// };
+  return api.get(
+    `/appointments/available_slots/?doctor_id=${data.doctorId}&date=${data.date}`,
+    {
+      headers: {
+        Authorization: `Bearer ${getCookie("token")}`,
+      },
+      withCredentials: true,
+    }
+  );
+};
+// patient profile api
+
 export const PatientEmergencyPost = (data) => {
   return api.post(`/emrgency_contact/`, data, {
     headers: {
@@ -180,8 +204,6 @@ export const PatientEmergencyPost = (data) => {
     withCredentials: true,
   });
 };
-
-// patient profile api
 
 export const PatientProfile = () => {
   console.log("first");
@@ -193,12 +215,87 @@ export const PatientProfile = () => {
     withCredentials: true,
   });
 };
+export const PatientDiagnosisData = () => {
+  return api.get("/diagnosis_detail/", {
+    // credentials: "include",
+    headers: {
+      Authorization: `Bearer ${getCookie("token")} `,
+    },
+    withCredentials: true,
+  });
+};
+export const PatientReportData = () => {
+  return api.get("/lab_report/", {
+    // credentials: "include",
+    headers: {
+      Authorization: `Bearer ${getCookie("token")} `,
+    },
+    withCredentials: true,
+  });
+};
 
 export const PatientprofileEditApi = (data) => {
-
   return api.patch(`/userprofile/${getCookie("user_id")}/`, data, {
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,
     },
+  });
+};
+export const DoctorsListDataAPi = () => {
+  return api.get("/doctors/", {
+    // credentials: "include",
+    headers: {
+      Authorization: `Bearer ${getCookie("token")} `,
+    },
+    withCredentials: true,
+  });
+};
+
+export const PatientReminderAppointmentsPost = (data) => {
+  return api.post("/appointment_reminder/", data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+export const PatientReminderAppointmentsDel = (id) => {
+  return api.delete(`/appointment_reminder/${id}/`, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+export const MedicationReminderPost = (data) => {
+  return api.post("/medicine_reminder/", data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+export const MedicationReminderDel = (id) => {
+  return api.delete(`/medicine_reminder/${id}/`, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+export const PatientReminderAppointmentsGet = () => {
+  return api.get("/appointment_reminder/", {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+export const PatientReminderMedicationGet = () => {
+  return api.get("/medicine_reminder/", {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
   });
 };

@@ -1,16 +1,15 @@
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
-const data = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-];
-
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
-export const ChartComponent = () => {
+export const ChartComponent = (alldata) => {
+  const data = [
+    { name: "Group A", value: alldata?.data?.overview?.total_appointments },
+    { name: "Group B", value: alldata?.data?.overview?.total_appointments },
+    { name: "Group C", value: alldata?.data?.overview?.new_patients },
+    { name: "Group D", value: alldata?.data?.overview?.active_staff },
+  ];
   return (
     <div style={{ width: "100%", height: 100 }}>
       <ResponsiveContainer>
@@ -26,7 +25,10 @@ export const ChartComponent = () => {
             dataKey="value"
           >
             {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
             ))}
           </Pie>
         </PieChart>

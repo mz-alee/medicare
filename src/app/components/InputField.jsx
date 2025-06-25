@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const InputField = ({ register, name, placeholder, type, values }) => {
-  console.log("input data", values);
+  // console.log("input data", values);
 
   return (
     <div className="w-full relative ">
