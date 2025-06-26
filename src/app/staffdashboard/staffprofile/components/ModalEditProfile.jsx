@@ -32,18 +32,17 @@ const ModalEditProfile = ({
       image: "",
     },
   });
-
+  const value = getValues();
   useEffect(() => {
     Modal.setAppElement("#root");
   }, []);
-
   const handleImage = (e) => {
     const img = e.target.files[0];
     const imageURL = URL.createObjectURL(img);
     setValue("image", img);
     setFile(imageURL);
-    console.log(img);
   };
+  console.log(file);
   const handleProfileData = (data) => {
     const formData = data;
     if (formData.image) {
@@ -99,17 +98,18 @@ const ModalEditProfile = ({
                 htmlFor="profile"
                 className="border-dashed hover:bg-gray-100 bg-gray-50 cursor-pointer border rounded-lg flex flex-col items-center justify-center gap-2 border-gray-300 h-30  w-full"
               >
-                {!file && !data?.data?.user_details?.image && (
-                  <>
-                    <LuImagePlus className="text-lg" />
-                    <p className="text-[12px]">
-                      click or drag and drop to upload your file
-                    </p>
-                    <p className="text-gray-500 text-[12px]">PNG,JPG,SVG</p>
-                  </>
-                )}
+                {!file ||
+                  (!data?.data?.user_details?.image && (
+                    <>
+                      <LuImagePlus className="text-lg" />
+                      <p className="text-[12px]">
+                        click or drag and drop to upload your file
+                      </p>
+                      <p className="text-gray-500 text-[12px]">PNG,JPG,SVG</p>
+                    </>
+                  ))}
 
-                {file || data?.data?.user_details && (
+                {true && (
                   <div className="bg-gray-400 rounded-full overflow-hidden w-25 h-25 flex justify-center items-center">
                     <Image
                       src={file || data?.data?.user_details?.image}

@@ -93,76 +93,70 @@ const PatientDiagnosis = () => {
         </p>
       ) : (
         <div className="   bg-white py-1 overflow-scroll hide-scrollbar rounded-2xl h-[80vh] mt-4 w-full ">
-          
           <div>
             <div className="w-full ">
               <table className="min-w-full h-full table-auto border-collapse text-left">
-                <div className="w-[80vw] ">
-                  <thead className=" w-[80vw] ">
-                    <tr className="flex justify-between w-[80vw]">
-                      <th className="px-4  py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
-                        Date
-                      </th>
-                      <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
-                        Doctor
-                      </th>
-                      <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
-                        Hospital/Clinic
-                      </th>
-                      <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
-                        Diagnosis
-                      </th>
+                <thead className=" w-[80vw] ">
+                  <tr className="w-[80vw]">
+                    <th className="px-4  py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
+                      Date
+                    </th>
+                    <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
+                      Doctor
+                    </th>
+                    <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
+                      Hospital/Clinic
+                    </th>
+                    <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
+                      Diagnosis
+                    </th>
 
-                      <th className="px-4 py-2 text-sm lg:text-[0.9vw] font-medium text-gray-700">
-                        Status
-                      </th>
-                      <th className="px-4 py-2 text-sm text-center  lg:text-[0.9vw] font-medium text-gray-700">
-                        View Details
-                      </th>
-                    </tr>
-                  </thead>
-                </div>
-                <div className="h-[60vh] overflow-y-scroll   hide-scrollbar  ">
-                  <tbody className="divide-y  divide-black ">
-                    {data?.data?.results.map((items, index) => (
-                      <tr
-                        key={index}
-                        className=" hover:bg-black/10 flex justify-between w-[80vw]   cursor-pointer text-[10px] lg:text-[0.9vw] border-gray-200"
+                    <th className="px-4 py-2 text-sm lg:text-[0.9vw] font-medium text-gray-700">
+                      Status
+                    </th>
+                    <th className="px-4 py-2 text-sm text-center  lg:text-[0.9vw] font-medium text-gray-700">
+                      View Details
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y  divide-black ">
+                  {data?.data?.results.map((items, index) => (
+                    <tr
+                      key={index}
+                      className=" hover:bg-black/10    cursor-pointer text-[10px] lg:text-[0.9vw] border-gray-200"
+                    >
+                      <td className="px-4 py-2  text-gray-600">
+                        jun 19 2025
+                        {/* {moment(items.date_time).format("MMMM Do YYYY")} */}
+                      </td>
+                      <td className="px-4 py-2 text-gray-600">
+                        Dr.ALi
+                        {/* {moment(items.date_time).format("LT")} */}
+                      </td>
+                      <td className="px-4 py-2 flex h-full  items-center gap-1 ">
+                        City Hospital
+                        {/* {items.patient} */}
+                      </td>
+                      <td className="px-4 py-2  text-gray-600">
+                        Gastrointestinal infection, nausea{" "}
+                      </td>
+
+                      <td
+                        className="text-green-400 px-4 py-2"
+                        // className={`${
+                        //   items.status === "cancelled"
+                        //     ? "text-red-600"
+                        //     : "text-green-400"
+                        // } px-4 py-2`}
                       >
-                        <td className="px-4 py-2  text-gray-600">
-                          jun 19 2025
-                          {/* {moment(items.date_time).format("MMMM Do YYYY")} */}
-                        </td>
-                        <td className="px-4 py-2 text-gray-600">
-                          Dr.ALi
-                          {/* {moment(items.date_time).format("LT")} */}
-                        </td>
-                        <td className="px-4 py-2 flex h-full  items-center gap-1 ">
-                          City Hospital
-                          {/* {items.patient} */}
-                        </td>
-                        <td className="px-4 py-2  text-gray-600">
-                          {" "}
-                          Gastrointestinal infection, nausea{" "}
-                        </td>
-
-                        <td
-                          className="text-green-400 px-4 py-2"
-                          // className={`${
-                          //   items.status === "cancelled"
-                          //     ? "text-red-600"
-                          //     : "text-green-400"
-                          // } px-4 py-2`}
-                        >
-                          done
-                        </td>
-                        <td className="px-4 py-2 flex  text-lg justify-center items-center gap-6 text-gray-600">
-                          <CiViewBoard className="cursor-pointer  text-black font-bold text-[20px] hover:text-gray-600" />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </div>
+                        done
+                      </td>
+                      <td className="px-4 py-2 flex  text-lg justify-center items-center gap-6 text-gray-600">
+                        <CiViewBoard className="cursor-pointer  text-black font-bold text-[20px] hover:text-gray-600" />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
               </table>
             </div>
           </div>

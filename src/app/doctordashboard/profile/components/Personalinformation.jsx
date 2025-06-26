@@ -12,7 +12,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { profilePersonalEditApi } from "@/app/Api";
 import { toast, ToastContainer } from "react-toastify";
 import moment from "moment";
-const Personalinformation = ({ data }) => {
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
+const Personalinformation = ({ data, isLoading }) => {
   const [isprofile, setisprofile] = useState(false);
   const [isPersonalOpen, setisPersonalIsOpen] = useState(false);
   const [isProfessionalOpen, setProfessionalIsOpen] = useState(false);
@@ -24,7 +27,7 @@ const Personalinformation = ({ data }) => {
       queryClient.invalidateQueries(["profile"]);
       setisPersonalIsOpen(false);
       setisprofile(false);
-      toast("Profile updated successfully");
+      toast("Profile Edit Successfully");
     },
     onError: (error) => {
       console.error("Profile update failed:", error.response.data.username[0]);
@@ -54,8 +57,20 @@ const Personalinformation = ({ data }) => {
             />
           )} */}
           <div className="text-[14px] lg:text-[1vw]">
-            <h1>{data?.data?.user_details.username}</h1>
-            <p className="text-[13px] lg:text-[0.9vw]">{getCookie("role")}</p>
+            <h1>
+              {isLoading ? (
+                <Skeleton count={1} height={15} width={150} />
+              ) : (
+                data?.data?.user_details.username || "empty"
+              )}
+            </h1>
+            <p className="text-[13px] lg:text-[0.9vw]">
+              {isLoading ? (
+                <Skeleton count={1} height={15} width={150} />
+              ) : (
+                getCookie("role") || "empty"
+              )}
+            </p>
           </div>
         </div>
         <button
@@ -106,9 +121,13 @@ const Personalinformation = ({ data }) => {
                 full name
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw] ">
-                {data?.data?.user_details?.username
-                  ? data?.data?.user_details?.username
-                  : "null"}
+                {isLoading ? (
+                  <Skeleton count={1} height={15} width={150} />
+                ) : data?.data?.user_details?.username ? (
+                  data?.data?.user_details?.username
+                ) : (
+                  "null"
+                )}
               </h1>
             </div>
             <div>
@@ -116,7 +135,11 @@ const Personalinformation = ({ data }) => {
                 email
               </h3>
               <h1 className=" text-[14px] lg:text-[1vw]">
-                {data?.data?.user_details?.email || "null"}
+                {isLoading ? (
+                  <Skeleton count={1} height={15} width={150} />
+                ) : (
+                  data?.data?.user_details?.email || "null"
+                )}
               </h1>
             </div>
             <div>
@@ -124,7 +147,11 @@ const Personalinformation = ({ data }) => {
                 phone number
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw]">
-                {data?.data?.user_details?.phone_number || "null"}
+                {isLoading ? (
+                  <Skeleton count={1} height={15} width={150} />
+                ) : (
+                  data?.data?.user_details?.phone_number || "null"
+                )}
               </h1>
             </div>
           </div>
@@ -134,9 +161,13 @@ const Personalinformation = ({ data }) => {
                 Date of birth
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw]">
-                {moment(data?.data?.user_details?.date_of_birth).format(
-                  "MMMM DD YYYY"
-                ) || "null"}
+                {isLoading ? (
+                  <Skeleton count={1} height={15} width={150} />
+                ) : (
+                  moment(data?.data?.user_details?.date_of_birth).format(
+                    "MMMM DD YYYY"
+                  ) || "null"
+                )}
               </h1>
             </div>
             <div>
@@ -144,7 +175,11 @@ const Personalinformation = ({ data }) => {
                 gender
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw]">
-                {data?.data?.user_details?.gender || "null"}
+                {isLoading ? (
+                  <Skeleton count={1} height={15} width={150} />
+                ) : (
+                  data?.data?.user_details?.gender || "null"
+                )}
               </h1>
             </div>
             <div>
@@ -152,7 +187,11 @@ const Personalinformation = ({ data }) => {
                 adress
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw]">
-                {data?.data?.user_details?.address || "null"}
+                {isLoading ? (
+                  <Skeleton count={1} height={15} width={150} />
+                ) : (
+                  data?.data?.user_details?.address || "null"
+                )}
               </h1>
             </div>
           </div>
@@ -184,7 +223,11 @@ const Personalinformation = ({ data }) => {
                 profession
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw] w-50">
-                {data?.data?.profession_details?.profession || "null"}
+                {isLoading ? (
+                  <Skeleton count={1} height={15} width={150} />
+                ) : (
+                  data?.data?.profession_details?.profession || "null"
+                )}
               </h1>
             </div>
             <div>
@@ -192,7 +235,11 @@ const Personalinformation = ({ data }) => {
                 specialization
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw] w-50">
-                {data?.data?.profession_details?.specialization || "null"}
+                {isLoading ? (
+                  <Skeleton count={1} height={15} width={150} />
+                ) : (
+                  data?.data?.profession_details?.specialization || "null"
+                )}
               </h1>
             </div>
             <div>
@@ -200,7 +247,11 @@ const Personalinformation = ({ data }) => {
                 clinic/hospital
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw] w-50">
-                {data?.data?.profession_details?.clinic_name || "null"}
+                {isLoading ? (
+                  <Skeleton count={1} height={15} width={150} />
+                ) : (
+                  data?.data?.profession_details?.clinic_name || "null"
+                )}
               </h1>
             </div>
           </div>
@@ -210,7 +261,11 @@ const Personalinformation = ({ data }) => {
                 clinic/hospital adress
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw] w-50">
-                {data?.data?.profession_details?.clinic_address || "null"}
+                {isLoading ? (
+                  <Skeleton count={1} height={15} width={150} />
+                ) : (
+                  data?.data?.profession_details?.clinic_address || "null"
+                )}
               </h1>
             </div>
             <div>
@@ -218,7 +273,11 @@ const Personalinformation = ({ data }) => {
                 your note
               </h3>
               <h1 className="capitalize text-[14px] lg:text-[1vw] w-50">
-                {data?.data?.profession_details?.your_note || "null"}
+                {isLoading ? (
+                  <Skeleton count={1} height={15} width={150} />
+                ) : (
+                  data?.data?.profession_details?.your_note || "null"
+                )}
               </h1>
             </div>
           </div>

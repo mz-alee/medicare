@@ -6,7 +6,7 @@ const Chart = ({data}) => {
     <div
       // data-aos="zoom-in-right"
       // data-aos-duration="1800"
-      className="w-full md:w-[35vw] xl:w-[17vw] bg-white h-[45vh] flex flex-col gap-1 rounded-2xl p-4"
+      className="w-full sm:w-[40vw] md:w-[25vw] xl:w-[17vw] bg-white h-[280px] lg:h-[50vh] flex flex-col gap-1 rounded-2xl p-4"
     >
       <h1 className="heading italic font-[400] ">Chart</h1>
       <div className=" h-60  flex flex-col justify-center gap-4  xl:h-[40vh]">

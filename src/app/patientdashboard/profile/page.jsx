@@ -9,6 +9,8 @@ import ModalEditProfile from "../components/ProfileEditModal";
 import EmergencyModal from "../components/emergencyModal";
 import PatientHeader from "../components/PatientHeader";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import "react-loading-skeleton/dist/skeleton.css";
+
 import {
   PatientEmergencyPost,
   PatientProfile,
@@ -16,6 +18,7 @@ import {
 } from "@/app/Api";
 import { toast, ToastContainer } from "react-toastify";
 import PersonalInformationModal from "../components/PersonalInformationModal";
+import Skeleton from "react-loading-skeleton";
 const Patientprofile = () => {
   const [isprofile, setisprofile] = useState(false);
   const [isPersonalOpen, setisPersonalIsOpen] = useState(false);
@@ -77,9 +80,19 @@ const Patientprofile = () => {
               className="w-20 rounded-full h-20"
             />
             <div className="text-[14px] lg:text-[1vw]">
-              <h1>{data?.data?.user_details?.username}</h1>
+              <h1>
+                {isLoading ? (
+                  <Skeleton count={1} height={15} width={150} />
+                ) : (
+                  data?.data?.user_details?.username
+                )}
+              </h1>
               <p className="text-[13px] lg:text-[0.9vw]">
-                {getCookie("role") || "null"}
+                {isLoading ? (
+                  <Skeleton count={1} height={15} width={150} />
+                ) : (
+                  getCookie("role") || "null"
+                )}
               </p>
             </div>
           </div>
@@ -131,9 +144,13 @@ const Patientprofile = () => {
                   full name
                 </h3>
                 <h1 className="capitalize text-[14px] lg:text-[1vw] ">
-                  {data?.data?.user_details?.username
-                    ? data?.data?.user_details?.username
-                    : "null"}
+                  {isLoading ? (
+                    <Skeleton count={1} height={15} width={150} />
+                  ) : data?.data?.user_details?.username ? (
+                    data?.data?.user_details?.username
+                  ) : (
+                    "null"
+                  )}
                 </h1>
               </div>
               <div>
@@ -141,7 +158,11 @@ const Patientprofile = () => {
                   email
                 </h3>
                 <h1 className=" text-[14px] lg:text-[1vw]">
-                  {data?.data?.user_details?.email || "null"}
+                  {isLoading ? (
+                    <Skeleton count={1} height={15} width={150} />
+                  ) : (
+                    data?.data?.user_details?.email || "null"
+                  )}
                 </h1>
               </div>
               <div>
@@ -149,7 +170,11 @@ const Patientprofile = () => {
                   phone number
                 </h3>
                 <h1 className="capitalize text-[14px] lg:text-[1vw]">
-                  {data?.data?.user_details?.phone_number || "null"}
+                  {isLoading ? (
+                    <Skeleton count={1} height={15} width={150} />
+                  ) : (
+                    data?.data?.user_details?.phone_number || "null"
+                  )}
                 </h1>
               </div>
             </div>
@@ -159,7 +184,11 @@ const Patientprofile = () => {
                   Date of birth
                 </h3>
                 <h1 className="capitalize text-[14px] lg:text-[1vw]">
-                  {data?.data?.user_details?.date_of_birth || "null"}
+                  {isLoading ? (
+                    <Skeleton count={1} height={15} width={150} />
+                  ) : (
+                    data?.data?.user_details?.date_of_birth || "null"
+                  )}
                 </h1>
               </div>
               <div>
@@ -167,7 +196,11 @@ const Patientprofile = () => {
                   gender
                 </h3>
                 <h1 className="capitalize text-[14px] lg:text-[1vw]">
-                  {data?.data?.user_details?.gender || "null"}
+                  {isLoading ? (
+                    <Skeleton count={1} height={15} width={150} />
+                  ) : (
+                    data?.data?.user_details?.gender || "null"
+                  )}
                 </h1>
               </div>
               <div>
@@ -175,7 +208,11 @@ const Patientprofile = () => {
                   adress
                 </h3>
                 <h1 className="capitalize text-[14px] lg:text-[1vw]">
-                  {data?.data?.user_details?.address || "null"}
+                  {isLoading ? (
+                    <Skeleton count={1} height={15} width={150} />
+                  ) : (
+                    data?.data?.user_details?.address || "null"
+                  )}
                 </h1>
               </div>
             </div>
@@ -208,7 +245,11 @@ const Patientprofile = () => {
                   name
                 </h3>
                 <h1 className="capitalize text-[14px] lg:text-[1vw] w-50">
-                  {data?.data?.emergency_contact_details?.full_name || "null"}
+                  {isLoading ? (
+                    <Skeleton count={1} height={15} width={150} />
+                  ) : (
+                    data?.data?.emergency_contact_details?.full_name || "null"
+                  )}
                 </h1>
               </div>
               <div>
@@ -224,8 +265,12 @@ const Patientprofile = () => {
                   contact
                 </h3>
                 <h1 className="capitalize text-[14px] lg:text-[1vw] w-50">
-                  {data?.data?.emergency_contact_details?.phone_number ||
-                    "null"}
+                  {isLoading ? (
+                    <Skeleton count={1} height={15} width={150} />
+                  ) : (
+                    data?.data?.emergency_contact_details?.phone_number ||
+                    "null"
+                  )}
                 </h1>
               </div>
             </div>
@@ -235,7 +280,11 @@ const Patientprofile = () => {
                   adress
                 </h3>
                 <h1 className="capitalize text-[14px] lg:text-[1vw] w-50">
-                  {data?.data?.emergency_contact_details?.address || "null"}
+                  {isLoading ? (
+                    <Skeleton count={1} height={15} width={150} />
+                  ) : (
+                    data?.data?.emergency_contact_details?.address || "null"
+                  )}
                 </h1>
               </div>
               <div>
@@ -243,7 +292,11 @@ const Patientprofile = () => {
                   email
                 </h3>
                 <h1 className="capitalize text-[14px] lg:text-[1vw] w-50">
-                  {data?.data?.emergency_contact_details?.email || "null"}
+                  {isLoading ? (
+                    <Skeleton count={1} height={15} width={150} />
+                  ) : (
+                    data?.data?.emergency_contact_details?.email || "null"
+                  )}
                 </h1>
               </div>
             </div>

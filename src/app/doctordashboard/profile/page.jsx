@@ -45,6 +45,7 @@ const Profile = () => {
         {pageNum === 0 && (
           <Personalinformation
             data={data}
+            isLoading={isLoading}
             // profileEditMutation={profileEditMutation}
           />
         )}

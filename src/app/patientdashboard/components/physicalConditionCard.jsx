@@ -7,7 +7,7 @@ import physicalimage from "../../../../public/Images/patientImages/physicalCard.
 import Image from 'next/image';
 const PhysicalCondition = () => {
   return (
-    <div className="w-full md:w-[35vw] xl:w-[17vw] bg-white h-[45vh] flex flex-col gap-1 rounded-2xl p-4">
+    <div className="w-[43vw] md:w-[38vw] lg:w-[35vw] xl:w-[17vw] bg-white h-[280px] lg:h-[45vh] flex flex-col gap-1 rounded-2xl p-4">
       <h1 className="heading italic font-[400] ">physical condition</h1>
       <div className=" h-60  flex flex-col  gap-3 justify-center items-center  xl:h-[40vh]">
         {/* details  */}

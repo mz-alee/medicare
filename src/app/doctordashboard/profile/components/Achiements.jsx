@@ -15,7 +15,7 @@ import {
   PublicationEditApi,
   publicationPostApi,
 } from "@/app/Api";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import PublicationModal from "./PublicationModal";
 import AwardModal from "./AwardModal";
 import * as yup from "yup";
@@ -46,7 +46,7 @@ const Achiements = ({ profiledata, isLoading }) => {
     mutationFn: (data) => certificateEditApi(data),
 
     onSuccess: (data) => {
-      toast("certificate uploaded successfully");
+      toast("Certificate edit successfully");
       queryClient.invalidateQueries(["certificate"]);
       setIsOpen(false);
     },
@@ -57,7 +57,7 @@ const Achiements = ({ profiledata, isLoading }) => {
   const publishingMutation = useMutation({
     mutationFn: (data) => publicationPostApi(data),
     onSuccess: (data) => {
-      toast("publish uploaded successfully");
+      toast("Publish uploaded successfully");
       console.log("alskdjflkasjdfklaj", data);
       queryClient.invalidateQueries(["publish"]);
       setIsPublicationOpen(false);
@@ -70,7 +70,7 @@ const Achiements = ({ profiledata, isLoading }) => {
     mutationFn: (data) => PublicationEditApi(data),
 
     onSuccess: (data) => {
-      toast("certificate uploaded successfully");
+      toast("Publish edit successfully");
       queryClient.invalidateQueries(["certificate"]);
       setIsOpen(false);
     },
@@ -93,7 +93,7 @@ const Achiements = ({ profiledata, isLoading }) => {
     mutationFn: (data) => AwardEditApi(data),
 
     onSuccess: (data) => {
-      toast("certificate uploaded successfully");
+      toast("Award edit successfully");
       queryClient.invalidateQueries(["certificate"]);
       setIsOpen(false);
     },
@@ -114,7 +114,7 @@ const Achiements = ({ profiledata, isLoading }) => {
   const publishDel = useMutation({
     mutationFn: (data) => publicationDelApi(data),
     onSuccess: () => {
-      toast("certificate deleted successfully");
+      toast("Publish deleted successfully");
       queryClient.invalidateQueries(["certificate"]);
     },
     onError: (error) => {
@@ -126,7 +126,7 @@ const Achiements = ({ profiledata, isLoading }) => {
     onSuccess: () => {
       queryClient.invalidateQueries(["certificate"]);
 
-      toast("certificate deleted successfully");
+      toast("Award deleted successfully");
     },
     onError: (error) => {
       console.log(error);
@@ -135,6 +135,7 @@ const Achiements = ({ profiledata, isLoading }) => {
   console.log("profiledata", profiledata);
   return (
     <>
+      <ToastContainer />
       <div id="root">
         <CertificateModal
           certificateMutation={certificateMutation}

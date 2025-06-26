@@ -14,6 +14,10 @@ import { profilePersonalEditApi } from "@/app/Api";
 import { toast, ToastContainer } from "react-toastify";
 import moment from "moment";
 import Skeleton from "react-loading-skeleton";
+import ModalEditProfile from "./components/ModalEditProfile";
+import PersonalInformationModal from "./components/PersonalInformationModal";
+import EditProfessionModal from "./components/EditProfessionModal";
+import SkeletonImage from "antd/es/skeleton/Image";
 const Personalinformation = ({ data, isLoading }) => {
   const [isprofile, setisprofile] = useState(false);
   const [isPersonalOpen, setisPersonalIsOpen] = useState(false);
@@ -39,13 +43,17 @@ const Personalinformation = ({ data, isLoading }) => {
       <ToastContainer />
       <div className="bg-white justify-between flex-wrap gap-2 rounded-2xl w-full flex items-center px-8 py-2 min-h-28">
         <div className="flex gap-4 items-center ">
-          <Image
-            src={data?.data?.user_details?.image || profile}
-            alt="profile image"
-            width={80}
-            height={80}
-            className="w-20 h-20  rounded-full"
-          />
+          {isLoading ? (
+            <Skeleton count={3} height={10} width={70} />
+          ) : (
+            <Image
+              src={data?.data?.user_details?.image || profile}
+              alt="profile image"
+              width={80}
+              height={80}
+              className="w-20 h-20  rounded-full"
+            />
+          )}
           {/* {data?.data?.user_details?.image && (
             <Image
               src={data.data.user_details.image || profile}
@@ -83,12 +91,12 @@ const Personalinformation = ({ data, isLoading }) => {
           <FiEdit />
         </button>
       </div>
-      {/* <ModalEditProfile
+      <ModalEditProfile
         profileEditMutation={profileEditMutation}
         isOpen={isprofile}
         setIsOpen={setisprofile}
         data={data}
-      /> */}
+      />
       {/* personal information  */}
       <div className="bg-white rounded-2xl flex flex-col gap-4  py-2 min-h-60 shadow px-8 w-full">
         <div className="flex items-center  gap-3">
@@ -105,12 +113,12 @@ const Personalinformation = ({ data, isLoading }) => {
             <FiEdit />
           </button>
           <div id="root">
-            {/* <PersonalInformationModal
+            <PersonalInformationModal
               isOpen={isPersonalOpen}
               setIsOpen={setisPersonalIsOpen}
               profileEditMutation={profileEditMutation}
               data={data}
-            /> */}
+            />
           </div>
         </div>
         <div className="flex flex-wrap w-1/2  justify-between  h-full   gap-3 ">
@@ -211,11 +219,11 @@ const Personalinformation = ({ data, isLoading }) => {
           >
             Edit <FiEdit className="text-md" />
           </button>
-          {/* <EditProfessionModal
+          <EditProfessionModal
             isOpen={isProfessionalOpen}
             setIsOpen={setProfessionalIsOpen}
             data={data}
-          /> */}
+          />
         </div>
         <div className="flex flex-wrap w-1/2 justify-between  h-full   gap-3 ">
           <div className="flex flex-col w-60 gap-3">

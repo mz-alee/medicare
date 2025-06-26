@@ -5,46 +5,53 @@ import pendingAppointments from "../../../../public/Images/docterImages/pendingA
 import activeStaff from "../../../../public/Images/docterImages/activeStaff.svg";
 import patient from "../../../../public/Images/docterImages/patient.svg";
 import AppointmentBox from "@/app/doctordashboard/components/appointmentBox";
-const StaffSchedule = () => {
+import StaffDashAppointmentBox from "./staffDashAppointmentBox";
+const StaffSchedule = ({ data }) => {
+  console.log(data?.data?.pending_appointments);
+
   return (
     <div
       // data-aos="zoom-in-right"
       // data-aos-duration="1000"
-      className="w-full     lg:w-[30vw] lg:h-[50vh] xl:h-[30vh] xl:min-w-[50vw]   bg-white  flex flex-col gap-4  rounded-2xl p-3"
+      className="w-full sm:w-[55vw] md:w-[44vw] lg:w-[48vw] lg:justify-center  md:h-[50vh]   lg:h-[30vh]   bg-white  flex flex-col gap-4  rounded-2xl p-3"
     >
-      <div className='flex  justify-between items-center'>
-      <h1 className="heading italic font-[400] ">today's schedule</h1>
-      <select className='text-[12px] lg:text-[0.9vw] text-gray-600 outline-none' name="" id="">
-        <option  value="">weekly</option>
-      </select>
+      <div className="flex  justify-between items-center">
+        <h1 className="heading italic font-[400] ">today's schedule</h1>
+        <select
+          className="text-[12px] lg:text-[0.9vw] text-gray-600 outline-none"
+          name=""
+          id=""
+        >
+          <option value="">weekly</option>
+        </select>
       </div>
-      <div className="w-full gap-2  flex items-center ">
-        <div className="flex    gap-4 w-full items-center    justify-center  ">
-          <div className="flex gap-4">
-            <AppointmentBox
+      <div className="w-full gap-2   flex items-center ">
+        <div className="flex   flex-col lg:flex-row  gap-4 w-full items-center    justify-center  ">
+          <div className="flex  gap-4">
+            <StaffDashAppointmentBox
               color="#daedff"
-              number="100"
+              number={data?.data?.overview?.total_appointments}
               text="Appointments"
               icon={file}
             />
-            <AppointmentBox
+            <StaffDashAppointmentBox
               color="#fffacf"
-              number="400"
-              text="Pending Appointments"
+              number={data?.data?.overview?.checked_in_patients}
+              text="Checked-in-patients"
               icon={pendingAppointments}
             />
           </div>
           <div className="flex gap-4">
-            <AppointmentBox
+            <StaffDashAppointmentBox
               color="#dbffe5"
-              number="50"
+              number={data?.data?.overview?.new_patients}
               text="new patients"
               icon={patient}
             />
-            <AppointmentBox
+            <StaffDashAppointmentBox
               color="#ead9ff"
-              number="90"
-              text="active staff"
+              number={data?.data?.overview?.pending_patients}
+              text="waiting patient"
               icon={activeStaff}
             />
           </div>

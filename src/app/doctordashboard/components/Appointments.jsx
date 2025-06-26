@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import person from "../../../../public/Images/person1.png";
 import Loader from "@/app/components/Loader";
-const Appointment = ({ data, isLoading }) => {
+const DoctorAppointment = ({ data, isLoading }) => {
   const [active, setActive] = useState(false);
   console.log(data?.data?.new_appointments);
 
@@ -11,7 +11,7 @@ const Appointment = ({ data, isLoading }) => {
     <div
       // data-aos="zoom-in-right"
       // data-aos-duration="1500"
-      className="w-full md:w-[40vw] xl:w-[35vw] bg-white h-[45vh] flex flex-col gap-1 rounded-2xl p-4"
+      className="w-full md:w-full lg:w-[45vw] xl:w-[35vw] bg-white h-[280px] lg:h-[50vh] flex flex-col gap-1 rounded-2xl p-4"
     >
       <div className="flex gap-3">
         <button
@@ -20,7 +20,7 @@ const Appointment = ({ data, isLoading }) => {
           }}
           className={`${
             active === false && "border-b border-[#205454]"
-          } cursor-pointer pb-2 heading italic font-[500]`}
+          } cursor-pointer pb-2 heading  italic font-[400]`}
         >
           New Appointments
         </button>
@@ -30,7 +30,7 @@ const Appointment = ({ data, isLoading }) => {
           }}
           className={`${
             active === true && "border-b-1 border-[#205454]"
-          } cursor-pointer pb-2 heading italic font-[500]`}
+          } cursor-pointer pb-2 heading italic font-[400]`}
         >
           Pending Appointments
         </button>
@@ -40,9 +40,11 @@ const Appointment = ({ data, isLoading }) => {
           <Loader />
         </div>
       ) : !data?.data?.new_appointments ? (
-        <p className="text-center mt-[25%] italic text-gray-500">
-          no appointments
-        </p>
+        <div className="flex justify-center items-center h-full">
+          <p className="text-center text-[12px] lg:text-[0.9vw]   italic text-gray-500">
+            no appointments
+          </p>
+        </div>
       ) : (
         <div className="overflow-x-auto  hide-scrollbar h-60  xl:h-[40vh]">
           <table className="min-w-full  table-auto border-collapse text-left">
@@ -85,4 +87,4 @@ const Appointment = ({ data, isLoading }) => {
   );
 };
 
-export default Appointment;
+export default DoctorAppointment;

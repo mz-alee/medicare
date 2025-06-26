@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getCookie } from "cookies-next";
 const api = axios.create({
-  baseURL: "https://2a63-119-154-199-121.ngrok-free.app",
+  baseURL: "https://6a9c-119-154-199-121.ngrok-free.app",
   headers: {
     "Content-Type": "multipart/form-data",
     // "Content-Type": "application/json",
@@ -161,7 +161,49 @@ export const AppointmentsData = () => {
   });
 };
 
+export const StaffListGetApi = () => {
+  return api.get("/staff/", {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+export const StaffGetApi = () => {
+  return api.get("/staff_management/", {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+export const StaffDelApi = (id) => {
+  return api.del(`/staff_management/${id}/`, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+export const StaffAddPostApi = (data) => {
+  return api.post(`/staff_management/`, data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+
 // patient api
+// dashborad
+export const PatientDashboardGetApi = () => {
+  return api.get(`/patient_dashboard/`, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
 
 // appointments create api
 export const AppointmentCreate = (data) => {
@@ -293,6 +335,17 @@ export const PatientReminderAppointmentsGet = () => {
 };
 export const PatientReminderMedicationGet = () => {
   return api.get("/medicine_reminder/", {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+
+// staff site api
+
+export const StaffDashboardGetApi = () => {
+  return api.get("/staff_dashboard/", {
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,
     },

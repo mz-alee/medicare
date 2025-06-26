@@ -24,8 +24,10 @@ const ModalEditProfile = ({
 
   const {
     handleSubmit,
+    watch,
     setValue,
     register,
+    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -33,28 +35,25 @@ const ModalEditProfile = ({
     },
   });
   console.log(file);
-
+  const value = getValues();
   useEffect(() => {
     Modal.setAppElement("#root");
   }, []);
   const handleImage = (e) => {
     const img = e.target.files[0];
     const imageURL = URL.createObjectURL(img);
-    setValue("image", data.data.user_details.image || img);
+    setValue("image", img);
     setFile(imageURL);
     console.log(img);
   };
-
   const handleProfileData = (data) => {
-    if (value.image === null) {
-      PatientProfileEdit.mutate(data);
+    const formData = data;
+    if (formData.image) {
+      profileEditMutation.mutate(data);
+    } else {
+      const username = { username: data.username };
+      profileEditMutation.mutate(username);
     }
-    // if (file) {
-    // } else {
-    //   PatientProfileEdit.mutate({ username: value.username });
-    // }
-
-    // PatientProfileEdit.mutate({ username: data.username });
   };
   return (
     <div>
@@ -104,7 +103,7 @@ const ModalEditProfile = ({
                 htmlFor="profile"
                 className="border-dashed hover:bg-gray-100 bg-gray-50 cursor-pointer border rounded-lg flex flex-col items-center justify-center gap-2 border-gray-300 h-30  w-full"
               >
-                {!data?.data?.user_details?.image && (
+                {!file && !data?.data?.user_details?.image && (
                   <>
                     <LuImagePlus className="text-lg" />
                     <p className="text-[12px]">
@@ -113,15 +112,19 @@ const ModalEditProfile = ({
                     <p className="text-gray-500 text-[12px]">PNG,JPG,SVG</p>
                   </>
                 )}
-                <div className="bg-gray-400 rounded-full overflow-hidden w-25 h-25 flex justify-center items-center">
-                  <Image
-                    src={!file ? data?.data?.user_details?.image : file}
-                    alt="srf"
-                    width={60}
-                    height={60}
-                    className="object-fit "
-                  />
-                </div>
+
+                {file ||
+                  (data?.data?.user_details && (
+                    <div className="bg-gray-400 rounded-full overflow-hidden w-25 h-25 flex justify-center items-center">
+                      <Image
+                        src={file || data?.data?.user_details?.image}
+                        alt="srf"
+                        width={60}
+                        height={60}
+                        className="object-fit "
+                      />
+                    </div>
+                  ))}
               </label>
               <input
                 type="file"

@@ -36,7 +36,6 @@ const StaffProfile = () => {
 
   console.log("profile dataaaaaaaaaa", data?.data);
 
-
   return (
     <div>
       <StaffHeader
@@ -49,7 +48,7 @@ const StaffProfile = () => {
       <div>
         {pageNum === 0 && (
           <Personalinformation
-          isLoading={isLoading}
+            isLoading={isLoading}
             data={data}
             // profileEditMutation={profileEditMutation}
           />

@@ -63,7 +63,7 @@ const StaffNavbar = () => {
           <div>
             <div className="italic capitalize text-[14px] w-20   text-[#282828]">
               <h1>
-                {getCookie("username") || (
+                {getCookie("username").substring(0,10)+"..." || (
                   <Skeleton count={1} height={15} width={90} />
                 )}
               </h1>

@@ -56,7 +56,9 @@ const Navbar = () => {
           </div>
           <div>
             <div className="italic capitalize text-[14px] w-20 overflow-hidden h-7  text-[#282828]">
-              <h1>{getCookie("username")}</h1>
+              <h1>
+                {getCookie("username")?.substring(0, 10) + "..." || "null"}
+              </h1>
             </div>
             <h1 className="text-[13px] text-[#417978] capitalize">
               {getCookie("role")}
@@ -65,7 +67,7 @@ const Navbar = () => {
         </div>
         {/* Links  */}
         <div className="flex w-full  flex-col gap-2 justify-center items-center py-2">
-          <div className="w-full flex flex-col justify-baseline h-[400px]">
+          <div className="w-full flex gap-2 lg:gap-[1vh] flex-col justify-baseline h-[400px]">
             <Link
               href="/patientdashboard"
               data-aos="zoom-in-right"

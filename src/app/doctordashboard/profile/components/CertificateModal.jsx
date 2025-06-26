@@ -81,7 +81,7 @@ const CertificateModal = ({
             zIndex: 1000,
           },
           content: {
-            height: "75vh",
+            height: "450px",
             width: "390px",
             top: "50%",
             left: "50%",

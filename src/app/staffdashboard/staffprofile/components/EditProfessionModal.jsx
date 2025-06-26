@@ -9,8 +9,7 @@ import { useForm } from "react-hook-form";
 import { IoIosClose } from "react-icons/io";
 import Modal from "react-modal";
 import { toast } from "react-toastify";
-const 
-EditProfessionModal = ({
+const EditProfessionModal = ({
   // btnName,
   // handleAddseat,
   // register,
