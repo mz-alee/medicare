@@ -14,29 +14,35 @@ const ReminderModal = ({
   setIsOpen,
   title,
   PatientReminder,
-
 }) => {
   const [selectedBtn, setSelectedBtn] = useState("");
   const [indx, setIndx] = useState(null);
   const {
     handleSubmit,
+    setValue,
+    getValues,
     reset,
     register,
     formState: { errors },
   } = useForm({
     defaultValues: {},
   });
-
+  const value = getValues();
   useEffect(() => {
     Modal.setAppElement("#root");
   }, []);
   const handleData = (data) => {
-    PatientReminder.mutate(data);
 
+    const combined = `${date}T${time}`;
+    const datetime = moment.utc(combined).format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z';
+    console.log(datetime);
+    
+    PatientReminder.mutate(data);
+    
     console.log("react hook form data", data);
   };
   useEffect(() => {
-    if (PatientReminder.isSuccess) {
+    if (PatientReminder.isSuccess) {s
       reset();
     }
     console.log("/////// reset ");
@@ -144,11 +150,12 @@ const ReminderModal = ({
                   <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
                     Time
                   </p>
-                  <InputField
-                    register={register}
-                    placeholder="Time"
-                    type="number"
-                    name="time"
+                  <input
+                    {...register("reminder_time")}
+                    type="time"
+                    onChange={(e) => {
+                      setValue("reminder_time", e.target.value);
+                    }}
                   />
                   {/* {errors.category && (
                 <p className="error">{errors.category.message}</p>

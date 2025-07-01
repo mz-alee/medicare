@@ -8,6 +8,7 @@ import person from "../../../../public/Images/empty.webp";
 import appointment from "../../../../public/Images/docterImages/appointment.svg";
 import staff from "../../../../public/Images/docterImages/staff.svg";
 import chat from "../../../../public/Images/docterImages/chat.svg";
+import { MdEventAvailable } from "react-icons/md";
 import Image from "next/image";
 import Link from "next/link";
 import { BiLogOut } from "react-icons/bi";
@@ -94,6 +95,18 @@ const Navbar = () => {
               className=" w-5 lg:w-[1.3vw] lg:h-[3vh]"
             />
             Dashborad
+          </Link>
+          <Link
+            href="/doctordashboard/availability"
+            data-aos="zoom-in-right"
+            data-aos-duration="1000"
+            className={`${
+              path === "/doctordashboard/availability" &&
+              "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
+            }  w-full h-11 lg:h-[6vh] flex capitalize text-[13px] lg:text-[1vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-3 `}
+          >
+            <MdEventAvailable  className='text-[18px] lg:text-[1.4vw]'/>
+            availability
           </Link>
           <Link
             href="/doctordashboard/appointments"

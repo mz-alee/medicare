@@ -20,6 +20,7 @@ const Appointments = () => {
   const [pageNum, setPageNum] = useState(0);
   const [userData, setUserData] = useState();
   const [Appointments, setApointments] = useState();
+  const [filters, setFilters] = useState('');
 
   const { data, isLoading } = useQuery({
     queryKey: ["doctor data"],
@@ -33,8 +34,12 @@ const Appointments = () => {
     },
   });
   const { data: appointmentData, isLoading: appointmentLoading } = useQuery({
-    queryKey: ["appointment_data"],
-    queryFn: AppointmentGetApi,
+    queryKey: ["appointment_data", filters],
+    queryFn: ({ queryKey }) => {
+      const [, params] = queryKey;
+      console.log("🧪 queryKey:", queryKey);
+      return AppointmentGetApi(params);
+    },
     retry: false,
     onSuccess: (data) => {
       // console.log(data);
@@ -59,6 +64,8 @@ const Appointments = () => {
             data={data}
             appointmentData={appointmentData}
             isLoading={appointmentLoading}
+            setFilters={setFilters}
+            filters={filters}
             // profileEditMutation={profileEditMutation}
           />
         )}

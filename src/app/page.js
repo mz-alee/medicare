@@ -4,12 +4,10 @@ import { toast, ToastContainer } from "react-toastify";
 import LandingPage from "./LandingPage";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
+
 const Home = () => {
-  const [taskData, setTaskData] = useState({
-    title: "",
-    des: "",
-  });
   const router = useRouter();
+ 
   const handleOnChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;

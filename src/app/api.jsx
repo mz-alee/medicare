@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getCookie } from "cookies-next";
 const api = axios.create({
-  baseURL: "https://6a9c-119-154-199-121.ngrok-free.app",
+  baseURL: "https://d18d-119-154-199-121.ngrok-free.app",
   headers: {
     "Content-Type": "multipart/form-data",
     // "Content-Type": "application/json",
@@ -56,8 +56,6 @@ export const profileProfessionApi = (data) => {
 // personal profile edit api
 
 export const profilePersonalEditApi = (data) => {
-  console.log("data(())))))", data);
-
   return api.patch(`/userprofile/${getCookie("user_id")}/`, data, {
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,
@@ -134,7 +132,6 @@ export const AwardDelApi = (id) => {
 // doctors api
 
 export const ProfileGetData = () => {
-  console.log("first");
   return api.get("/mainprofile/", {
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,
@@ -150,8 +147,7 @@ export const DoctorsDashboardApi = () => {
     withCredentials: true,
   });
 };
-export const AppointmentsData = () => {
-  console.log("first");
+export const AppointmentsData = (filterUrl) => {
   return api.get("/appointments/", {
     // credentials: "include",
     headers: {
@@ -160,7 +156,6 @@ export const AppointmentsData = () => {
     withCredentials: true,
   });
 };
-
 export const StaffListGetApi = () => {
   return api.get("/staff/", {
     headers: {
@@ -178,7 +173,7 @@ export const StaffGetApi = () => {
   });
 };
 export const StaffDelApi = (id) => {
-  return api.del(`/staff_management/${id}/`, {
+  return api.delete(`/staff_management/${id}/`, {
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,
     },
@@ -187,6 +182,41 @@ export const StaffDelApi = (id) => {
 };
 export const StaffAddPostApi = (data) => {
   return api.post(`/staff_management/`, data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+
+export const DoctorWorkingHour = (data) => {
+  return api.post(`/workinghours/`, data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+export const EditDoctorWorkingHour = (data) => {
+  console.log("data from api ", data);
+
+  return api.patch(`/workinghours/${data.id}/`, data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+export const DoctorGetWorkingHour = () => {
+  return api.get(`/workinghours/`, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+export const DoctorDeleteWorkingHour = (id) => {
+  return api.delete(`/workinghours/${id}/`, {
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,
     },
@@ -214,8 +244,8 @@ export const AppointmentCreate = (data) => {
     withCredentials: true,
   });
 };
-export const AppointmentGetApi = () => {
-  return api.get("/appointments/", {
+export const AppointmentGetApi = (filters) => {
+  return api.get(`/appointments/?status=${filters}`, {
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,
     },
@@ -223,8 +253,6 @@ export const AppointmentGetApi = () => {
   });
 };
 export const TimeSlotGetAPi = (data) => {
-  console.log(data.date);
-
   return api.get(
     `/appointments/available_slots/?doctor_id=${data.doctorId}&date=${data.date}`,
     {
@@ -248,7 +276,6 @@ export const PatientEmergencyPost = (data) => {
 };
 
 export const PatientProfile = () => {
-  console.log("first");
   return api.get("/patientprofile/", {
     // credentials: "include",
     headers: {
@@ -348,6 +375,17 @@ export const StaffDashboardGetApi = () => {
   return api.get("/staff_dashboard/", {
     headers: {
       Authorization: `Bearer ${getCookie("token")}`,
+    },
+    withCredentials: true,
+  });
+};
+
+// notifications
+export const notificationsPost = (data) => {
+  return api.post(`/fcm/`, data, {
+    headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+      "Content-Type": "application/json",
     },
     withCredentials: true,
   });

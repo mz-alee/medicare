@@ -6,8 +6,11 @@ import StaffDashboardChart from "./components/staffdashboardchart";
 import StaffAppointmentBox from "./components/staffappointmentbox";
 import StaffRole from "./components/staffrole";
 import { useQuery } from "@tanstack/react-query";
-import { StaffDashboardGetApi } from "../Api";
-
+import { notificationsPost, StaffDashboardGetApi } from "../Api";
+import { onMessage } from "firebase/messaging";
+import { useMutation } from "@tanstack/react-query";
+import { generateToken, messaging } from "../notifcations/firebase";
+import { getCookie } from "cookies-next";
 const Dashboard = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["staff_dashboard_Data"],
@@ -18,7 +21,26 @@ const Dashboard = () => {
     },
   });
   console.log("staff dashboard data", data?.data);
+  const notifcationsMutation = useMutation({
+    mutationFn: (data) => notificationsPost(data),
+    onSuccess: () => {},
+    retry: false,
+    onError: (error) => {
+      console.log("notification api error", error);
+    },
+  });
 
+  useEffect(() => {
+    generateToken();
+    onMessage(messaging, (payload) => {
+      console.log("messaging payload ", payload);
+    });
+
+    notifcationsMutation.mutate({
+      registration_id: getCookie("notification_token"),
+      type: "web",
+    });
+  }, []);
   return (
     <div className="w-full   ">
       <StaffHeader name="Dashboard" />

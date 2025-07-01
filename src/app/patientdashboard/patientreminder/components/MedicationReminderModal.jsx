@@ -115,7 +115,7 @@ const MedicationReminderModal = ({
                     register={register}
                     placeholder="Dosage MG"
                     type="text"
-                    name="dosage_type"
+                    name="dosage"
                   />
                   {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
                 </div>
@@ -126,12 +126,6 @@ const MedicationReminderModal = ({
                     date
                   </p>
                   <Datepicker value={dateValue} setValue={setDateValue} />
-                  {/* <InputField
-                    register={register}
-                    placeholder="date"
-                    type="date"
-                    name="date"
-                  /> */}
                 </div>
                 {/* {errors.addSeat && (
               <p className="error">{errors.addSeat.message}</p>

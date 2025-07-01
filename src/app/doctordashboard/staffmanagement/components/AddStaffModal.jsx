@@ -13,34 +13,45 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { getCookie } from "cookies-next";
 import { Dropdown } from "../../components/Dropdown";
+import { useQuery } from "@tanstack/react-query";
+import { StaffListGetApi } from "@/app/Api";
+import MyDateRangePicker from "@/app/components/DateRangePicker";
+import TimePicker from "@/app/components/TimeRangePicker";
 const AddStaffSchema = yup.object({
-  Staff_name: yup.string().required("staff name is a required field"),
-  phone_number: yup.string().required("phone number is a required field"),
-  email: yup.string().required("email is a required field"),
-  // staff_role: yup.string().required("role is a required field"),
+  // Staff_name: yup.string().required("staff name is a required field"),
+  // phone_number: yup.string().required("phone number is a required field"),
   duty: yup.string().required("duty is a required field"),
 });
 const AddStaffModal = ({
   isOpen,
   setIsOpen,
-  timeStamp,
-  data,
+  // data,
   createStaffMutation,
   setStaffID,
-  // refetch,
-  timeStampLoding,
   staffId,
-  setSelectedDate,
-  selectedDate,
-  isLoading,
+  // isLoading,
 }) => {
   const [selectDoctor, setSelectDoctor] = useState(null);
   const [selectedStaff, setSelectedStaff] = useState(false);
   const [role, setRole] = React.useState("");
+  const [timeValue, setTimeValue] = useState(["8:00", "05:00"]);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["staff list"],
+    queryFn: StaffListGetApi,
+    retry: false,
+    onSuccess: (data) => {
+      // console.log(data);
+    },
+    onError: (error) => {
+      console.log("staff list get api error", error);
+    },
+  });
 
   const {
     register,
     setValue,
+    reset,
     getValues,
     handleSubmit,
     formState: { errors },
@@ -69,23 +80,18 @@ const AddStaffModal = ({
     data.doctor = getCookie("user_id");
     data.staff_role = role;
     createStaffMutation.mutate(data);
-    // const mainData = {
-    //   appointment_type: selectedBtn,
-    //   patient: value.patientName,
-    //   doctor: doctorId,
-    // };
-    //     {
-    //     "id": 6,
-    //     "staff_role": "Medical Assistant",
-    //     "start_time": null,
-    //     "end_time": null,
-    //     "duty": "fasdf",
-    //     "assigned_at": "2025-06-26T18:43:46.709271Z",
-    //     "doctor": "5d0f8bf0-a9cb-4d6d-b806-0da70727c4ed",
-    //     "staff": "2dc10883-f5a2-498a-b4db-79c2ccedd101"
-    // }
   };
+  useEffect(() => {
+    if (createStaffMutation.isSuccess) {
+      reset();
+      setIsOpen(false);
+      setSelectedStaff(false);
+      setStaffID("");
+    }
+  }, [createStaffMutation.isSuccess]);
+
   console.log("error", errors);
+  console.log(timeValue);
 
   return (
     <div>
@@ -156,7 +162,8 @@ const AddStaffModal = ({
                       <div className="text-black mt-40">
                         <Loader />
                       </div>
-                    ) : !data?.data?.results ? (
+                    ) : data?.data?.results.length === 0 ||
+                      !data?.data?.results ? (
                       <p className="text-black my-[50%] text-center">
                         staff are not available
                       </p>
@@ -203,55 +210,6 @@ const AddStaffModal = ({
               }  flex-col gap-1 `}
             >
               <div className="w-full">
-                <div className="w-full flex flex-col gap-1 items-start">
-                  <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    staff name
-                  </p>
-                  <InputField
-                    register={register}
-                    placeholder="Staff Name"
-                    type="text"
-                    name="Staff_name"
-                  />
-                  {errors.Staff_name && (
-                    <p className="error">{errors.Staff_name.message}</p>
-                  )}
-                </div>
-              </div>
-              <div className="w-full">
-                <div className="w-full flex flex-col gap-1 items-start">
-                  <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    Phone number
-                  </p>
-                  <InputField
-                    register={register}
-                    placeholder="phone number"
-                    type="number"
-                    name="phone_number"
-                  />
-                </div>
-                {errors.phone_number && (
-                  <p className="error">{errors.phone_number.message}</p>
-                )}
-              </div>
-              <div className="w-full">
-                <div className="w-full  flex flex-col gap-1 items-start">
-                  <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    email
-                  </p>
-                  <InputField
-                    register={register}
-                    placeholder="email"
-                    type="email"
-                    name="email"
-                  />
-
-                  {errors.email && (
-                    <p className="error">{errors.email.message}</p>
-                  )}
-                </div>
-              </div>
-              <div className="w-full">
                 <div className="w-full mt-3 flex flex-col gap-1 items-start">
                   {/* <p className=" capitalize text-[12px]  text-gray-800 italic lg:text-[0.9vw]">
                     role
@@ -267,6 +225,27 @@ const AddStaffModal = ({
                 {errors.staff_role && (
                   <p className="error">{errors.staff_role.message}</p>
                 )}
+              </div>
+              {/* <div className="w-full">
+                <div className="w-full flex flex-col gap-1 items-start">
+                  <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
+                    select date
+                  </p>
+                  <MyDateRangePicker />
+                </div>
+                {/* {errors.duty && <p className="error">{errors.duty.message}</p>} */}
+              {/* </div>  */}
+              <div className="w-full">
+                <div className="w-full flex flex-col gap-1 items-start">
+                  <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
+                    select time
+                  </p>
+                  <TimePicker
+                    timeValue={timeValue}
+                    setTimeValue={setTimeValue}
+                  />
+                </div>
+                {/* {errors.duty && <p className="error">{errors.duty.message}</p>} */}
               </div>
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
@@ -296,16 +275,14 @@ const AddStaffModal = ({
                 </button>
                 <button
                   type="submit"
-                  onClick={() => {
-                    // setSelectedDoctor("true");
-                  }}
+                  onClick={() => {}}
                   className="bg-[#132928] text-[12px] lg:text-[0.8w] cursor-pointer hover:bg-[#375f5d] rounded-2xl w-37 px-3 py-1 text-white"
                 >
                   {/* {patientAppointmentPost.isPending ? (
                     <Loader />
                   ) : (
                   )} */}
-                  Create Appointment
+                  {isLoading ? <Loader /> : "Add Staff"}
                 </button>
               </div>
             )}
@@ -328,10 +305,8 @@ const AddStaffModal = ({
                     setSelectedStaff("true");
                   }
                 }}
-                // onClick={handleAddseat}
                 className="bg-[#132928] text-[12px] lg:text-[0.8w] cursor-pointer hover:bg-[#375f5d] rounded-2xl w-37 px-3 py-1 text-white"
               >
-                {/* {!selectedStaff ? "Next" : "Save Changes"} */}
                 select staff
               </button>
             </div>

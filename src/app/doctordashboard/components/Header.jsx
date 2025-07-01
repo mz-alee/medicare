@@ -4,11 +4,11 @@ import Navbar from "./Navbar";
 import React, { useState } from "react";
 import { RiMenu4Fill } from "react-icons/ri";
 import { IoMdClose } from "react-icons/io";
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
 const Header = ({ name, links, setPageNum, pageNum }) => {
   const [isActive, setIsActive] = useState(false);
-  const path = usePathname()
-  
+  const path = usePathname();
+
   return (
     <div
       data-aos="fade-up"
@@ -28,13 +28,15 @@ const Header = ({ name, links, setPageNum, pageNum }) => {
           </button>
         </div>
 
-        {path === "/doctordashboard" && <input
-          className="text-[9px] md:text-[12px] lg:w-90 px-4 py-2 outline-none border border-gray-300 bg-white shadow-2xl rounded-lg "
-          type="search"
-          placeholder="search by date,docter,clinic,desease... "
-          name=""
-          id=""
-        />}
+        {path === "/doctordashboard" && (
+          <input
+            className="text-[9px] md:text-[12px] lg:w-90 px-4 py-2 outline-none border border-gray-300 bg-white shadow-2xl rounded-lg "
+            type="search"
+            placeholder="search by date,docter,clinic,desease... "
+            name=""
+            id=""
+          />
+        )}
       </div>
       {/* links  */}
       <div className="w-full border-b flex items-end gap-1 py-2 border-gray-200 text-[10px] lg:text-[1vw]">

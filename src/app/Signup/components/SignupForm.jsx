@@ -1,7 +1,7 @@
 "use client";
 import { overpass } from "@/app/components/Fonts";
 import InputField from "@/app/components/InputField";
-import Loader from '@/app/components/Loader';
+import Loader from "@/app/components/Loader";
 import Link from "next/link";
 import React, { useState } from "react";
 import { FiEye } from "react-icons/fi";
@@ -28,7 +28,6 @@ const SignupForm = ({
             >
               Full Name
             </label>
-
             <InputField
               register={register}
               placeholder={"Full Name"}
@@ -65,7 +64,10 @@ const SignupForm = ({
               Gender
             </label>
 
-            <select className='text-[12px] border border-gray-300 p-2 rounded text-gray-500' {...register("gender")} >
+            <select
+              className="text-[12px] border border-gray-300 p-2 rounded text-gray-500"
+              {...register("gender")}
+            >
               <option value="">select gender</option>
               <option value="male">male</option>
               <option value="female">female</option>
@@ -172,7 +174,7 @@ const SignupForm = ({
             type="submit"
             className="bg-[#1e3837] text-white hover:text-[#132928] hover:bg-black/20 font-semibold italic px-6 py-2 rounded-full transition"
           >
-            {signupMutation.isPending ? <Loader/> : "Sign Up"}
+            {signupMutation.isPending ? <Loader /> : "Sign Up"}
           </button>
         </form>
       </div>

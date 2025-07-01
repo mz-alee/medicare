@@ -118,7 +118,7 @@ const AllAppointments = ({ data, isLoading }) => {
       ) : (
         <div className="overflow-x-auto hide-scrollbar rounded-2xl mt-4 w-full h-[80vh]">
           <div>
-            <div className="w-full h-screen">
+            <div className="w-full ">
               <table className="min-w-full h-full table-auto border-collapse text-left">
                 <thead>
                   <tr>

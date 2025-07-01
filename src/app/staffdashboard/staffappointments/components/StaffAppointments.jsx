@@ -1,19 +1,20 @@
 "use client";
 import Loader from "@/app/components/Loader";
 import moment from "moment";
-import React, { Component, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { VscReport } from "react-icons/vsc";
-import AppointmentModal from "./components/AppointmentModal";
+import AppointmentModal from "./AppointmentModal";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AppointmentCreate, TimeSlotGetAPi } from "@/app/Api";
+import { AppointmentCreate } from "@/app/Api";
 import { toast, ToastContainer } from "react-toastify";
-const PateintAppointments = ({
+// import AppointmentModal from "./components/AppointmentModal";
+const StaffAppointments = ({
   data,
   isLoading,
   appointmentData,
-  setFilters,
-  filters,
+  appointmentLoading,
+  setFilterUrl,
 }) => {
   const [appointmentModal, setAppointmentModal] = useState(false);
   const [doctorId, setDoctorID] = useState(null);
@@ -30,7 +31,7 @@ const PateintAppointments = ({
     },
     onError: (error) => {
       console.log(error);
-      toast.error(error.response.data.patient[0]);
+      toast.error(error?.response?.data.detail);
     },
   });
   console.log("dateeeeeeeeeeeeeeee", selectedDate);
@@ -55,7 +56,7 @@ const PateintAppointments = ({
       console.log(error);
     },
   });
-  console.log("filters", filters);
+  console.log("appointment data", appointmentData);
 
   return (
     <>
@@ -78,57 +79,38 @@ const PateintAppointments = ({
       </div>
       <div className="w-full flex justify-between  items-center">
         <div className="header flex flex-wrap gap-3 items-center ">
-          <button className="border border-gray-400 rounded-lg cursor-pointer hover:bg-[#41797a] md:text-[0.8vw] hover:text-white px-6 text-[8px] text-gray-400 capitalize p-0.5">
+          <button className="border border-gray-400 rounded-lg hover:bg-[#41797a] md:text-[0.8vw] hover:text-white px-6 text-[8px] text-gray-400 capitalize p-0.5">
             sort by
           </button>
           <button
             onClick={() => {
-              setFilters("");
+              setFilterUrl("today");
             }}
-            className={`${
-              filters === "" ? "bg-[#41797a] text-white  " : ""
-            } border border-gray-400 rounded-2xl px-6 text-[8px] cursor-pointer md:text-[0.8vw] text-gray-400 hover:bg-[#41797a] hover:text-white capitalize p-0.5`}
-          >
-            all
-          </button>
-          <button
-            onClick={() => {
-              setFilters("today");
-            }}
-            className={`${
-              filters === "today" && "bg-[#41797a] text-white"
-            } border border-gray-400 rounded-2xl px-6 text-[8px] cursor-pointer md:text-[0.8vw] text-gray-400 hover:bg-[#41797a] hover:text-white capitalize p-0.5`}
+            className="border border-gray-400 rounded-2xl px-6 text-[8px] md:text-[0.8vw] text-gray-400 hover:bg-[#41797a] hover:text-white capitalize p-0.5"
           >
             today
           </button>
           <button
             onClick={() => {
-              setFilters("upcoming");
+              setFilterUrl("new_appointments");
             }}
-            className={`${
-              filters === "new" && "bg-[#41797a] text-white"
-            } border border-gray-400 rounded-2xl px-6 text-[8px] cursor-pointer md:text-[0.8vw] text-gray-400 hover:bg-[#41797a] hover:text-white capitalize p-0.5`}
+            className="border border-gray-400 rounded-2xl px-6 text-[8px] md:text-[0.8vw] text-gray-400 hover:bg-[#41797a] hover:text-white capitalize p-0.5"
           >
             new appointments
           </button>
           <button
             onClick={() => {
-              setFilters("cancelled");
+              setFilterUrl("cancelled_appointments");
             }}
-            className={`${
-              filters === "cancelled" ? "bg-[#41797a] text-white  " : ""
-            } border border-gray-400 rounded-2xl px-6 text-[8px] cursor-pointer md:text-[0.8vw] text-gray-400 hover:bg-[#41797a] hover:text-white capitalize p-0.5`}
+            className="border border-gray-400 rounded-2xl px-6 text-[8px] md:text-[0.8vw] text-gray-400 hover:bg-[#41797a] hover:text-white capitalize p-0.5"
           >
             cancelled appointments
           </button>
-
           <button
             onClick={() => {
-              setFilters("completed");
+              setFilterUrl("completed_appointments");
             }}
-            className={`${
-              filters === "completed" ? "bg-[#41797a] text-white  " : ""
-            } border border-gray-400 rounded-2xl px-6 text-[8px] cursor-pointer md:text-[0.8vw] text-gray-400 hover:bg-[#41797a] hover:text-white capitalize p-0.5`}
+            className="border border-gray-400 rounded-2xl px-6 text-[8px] text-gray-400 md:text-[0.8vw] hover:bg-[#41797a] hover:text-white capitalize p-0.5"
           >
             completed appointments
           </button>
@@ -144,24 +126,21 @@ const PateintAppointments = ({
           </button>
         </div>
       </div>
-      {isLoading ? (
+      {appointmentLoading ? (
         <div className="my-auto mt-50">
           <Loader />
         </div>
-      ) : !appointmentData?.data?.results?.length ? (
+      ) : appointmentData?.data?.results?.length === 0 ? (
         <p className="text-center my-auto mt-50 text-gray-700 text-[13px] lg:text-[1vw]">
           no appointments
         </p>
       ) : (
-        <div className="overflow-x-auto hide-scrollbar rounded-2xl mt-4 w-full h-[70vh]">
+        <div className="overflow-x-auto hide-scrollbar rounded-2xl mt-4 w-full h-[80vh]">
           <div>
-            <div className="w-full ">
+            <div className="w-full h-screen">
               <table className="min-w-full h-full table-auto border-collapse text-left">
                 <thead>
                   <tr>
-                    <th className="px-4 py-2 text-center lg:text-[0.9vw] text-sm font-medium text-gray-700">
-                      Appointment Key
-                    </th>
                     <th className="px-4 py-2 lg:text-[0.9vw] text-sm font-medium text-gray-700">
                       Date
                     </th>
@@ -183,45 +162,37 @@ const PateintAppointments = ({
                   </tr>
                 </thead>
                 <tbody>
-                  {appointmentData?.data?.results.length &&
-                    appointmentData?.data?.results.map((items, index) => (
-                      <tr
-                        key={index}
-                        className="border-b hover:bg-black/10  cursor-default text-[10px]  lg:text-[0.9vw] border-gray-200"
+                  {appointmentData?.data?.results.map((items, index) => (
+                    <tr
+                      key={index}
+                      className="border-b hover:bg-black/10 cursor-default text-[10px] lg:text-[0.9vw] border-gray-200"
+                    >
+                      <td className="px-4 py-2 text-gray-600">
+                        {moment(items.date_time).format("MMMM Do YYYY")}
+                      </td>
+                      <td className="px-4 py-2 text-gray-600">
+                        {moment(items.date_time).format("LT")}
+                      </td>
+                      <td className="px-4 py-2 flex items-center gap-1">
+                        <span className="block border border-gray-600 w-7 h-7 rounded-full"></span>
+                        {items.patient}
+                      </td>
+                      <td className="px-4 py-2 text-gray-600">{items.note}</td>
+                      <td className="px-4 py-2 flex text-lg justify-center gap-6 text-gray-600">
+                        <IoChatbubbleEllipsesOutline className="hover:text-purple-600" />
+                        <VscReport className="text-blue-600 hover:text-red-600" />
+                      </td>
+                      <td
+                        className={`${
+                          items.status === "cancelled"
+                            ? "text-red-600"
+                            : "text-green-400"
+                        } px-4 py-2`}
                       >
-                        <td className="px-4 py-2 text-center text-[#41797a] font-extrabold italic text-[18px] lg:text-[1.5vw] ">
-                          {items.id}
-                        </td>
-                        <td className="px-4 py-2 text-gray-600">
-                          {moment(items.date_time).format("MMMM Do YYYY")}
-                        </td>
-                        <td className="px-4 py-2 text-gray-600">
-                          {moment(items.date_time).format("LT")}
-                        </td>
-                        <td className="px-4 py-2 flex h-full items-center capitalize gap-1">
-                          <span className="flex justify-center items-center text-white bg-[#41797a] border-none w-7 h-7 rounded-full">
-                            {items.patient.charAt(0)}
-                          </span>
-                          {items.patient}
-                        </td>
-                        <td className="px-4 py-2 text-gray-600">
-                          {items.note}
-                        </td>
-                        <td className="px-4 py-2 flex text-lg justify-center gap-6 text-gray-600">
-                          <IoChatbubbleEllipsesOutline className="hover:text-purple-600" />
-                          <VscReport className="text-blue-600 hover:text-red-600" />
-                        </td>
-                        <td
-                          className={`${
-                            items.status === "cancelled"
-                              ? "text-red-600"
-                              : "text-green-400"
-                          } px-4 py-2`}
-                        >
-                          {items.status}
-                        </td>
-                      </tr>
-                    ))}
+                        {items.status}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -232,4 +203,4 @@ const PateintAppointments = ({
   );
 };
 
-export default PateintAppointments;
+export default StaffAppointments;
