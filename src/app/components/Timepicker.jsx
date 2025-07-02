@@ -11,11 +11,10 @@ export const Timepicker = ({ value, setValue }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <TimePicker
-        className="w-full "
+        className="w-full h-[50px] "
         label="Pick a time"
         value={value}
         onChange={setValue}
-        disablePast
       />
     </LocalizationProvider>
   );

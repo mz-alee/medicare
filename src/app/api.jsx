@@ -1,7 +1,8 @@
 import axios from "axios";
 import { getCookie } from "cookies-next";
 const api = axios.create({
-  baseURL: "https://d18d-119-154-199-121.ngrok-free.app",
+  baseURL: "https://4e62-119-154-198-82.ngrok-free.app",
+  // baseURL: process.env.NEXT_API_KEY,
   headers: {
     "Content-Type": "multipart/form-data",
     // "Content-Type": "application/json",

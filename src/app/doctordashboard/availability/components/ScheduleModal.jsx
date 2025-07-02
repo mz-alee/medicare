@@ -1,75 +1,65 @@
 "use client";
-import InputField from "@/app/components/InputField";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosClose } from "react-icons/io";
 import Modal from "react-modal";
-import { LuImagePlus } from "react-icons/lu";
 import { getCookie } from "cookies-next";
-import Image from "next/image";
 import Loader from "@/app/components/Loader";
-import { Dropdown } from "../../components/Dropdown";
 import { ScheduleDropdown } from "./ScheduleDropdown";
 import { toast, ToastContainer } from "react-toastify";
-const ScheduleModal = ({
-  // btnName,
-  // handleAddseat,
-  // register,
-  // series,
-  // errors,
-  isOpen,
-  setIsOpen,
-  createSchedule,
-  data,
-}) => {
-  const [file, setFile] = useState();
-  const [day, setDay] = useState("");
+import StartTimePicker from "./StartTimePicker";
+import EndTimePicker from "./EndTimePicker";
+import moment from "moment";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+const scheduleSchema = yup.object({
+  day: yup.string().required("day is a required field"),
+  startTime: yup.string().required("start time is required filed"),
+  endTime: yup.string().required("end time is required filed"),
+});
+const ScheduleModal = ({ isOpen, setIsOpen, createSchedule, data }) => {
   const {
     handleSubmit,
     setValue,
     reset,
     getValues,
+    control,
     register,
     formState: { errors },
   } = useForm({
-    defaultValues: {},
+    resolver: yupResolver(scheduleSchema),
+    defaultValues: {
+      day: "",
+      startTime: "",
+      endTime: "",
+    },
   });
   const value = getValues();
   useEffect(() => {
     Modal.setAppElement("#root");
   }, []);
 
-  const handleImage = (e) => {
-    const img = e.target.files[0];
-    const imageURL = URL.createObjectURL(img);
-    setValue("image", img);
-    setFile(imageURL);
-    console.log(img);
-  };
-  const handleProfileData = (data) => {
-    data.day = day;
-    const formData = data;
-    console.log("form data", formData);
-    // if (day === "") {
-    //   toast.error("select day");
-    //   return;
-    // }
-    // if (value.start_time === "") {
-    //   toast.error("select start time");
-    //   return;
-    // }
-    // if (value.end_time === "") {
-    //   toast.error("select end time");
-    //   return;
-    // }
+  const handleData = (data) => {
+    console.log("form data ", data);
 
-    createSchedule.mutate(data);
+    console.log(data.start_time);
+
+    const mainData = {
+      day: data.day,
+      start_time: moment(data.startTime, ["h:mm A"]).format("HH:mm"),
+      end_time: moment(data.endTime, ["h:mm A"]).format("HH:mm"),
+    };
+    console.log(mainData);
+
+    createSchedule.mutate(mainData);
   };
   useEffect(() => {
     if (createSchedule.isSuccess) {
       reset();
     }
   }, [createSchedule.isSec]);
+  console.log(errors);
+
   return (
     <div>
       <ToastContainer />
@@ -83,8 +73,8 @@ const ScheduleModal = ({
             zIndex: 1000,
           },
           content: {
-            height: "260px",
-            width: "350px",
+            minheight: "300px",
+            width: "340px",
             top: "50%",
             left: "50%",
             right: "auto",
@@ -98,7 +88,7 @@ const ScheduleModal = ({
         <div className={` text-sm   `}>
           <form
             className="flex flex-col  justify-between gap-4"
-            onSubmit={handleSubmit(handleProfileData)}
+            onSubmit={handleSubmit(handleData)}
           >
             <div>
               <IoIosClose
@@ -115,40 +105,33 @@ const ScheduleModal = ({
 
             <div className="flex flex-col gap-2">
               <div className="w-full">
-                <div className="w-full flex items-center gap-3 ">
-                  <p className=" capitalize text-[13px]"> Day</p>
-                  <ScheduleDropdown day={day} setDay={setDay} />
+                <div className="w-full flex  items-center gap-3 ">
+                  <p className=" capitalize text-[13px] w-[25px]"> Day</p>
+                  <div className="w-[240px] ">
+                    <ScheduleDropdown control={control} errors={errors} />
+                    {errors.day && (
+                      <p className="error"> {errors.day.message}</p>
+                    )}
+                  </div>
                 </div>
-                {/* {errors.addSeat && (
-              <p className="error">{errors.addSeat.message}</p>
-            )} */}
               </div>
               <div className="w-full flex items-center gap-3 ">
-                <p className=" capitalize text-[13px]"> start time</p>
-                <input
-                  {...register("start_time")}
-                  onChange={(e) => {
-                    setValue("start_time", e.target.value);
-                    console.log(e.target.value);
-                  }}
-                  type="time"
-                  name=""
-                  id=""
-                />
-                <div className="w-full"></div>
+                <p className=" capitalize w-[25px] text-[13px]"> start time</p>
+                <div className="w-[240px] ">
+                  <StartTimePicker control={control} />
+                  {errors.startTime && (
+                    <p className="error"> {errors.startTime.message}</p>
+                  )}
+                </div>
               </div>
               <div className="w-full flex items-center gap-3 ">
-                <p className=" capitalize text-[13px]"> end time</p>
-                <input
-                  {...register("end_time")}
-                  onChange={(e) => {
-                    setValue("end_time", e.target.value);
-                  }}
-                  type="time"
-                  name=""
-                  id=""
-                />
-                <div className="w-full"></div>
+                <p className=" capitalize text-[13px] w-[25px]"> end time</p>
+                <div className="w-[240px]">
+                  <EndTimePicker control={control} />
+                  {errors.endTime && (
+                    <p className="error"> {errors.endTime.message}</p>
+                  )}
+                </div>
               </div>
               {/* btns  */}
               <div className=" flex justify-between">

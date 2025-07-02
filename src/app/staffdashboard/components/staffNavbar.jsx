@@ -17,6 +17,12 @@ import { usePathname, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { ProfileGetData } from "@/app/Api";
 import Skeleton from "react-loading-skeleton";
+import { Space_Grotesk } from "next/font/google";
+
+const font = Space_Grotesk({
+  subsets: ["latin"],
+  width: ["300,400,500,600"],
+});
 const StaffNavbar = () => {
   const path = usePathname();
   const router = useRouter();
@@ -38,7 +44,7 @@ const StaffNavbar = () => {
     <div
       data-aos="fade-right"
       data-aos-duration="500"
-      className="  md:relative  w-50  md:w-50 lg:w-[20vw] xl:w-[14vw] h-screen bg-[#f9f9f9] md:flex flex-col justify-between py-4 items-center px-3  "
+      className={`${font.className} md:relative  w-50  md:w-50 lg:w-[20vw] xl:w-[14vw] h-screen bg-[#f9f9f9] md:flex flex-col justify-between py-4 items-center px-3`}
     >
       <div>
         <div
@@ -47,7 +53,7 @@ const StaffNavbar = () => {
           className="flex items-center justify-center gap-2 py-1   w-full "
         >
           <Image src={logo} alt="logo" className="w-14  h-14" />
-          <h1 className="font-[600] capitalize text-sm lg:text-md ">
+          <h1 className="font-[600] capitalize text-sm lg:text-md italic ">
             medi scheduler
           </h1>
         </div>
@@ -63,7 +69,7 @@ const StaffNavbar = () => {
           <div>
             <div className="italic capitalize text-[14px] w-20   text-[#282828]">
               <h1>
-                {getCookie("username").substring(0,10)+"..." || (
+                {getCookie("username")?.substring(0, 10) + "..." || (
                   <Skeleton count={1} height={15} width={90} />
                 )}
               </h1>
@@ -109,7 +115,7 @@ const StaffNavbar = () => {
             <Image src={profile} alt="dashborad icon" className=" w-5" />
             profile
           </Link>
-          <Link
+          {/* <Link
             href="/staffdashboard/patientdetails"
             className={`${
               path === "/staffdashboard/patientdetails" &&
@@ -118,7 +124,8 @@ const StaffNavbar = () => {
           >
             <Image src={staff} alt="dashborad icon" className=" w-5" />
             patient details
-          </Link>
+          </Link> */}
+
           <Link
             href="/staffdashboard/chat"
             className={`${
@@ -126,20 +133,10 @@ const StaffNavbar = () => {
               "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
             }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
           >
-            <Image src={staff} alt="dashborad icon" className=" w-5" />
+            <Image src={chat} alt="dashborad icon" className=" w-5" />
             chat
           </Link>
-          <Link
-            href="/staffdashboard/patientreports"
-            className={`${
-              path === "/staffdashboard/patientreports" &&
-              "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
-            }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
-          >
-            <Image src={chat} alt="dashborad icon" className=" w-5" />
-            patient reports
-          </Link>
-          <Link
+          {/* <Link
             href="/staffdashboard/patientlistings"
             className={`${
               path === "/staffdashboard/patientlistings" &&
@@ -148,7 +145,7 @@ const StaffNavbar = () => {
           >
             <Image src={setting} alt="dashborad icon" className=" w-5" />
             patient listings
-          </Link>
+          </Link> */}
         </div>
       </div>
       <button

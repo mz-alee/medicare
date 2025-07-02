@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import ScheduleModal from "./ScheduleModal";
 import EditScheduleModal from "./editScheduleModal";
 import Loader from "@/app/components/Loader";
+import Swal from 'sweetalert2';
 const AllSchedule = () => {
   const [scheduleModal, setScheduleModal] = useState(false);
   const [editScheduleModal, setEditScheduleModal] = useState(false);
@@ -158,7 +159,24 @@ const AllSchedule = () => {
                       </button>
                       <button
                         onClick={() => {
-                          deleteSchedule.mutate(items.id);
+                          Swal.fire({
+                            title: "Are you sure?",
+                            text: "You won't be able to revert this!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes, delete it!",
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              deleteSchedule.mutate(items.id);
+                              Swal.fire({
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                icon: "success",
+                              });
+                            }
+                          });
                         }}
                       >
                         <MdOutlineDelete className="text-red-600 cursor-pointer" />

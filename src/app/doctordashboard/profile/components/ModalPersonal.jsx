@@ -69,7 +69,7 @@ const PersonalInformationModal = ({
                 className="text-2xl"
               />
             </div>
-            <h2 className="capitalize font-[500] text-[15px] lg:text-[1.1vw]   text-center ">
+            <h2 className=" italic  font-[500] text-[15px] lg:text-[1.1vw]   text-center ">
               Personal Information
             </h2>
             {/* select option  */}
@@ -85,14 +85,6 @@ const PersonalInformationModal = ({
                     type="text"
                     name="username"
                     values={data?.data?.user_details?.username}
-                  />
-
-                  <InputField
-                    register={register}
-                    placeholder="Profession"
-                    type="text"
-                    name="profession"
-                    values={data?.data?.profession_details?.profession}
                   />
                   {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
                 </div>

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import StaffSchedule from "./components/staffschedule";
 import StaffHeader from "./components/staffheader";
 import StaffDashboardChart from "./components/staffdashboardchart";
@@ -11,6 +11,7 @@ import { onMessage } from "firebase/messaging";
 import { useMutation } from "@tanstack/react-query";
 import { generateToken, messaging } from "../notifcations/firebase";
 import { getCookie } from "cookies-next";
+
 const Dashboard = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["staff_dashboard_Data"],
@@ -42,18 +43,13 @@ const Dashboard = () => {
     });
   }, []);
   return (
-    <div className="w-full   ">
+    <div className={` w-full`}>
       <StaffHeader name="Dashboard" />
-
       <div className=" flex-col justify-center sm:flex-row gap-3 py-4 flex-wrap   flex items-center md:items-start">
         <StaffSchedule data={data} />
         <StaffRole data={data} />
         <StaffAppointmentBox data={data} />
         <StaffDashboardChart data={data} />
-        {/* <UpcomingEvent />
-        <Appointment />
-        <Chart />
-        <Article /> */}
       </div>
     </div>
   );

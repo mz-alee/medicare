@@ -16,7 +16,7 @@ import { Dropdown } from "../../components/Dropdown";
 import { useQuery } from "@tanstack/react-query";
 import { StaffListGetApi } from "@/app/Api";
 import MyDateRangePicker from "@/app/components/DateRangePicker";
-import TimePicker from "@/app/components/TimeRangePicker";
+import TimerangePicker from "@/app/components/TimeRangePicker";
 const AddStaffSchema = yup.object({
   // Staff_name: yup.string().required("staff name is a required field"),
   // phone_number: yup.string().required("phone number is a required field"),
@@ -240,7 +240,7 @@ const AddStaffModal = ({
                   <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
                     select time
                   </p>
-                  <TimePicker
+                  <TimerangePicker
                     timeValue={timeValue}
                     setTimeValue={setTimeValue}
                   />

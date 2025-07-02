@@ -14,6 +14,12 @@ import { BiLogOut } from "react-icons/bi";
 import Aos from "aos";
 import { deleteCookie, getCookie } from "cookies-next";
 import { usePathname, useRouter } from "next/navigation";
+import { Space_Grotesk } from "next/font/google";
+
+const font = Space_Grotesk({
+  subsets: ["latin"],
+  width: ["300,400,500,600"],
+});
 const Navbar = () => {
   const path = usePathname();
   const router = useRouter();
@@ -25,7 +31,7 @@ const Navbar = () => {
     <div
       data-aos="fade-right"
       data-aos-duration="500"
-      className="  md:relative  w-50  md:w-50 lg:w-[20vw] xl:w-[14vw] h-screen bg-[#f9f9f9] md:flex flex-col justify-between py-4 items-center px-3  "
+      className={`${font.className} md:relative  w-50  md:w-50 lg:w-[20vw] xl:w-[14vw] h-screen bg-[#f9f9f9] md:flex flex-col justify-between py-4 items-center px-3  `}
     >
       <div>
         <div
@@ -34,7 +40,7 @@ const Navbar = () => {
           className="flex items-center justify-center gap-2 py-1   w-full "
         >
           <Image src={logo} alt="logo" className="w-14  h-14" />
-          <h1 className="font-[600] capitalize text-sm lg:text-md ">
+          <h1 className="font-[600] capitalize italic text-sm lg:text-md ">
             medi scheduler
           </h1>
         </div>

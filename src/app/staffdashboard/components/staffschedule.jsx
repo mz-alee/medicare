@@ -13,7 +13,7 @@ const StaffSchedule = ({ data }) => {
     <div
       // data-aos="zoom-in-right"
       // data-aos-duration="1000"
-      className="w-full sm:w-[55vw] md:w-[44vw] lg:w-[48vw] lg:justify-center  md:h-[50vh]   lg:h-[30vh]   bg-white  flex flex-col gap-4  rounded-2xl p-3"
+      className="w-full sm:w-[55vw] md:w-[44vw] lg:w-[48vw] xl:w-[50vw] lg:justify-center  md:h-[50vh]   lg:h-[30vh]   bg-white  flex flex-col gap-4  rounded-2xl p-3"
     >
       <div className="flex  justify-between items-center">
         <h1 className="heading italic font-[400] ">today's schedule</h1>

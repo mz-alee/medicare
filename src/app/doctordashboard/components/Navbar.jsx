@@ -17,6 +17,12 @@ import { deleteCookie, getCookie } from "cookies-next";
 import { usePathname, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { ProfileGetData } from "@/app/Api";
+import { Space_Grotesk } from "next/font/google";
+
+const font = Space_Grotesk({
+  subsets: ["latin"],
+  width: ["300,400,500,600"],
+});
 const Navbar = () => {
   const path = usePathname();
   const router = useRouter();
@@ -38,7 +44,7 @@ const Navbar = () => {
     <div
       data-aos="fade-right"
       data-aos-duration="500"
-      className="  md:relative  w-50  md:w-50 lg:w-[20vw] xl:w-[14vw] h-screen bg-[#f9f9f9] md:flex flex-col justify-between py-4 lg:py-[2vh] items-center px-3 lg:px-[1vw]  "
+      className={`${font.className} md:relative  w-50  md:w-50 lg:w-[20vw] xl:w-[14vw] h-screen bg-[#f9f9f9] md:flex flex-col justify-between py-4 lg:py-[2vh] items-center px-3 lg:px-[1vw]  `}
     >
       <div>
         <div
@@ -71,7 +77,7 @@ const Navbar = () => {
           <div>
             <div className="italic capitalize text-[14px] lg:text-[0.9vw]  w-20 lg:w-[5vw] overflow-hidden h-7 lg:h-[4  vh]  text-[#282828]">
               {/* <h1> { getCookie("username") || "empty"}</h1> */}
-              <h1>{getCookie("username").substring(0, 10 - 3) + "..."} </h1>
+              <h1>{getCookie("username")?.substring(0, 10 - 3) + "..."}</h1>
             </div>
             <h1 className="text-[13px] lg:text-[0.9vw] text-[#417978] capitalize">
               {getCookie("role") || "empty"}
@@ -105,7 +111,7 @@ const Navbar = () => {
               "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
             }  w-full h-11 lg:h-[6vh] flex capitalize text-[13px] lg:text-[1vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-3 `}
           >
-            <MdEventAvailable  className='text-[18px] lg:text-[1.4vw]'/>
+            <MdEventAvailable className="text-[18px] lg:text-[1.4vw]" />
             availability
           </Link>
           <Link
@@ -164,7 +170,7 @@ const Navbar = () => {
             />
             message
           </Link>
-          <Link
+          {/* <Link
             href="/doctordashboard/setting"
             className={`${
               path === "/doctordashboard/setting" &&
@@ -177,7 +183,7 @@ const Navbar = () => {
               className=" w-5 lg:w-[1.3vw] lg:h-[3vh]"
             />
             setting
-          </Link>
+          </Link> */}
         </div>
       </div>
       <button
