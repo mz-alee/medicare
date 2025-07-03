@@ -2,18 +2,20 @@
 import { Datepicker } from "@/app/components/Datepicker";
 import InputField from "@/app/components/InputField";
 import { Timepicker } from "@/app/components/Timepicker";
+import { yupResolver } from "@hookform/resolvers/yup";
 import dayjs from "dayjs";
 import moment from "moment";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosClose } from "react-icons/io";
 import Modal from "react-modal";
+import * as yup from "yup";
+const reminderSchema = yup.object({
+  medicine_name: yup.string().required("medicine name is a required field"),
+  dosage: yup.string().required("dosage is a required field"),
+  appointment: yup.string().required("appointment key  is a required field"),
+});
 const MedicationReminderModal = ({
-  // btnName,
-  // handleAddseat,
-  // register,
-  // series,
-  // errors,
   isOpen,
   setIsOpen,
   title,
@@ -26,9 +28,11 @@ const MedicationReminderModal = ({
     reset,
     setValue,
     getValues,
+    control,
     register,
     formState: { errors },
   } = useForm({
+    resolver: yupResolver(reminderSchema),
     defaultValues: {},
   });
   const value = getValues();
@@ -36,6 +40,7 @@ const MedicationReminderModal = ({
     Modal.setAppElement("#root");
   }, []);
   const handleData = (data) => {
+
     const combinedDateTime = moment(dateValue).set({
       hour: moment(timeValue).hour(),
       minute: moment(timeValue).minute(),
@@ -46,7 +51,6 @@ const MedicationReminderModal = ({
       "YYYY-MM-DDTHH:mm:ss[Z]"
     );
     data.date_time = momentDate;
-    data.appointment = 6;
     MedicationReminder.mutate(data);
   };
   useEffect(() => {
@@ -54,6 +58,8 @@ const MedicationReminderModal = ({
       reset();
     }
   }, [MedicationReminder.isSuccess]);
+  console.log(errors);
+
   return (
     <div>
       <Modal
@@ -103,7 +109,24 @@ const MedicationReminderModal = ({
                     type="text"
                     name="medicine_name"
                   />
-                  {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
+                  {errors.medicine_name && (
+                    <p className="error">{errors.medicine_name.message}</p>
+                  )}
+                </div>
+                <div className="w-full flex flex-col gap-1 items-start">
+                  <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
+                    Appointment key
+                  </p>
+                  <InputField
+                    register={register}
+                    placeholder="Appointment key"
+                    type="number"
+                    
+                    name="appointment"
+                  />
+                  {errors.appointment && (
+                    <p className="error">{errors.appointment.message}</p>
+                  )}
                 </div>
               </div>
               <div className="w-full">
@@ -117,7 +140,9 @@ const MedicationReminderModal = ({
                     type="text"
                     name="dosage"
                   />
-                  {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
+                  {errors.dosage && (
+                    <p className="error">{errors.dosage.message}</p>
+                  )}
                 </div>
               </div>
               <div className="w-full">
@@ -125,11 +150,13 @@ const MedicationReminderModal = ({
                   <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
                     date
                   </p>
-                  <Datepicker value={dateValue} setValue={setDateValue} />
+                  <Datepicker
+                    control={control}
+                    value={dateValue}
+                    setValue={setDateValue}
+                  />
                 </div>
-                {/* {errors.addSeat && (
-              <p className="error">{errors.addSeat.message}</p>
-            )} */}
+                {/* {errors.date && <p className="error">{errors.date.message}</p>} */}
               </div>
               <div className="w-full">
                 <div className="w-full  flex flex-col gap-1 items-start">

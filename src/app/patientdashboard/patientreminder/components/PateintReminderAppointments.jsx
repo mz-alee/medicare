@@ -8,6 +8,7 @@ import ToggleBtn from "../../components/ToggleBtn";
 import { PiCalendarCheckLight } from "react-icons/pi";
 import ReminderModal from "./ReminderModal";
 import ReminderEditModal from "./ReminderEditModal";
+import Swal from "sweetalert2";
 const PateintReminderAppointments = ({
   PatientReminder,
   data,
@@ -28,7 +29,7 @@ const PateintReminderAppointments = ({
         <ReminderEditModal
           isOpen={reminderEditOpen}
           setIsOpen={setReminderEditOpen}
-
+          name="Edit appointment reminder"
         />
       </div>
       <div className="w-full flex justify-between  items-center">
@@ -70,7 +71,7 @@ const PateintReminderAppointments = ({
           no appointments
         </p>
       ) : ( */}
-      <div className="overflow-x-auto  py-1 hide-scrollbar rounded-2xl mt-4 w-full min-h-[550px] bg-white">
+      <div className=" py-1 rounded-2xl mt-4 w-full min-h-[550px] bg-white">
         <div className="flex justify-between items-center px-4 w-full">
           <h1 className=" py-2 lg:text-[1.1vw] italic capitalize text-sm font-medium text-gray-900">
             appointments reminder
@@ -84,7 +85,7 @@ const PateintReminderAppointments = ({
             + add reminder
           </button>
         </div>
-        <div>
+        <div className="overflow-x-auto hide-scrollbar ">
           <div
             className={`${
               data?.data.length === 0 &&
@@ -176,7 +177,24 @@ const PateintReminderAppointments = ({
                           </button>
                           <button
                             onClick={() => {
-                              PatientReminderDel.mutate(items.id);
+                              Swal.fire({
+                                title: "Are you sure?",
+                                text: "You won't be able to revert this!",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Yes, delete it!",
+                              }).then((result) => {
+                                if (result.isConfirmed) {
+                                  PatientReminderDel.mutate(items.id);
+                                  Swal.fire({
+                                    title: "Deleted!",
+                                    text: "Your file has been deleted.",
+                                    icon: "success",
+                                  });
+                                }
+                              });
                             }}
                           >
                             <MdCancelPresentation className="text-red-400 text-[18px]  cursor-pointer hover:text-red-600" />

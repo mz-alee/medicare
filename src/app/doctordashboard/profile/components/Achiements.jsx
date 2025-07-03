@@ -20,6 +20,7 @@ import PublicationModal from "./PublicationModal";
 import AwardModal from "./AwardModal";
 import * as yup from "yup";
 import Loader from "@/app/components/Loader";
+import Swal from "sweetalert2";
 const Achiements = ({ profiledata, isLoading }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isPublicationOpen, setIsPublicationOpen] = useState(false);
@@ -209,9 +210,24 @@ const Achiements = ({ profiledata, isLoading }) => {
                     <button
                       type="button"
                       onClick={() => {
-                        console.log(items.id);
-
-                        certificateDel.mutate(items.id);
+                        Swal.fire({
+                          title: "Are you sure?",
+                          text: "You won't be able to revert this!",
+                          icon: "warning",
+                          showCancelButton: true,
+                          confirmButtonColor: "#3085d6",
+                          cancelButtonColor: "#d33",
+                          confirmButtonText: "Yes, delete it!",
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            certificateDel.mutate(items.id);
+                            Swal.fire({
+                              title: "Deleted!",
+                              text: "Your file has been deleted.",
+                              icon: "success",
+                            });
+                          }
+                        });
                       }}
                     >
                       <AiFillDelete className="hover:text-red-600 cursor-pointer" />
@@ -275,11 +291,26 @@ const Achiements = ({ profiledata, isLoading }) => {
                     </button>
                     <button
                       onClick={() => {
-                        publishDel.mutate(items.id);
+                        Swal.fire({
+                          title: "Are you sure?",
+                          text: "You won't be able to revert this!",
+                          icon: "warning",
+                          showCancelButton: true,
+                          confirmButtonColor: "#3085d6",
+                          cancelButtonColor: "#d33",
+                          confirmButtonText: "Yes, delete it!",
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            publishDel.mutate(items.id);
+                            Swal.fire({
+                              title: "Deleted!",
+                              text: "Your file has been deleted.",
+                              icon: "success",
+                            });
+                          }
+                        });
                       }}
-                      type="button
-                  
-                    "
+                      type="button"
                     >
                       <AiFillDelete className="hover:text-red-600 cursor-pointer" />
                     </button>
@@ -339,7 +370,24 @@ const Achiements = ({ profiledata, isLoading }) => {
                     </button>
                     <button
                       onClick={() => {
-                        awardDel.mutate(items.id);
+                        Swal.fire({
+                          title: "Are you sure?",
+                          text: "You won't be able to revert this!",
+                          icon: "warning",
+                          showCancelButton: true,
+                          confirmButtonColor: "#3085d6",
+                          cancelButtonColor: "#d33",
+                          confirmButtonText: "Yes, delete it!",
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            awardDel.mutate(items.id);
+                            Swal.fire({
+                              title: "Deleted!",
+                              text: "Your file has been deleted.",
+                              icon: "success",
+                            });
+                          }
+                        });
                       }}
                     >
                       <AiFillDelete className="hover:text-red-600 cursor-pointer" />

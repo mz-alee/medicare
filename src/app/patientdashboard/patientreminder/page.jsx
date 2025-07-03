@@ -33,7 +33,7 @@ const PatientReminder = () => {
 
     onError: (error) => {
       console.log("patient reminder post api error", error);
-      toast.error("Reminder Set Failed");
+      toast.error(error?.response.data?.non_field_errors[0]);
     },
   });
   const PatientReminderDel = useMutation({

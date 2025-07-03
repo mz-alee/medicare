@@ -8,6 +8,11 @@ import { LuImagePlus } from "react-icons/lu";
 import { getCookie } from "cookies-next";
 import Image from "next/image";
 import Loader from "@/app/components/Loader";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+const profileSchema = yup.object().shape({
+  username: yup.string().required("username is a required field"),
+});
 const ModalEditProfile = ({
   // btnName,
   // handleAddseat,
@@ -28,6 +33,7 @@ const ModalEditProfile = ({
     register,
     formState: { errors },
   } = useForm({
+    resolver: yupResolver(profileSchema),
     defaultValues: {
       image: "",
     },
@@ -65,7 +71,7 @@ const ModalEditProfile = ({
             zIndex: 1000,
           },
           content: {
-            height: "320px",
+            minheight: "320px",
             width: "350px",
             top: "50%",
             left: "50%",
@@ -99,26 +105,24 @@ const ModalEditProfile = ({
                 htmlFor="profile"
                 className="border-dashed hover:bg-gray-100 bg-gray-50 cursor-pointer border rounded-lg flex flex-col items-center justify-center gap-2 border-gray-300 h-30  w-full"
               >
-                {!file && !data?.data?.user_details?.image && (
+                {file || data?.data?.user_details?.image ? (
+                  <div className="bg-gray-400 rounded-full overflow-hidden w-25 h-25 flex justify-center items-center">
+                    <Image
+                      src={file || data?.data?.user_details?.image}
+                      alt="profile"
+                      width={60}
+                      height={60}
+                      className="object-fit"
+                    />
+                  </div>
+                ) : (
                   <>
                     <LuImagePlus className="text-lg" />
                     <p className="text-[12px]">
                       click or drag and drop to upload your file
                     </p>
-                    <p className="text-gray-500 text-[12px]">PNG,JPG,SVG</p>
+                    <p className="text-gray-500 text-[12px]">PNG, JPG, SVG</p>
                   </>
-                )}
-
-                {file || data?.data?.user_details && (
-                  <div className="bg-gray-400 rounded-full overflow-hidden w-25 h-25 flex justify-center items-center">
-                    <Image
-                      src={file || data?.data?.user_details?.image}
-                      alt="srf"
-                      width={60}
-                      height={60}
-                      className="object-fit "
-                    />
-                  </div>
                 )}
               </label>
               <input
@@ -133,17 +137,19 @@ const ModalEditProfile = ({
               <div className="w-full">
                 <div className="w-full flex items-center gap-3 ">
                   <p className=" capitalize text-[13px]"> username</p>
-                  <InputField
-                    register={register}
-                    placeholder="username"
-                    type="text"
-                    name="username"
-                    values={data?.data?.user_details?.username}
-                  />
+                  <div className="flex flex-col w-full">
+                    <InputField
+                      register={register}
+                      placeholder="username"
+                      type="text"
+                      name="username"
+                      values={data?.data?.user_details?.username}
+                    />
+                    {errors.username && (
+                      <p className="error">{errors.username.message}</p>
+                    )}
+                  </div>
                 </div>
-                {/* {errors.addSeat && (
-              <p className="error">{errors.addSeat.message}</p>
-            )} */}
               </div>
               {/* <div className="w-full">
                 <div className="w-full flex items-center gap-3 ">

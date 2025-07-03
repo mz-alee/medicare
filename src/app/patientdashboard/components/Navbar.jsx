@@ -15,7 +15,10 @@ import Aos from "aos";
 import { deleteCookie, getCookie } from "cookies-next";
 import { usePathname, useRouter } from "next/navigation";
 import { Space_Grotesk } from "next/font/google";
-
+import { useQuery } from "@tanstack/react-query";
+import { ProfileGetData } from "@/app/Api";
+import { TbReportSearch } from "react-icons/tb";
+import { MdLibraryBooks } from "react-icons/md";
 const font = Space_Grotesk({
   subsets: ["latin"],
   width: ["300,400,500,600"],
@@ -23,10 +26,18 @@ const font = Space_Grotesk({
 const Navbar = () => {
   const path = usePathname();
   const router = useRouter();
-  // console.log("image", getCookie("user_image"));
-  // const imageSrc = getCookie("user_image")
-  //   ? `https://9000-119-157-176-164.ngrok-free.app${getCookie("user_image")}`
-  //   : person;
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["profiledata"],
+    queryFn: ProfileGetData,
+    onSuccess: (data) => {
+      toast("data fetch successfully");
+    },
+    retry: "false",
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
   return (
     <div
       data-aos="fade-right"
@@ -53,7 +64,7 @@ const Navbar = () => {
           <div className="overflow-hidden h-14 w-14 rounded-full">
             {/* <Image src={getCookie("user_image")} width={100} height={100} alt="person" className="w-14 h-14" /> */}
             <Image
-              src={profile}
+              src={data?.data?.user_details?.image || person}
               width={100}
               height={100}
               alt="person"
@@ -124,7 +135,8 @@ const Navbar = () => {
                 "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
               }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
             >
-              <Image src={chat} alt="dashborad icon" className=" w-5" />
+              {/* <Image src={chat} alt="dashborad icon" className=" w-5" /> */}
+              <MdLibraryBooks className="text-[20px] text-black" />
               diagnosis
             </Link>
             <Link
@@ -134,7 +146,8 @@ const Navbar = () => {
                 "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
               }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
             >
-              <Image src={setting} alt="dashborad icon" className=" w-5" />
+              {/* <Image src={setting} alt="dashborad icon" className=" w-5" /> */}
+              <TbReportSearch className="text-[20px] text-black" />
               reports
             </Link>
           </div>

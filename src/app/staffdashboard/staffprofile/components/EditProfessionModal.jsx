@@ -2,6 +2,7 @@
 import { profileProfessionApi } from "@/app/Api";
 import InputField from "@/app/components/InputField";
 import Loader from "@/app/components/Loader";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getCookie } from "cookies-next";
 import React, { useState, useEffect } from "react";
@@ -9,6 +10,14 @@ import { useForm } from "react-hook-form";
 import { IoIosClose } from "react-icons/io";
 import Modal from "react-modal";
 import { toast } from "react-toastify";
+import * as yup from "yup";
+const professionSchema = yup.object({
+  profession: yup.string().required("profesion is a required field"),
+  clinic_address: yup.string().required("clinic address is a required field"),
+  clinic_name: yup.string().required("clinic name is a required field"),
+  specialization: yup.string().required("specialization is a required field"),
+});
+
 const EditProfessionModal = ({
   // btnName,
   // handleAddseat,
@@ -25,6 +34,7 @@ const EditProfessionModal = ({
     handleSubmit,
     formState: { errors },
   } = useForm({
+    resolver: yupResolver(professionSchema),
     defaultValues: {},
   });
 
@@ -61,7 +71,7 @@ const EditProfessionModal = ({
             zIndex: 1000,
           },
           content: {
-            height: "450px",
+            minheight: "450px",
             width: "350px",
             top: "50%",
             left: "50%",
@@ -101,7 +111,9 @@ const EditProfessionModal = ({
                     name="profession"
                     values={data?.data?.profession_details?.profession}
                   />
-                  {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
+                  {errors.profession && (
+                    <p className="error">{errors.profession.message}</p>
+                  )}
                 </div>
               </div>
               <div className="w-full">
@@ -115,9 +127,9 @@ const EditProfessionModal = ({
                     name="specialization"
                   />
                 </div>
-                {/* {errors.addSeat && (
-              <p className="error">{errors.addSeat.message}</p>
-            )} */}
+                {errors.specialization && (
+                  <p className="error">{errors.specialization.message}</p>
+                )}
               </div>
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
@@ -130,6 +142,9 @@ const EditProfessionModal = ({
                     values={data?.data?.profession_details?.clinic_name}
                   />
                 </div>
+                {errors.clinic_name && (
+                  <p className="error">{errors.clinic_name.message}</p>
+                )}
               </div>
               {/* series  */}
               <div className="w-full">
@@ -145,6 +160,9 @@ const EditProfessionModal = ({
                     values={data?.data?.profession_details?.clinic_address}
                   />
                 </div>
+                {errors.clinic_address && (
+                  <p className="error">{errors.clinic_address.message}</p>
+                )}
               </div>
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">

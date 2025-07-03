@@ -3,7 +3,6 @@ import Image from "next/image";
 import React, { useState } from "react";
 import ModalEditProfile from "./ModalEditProfile";
 import PersonalInformationModal from "./ModalPersonal";
-import EditProfessionModal from "./EditProfessionModal";
 import profile from "../../../../../public/Images/empty.webp";
 import { FaRegEdit } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
@@ -14,6 +13,7 @@ import { toast, ToastContainer } from "react-toastify";
 import moment from "moment";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import EditProfessionModal from "./EditProfessionModal";
 
 const Personalinformation = ({ data, isLoading }) => {
   const [isprofile, setisprofile] = useState(false);

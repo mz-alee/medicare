@@ -9,14 +9,9 @@ import { useForm } from "react-hook-form";
 import { IoIosClose } from "react-icons/io";
 import Modal from "react-modal";
 const ReminderEditModal = ({
-  // btnName,
-  // handleAddseat,
-  // register,
-  // series,
-  // errors,
   isOpen,
   setIsOpen,
-  title,
+  name,
   // MedicationReminder,
 }) => {
   const [dateValue, setDateValue] = useState(new Date());
@@ -27,6 +22,7 @@ const ReminderEditModal = ({
     reset,
     setValue,
     getValues,
+    control,
     register,
     formState: { errors },
   } = useForm({
@@ -50,11 +46,7 @@ const ReminderEditModal = ({
     data.appointment = 6;
     MedicationReminder.mutate(data);
   };
-  // useEffect(() => {
-  //   if (MedicationReminder.isSuccess) {
-  //     reset();
-  //   }
-  // }, [MedicationReminder.isSuccess]);
+
   return (
     <div>
       <Modal
@@ -89,18 +81,23 @@ const ReminderEditModal = ({
             />
           </div>
           <h2 className="italic capitalize mb-3 font-[500] text-[15px] lg:text-[1.1vw]   text-center ">
-            Appointment reminder Reschedule
+            {name}
           </h2>
-          <form 
-          className='flex flex-col justify-between  h-[350px]'
-          onSubmit={handleSubmit(handleData)}>
+          <form
+            className="flex flex-col justify-between  h-[350px]"
+            onSubmit={handleSubmit(handleData)}
+          >
             <div className="flex  flex-col gap-2">
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
                   <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
                     date
                   </p>
-                  <Datepicker value={dateValue} setValue={setDateValue} />
+                  <Datepicker
+                    control={control}
+                    value={dateValue}
+                    setValue={setDateValue}
+                  />
                   {/* <InputField
                     register={register}
                     placeholder="date"

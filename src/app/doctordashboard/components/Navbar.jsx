@@ -27,18 +27,17 @@ const Navbar = () => {
   const path = usePathname();
   const router = useRouter();
 
-  // const { data, isLoading, isError } = useQuery({
-  //   queryKey: ["profiledata"],
-  //   queryFn: ProfileGetData,
-  //   onSuccess: (data) => {
-  //     toast("data fetch successfully");
-  //   },
-  //   retry: "false",
-  //   onError: (error) => {
-  //     console.error(error);
-  //   },
-  // });
-  // console.log(data);
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["profiledata"],
+    queryFn: ProfileGetData,
+    onSuccess: (data) => {
+      toast("data fetch successfully");
+    },
+    retry: "false",
+    onError: (error) => {
+      console.error(error);
+    },
+  });
 
   return (
     <div
@@ -69,7 +68,9 @@ const Navbar = () => {
         >
           <div className="overflow-hidden h-14 lg:h-[8vh] lg:w-[3.5vw] w-14 rounded-full">
             <Image
-              src={person}
+              src={data?.data?.user_details?.image || person}
+              width={100}
+              height={100}
               alt="person"
               className="w-14 h-14 lg:h-[8vh] lg:w-[3.5vw]"
             />
@@ -115,9 +116,15 @@ const Navbar = () => {
             availability
           </Link>
           <Link
-            href="/doctordashboard/appointments"
+            href={` ${
+              "/doctordashboard/appointments" &&
+              " /doctordashboard/appointments/patientreports"
+            }`}
             className={`${
-              path === "/doctordashboard/appointments" &&
+              path ===
+              "/doctordashboard/appointments" &&
+              " /doctordashboard/appointments/patientreports"
+            &&
               "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
             }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
           >

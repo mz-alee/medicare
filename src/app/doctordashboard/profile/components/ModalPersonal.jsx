@@ -1,11 +1,20 @@
 "use client";
 import InputField from "@/app/components/InputField";
 import Loader from "@/app/components/Loader";
+import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosClose } from "react-icons/io";
 import Modal from "react-modal";
+import * as yup from "yup";
+const personalSchema = yup.object({
+  username: yup.string().required("username is a required field"),
+  phone_number: yup.string().required("phone number is a required field"),
+  date_of_birth: yup.string().required("date of birth is a required field"),
+  address: yup.string().required("address is a required field"),
+});
+
 const PersonalInformationModal = ({
   // btnName,
   // handleAddseat,
@@ -22,6 +31,7 @@ const PersonalInformationModal = ({
     register,
     formState: { errors },
   } = useForm({
+    resolver: yupResolver(personalSchema),
     defaultValues: {},
   });
 
@@ -86,7 +96,9 @@ const PersonalInformationModal = ({
                     name="username"
                     values={data?.data?.user_details?.username}
                   />
-                  {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
+                  {errors.username && (
+                    <p className="error">{errors.username.message}</p>
+                  )}
                 </div>
               </div>
               {/* <div className="w-full">
@@ -106,11 +118,13 @@ const PersonalInformationModal = ({
                     values={data?.data?.user_details?.phone_number}
                   />
                 </div>
+                {errors.phone_number && (
+                  <p className="error">{errors.phone_number.message}</p>
+                )}
               </div>
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
                   <p className=" capitalize text-[12px] lg:text-[0.9vw] italic">
-                    {" "}
                     Date of Birth
                   </p>
                   <InputField
@@ -120,17 +134,16 @@ const PersonalInformationModal = ({
                     name="date_of_birth"
                     values={moment(
                       data?.data?.user_details?.date_of_birth
-                    ).format("MM DD YYYY")}
+                    ).format("YYYY-MM-DD")}
                   />
-                  {/* {errors.category && (
-                <p className="error">{errors.category.message}</p>
-              )} */}
+                  {errors.date_of_birth && (
+                    <p className="error">{errors.date_of_birth.message}</p>
+                  )}
                 </div>
               </div>
               <div className="w-full">
                 <div className="w-full  flex flex-col gap-1 items-start">
                   <p className=" capitalize text-[12px] lg:text-[0.9vw] italic">
-                    {" "}
                     Gender
                   </p>
                   <select
@@ -163,9 +176,9 @@ const PersonalInformationModal = ({
                     name="address"
                     values={data?.data?.user_details?.address}
                   />
-                  {/* {errors.category && (
-                <p className="error">{errors.category.message}</p>
-              )} */}
+                  {errors.address && (
+                    <p className="error">{errors.address.message}</p>
+                  )}
                 </div>
               </div>
             </div>

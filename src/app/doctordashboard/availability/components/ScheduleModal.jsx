@@ -18,6 +18,7 @@ const scheduleSchema = yup.object({
   endTime: yup.string().required("end time is required filed"),
 });
 const ScheduleModal = ({ isOpen, setIsOpen, createSchedule, data }) => {
+  const [openTimer, setOpenTimer] = useState(false);
   const {
     handleSubmit,
     setValue,
@@ -34,6 +35,8 @@ const ScheduleModal = ({ isOpen, setIsOpen, createSchedule, data }) => {
       endTime: "",
     },
   });
+  console.log(openTimer);
+
   const value = getValues();
   useEffect(() => {
     Modal.setAppElement("#root");
@@ -65,7 +68,11 @@ const ScheduleModal = ({ isOpen, setIsOpen, createSchedule, data }) => {
       <ToastContainer />
       <Modal
         isOpen={isOpen}
-        onRequestClose={() => setIsOpen(false)}
+        onRequestClose={() => {
+          if (openTimer) {
+            setIsOpen(true);
+          } else setIsOpen(false);
+        }}
         contentLabel="My Modal"
         style={{
           overlay: {
@@ -118,7 +125,11 @@ const ScheduleModal = ({ isOpen, setIsOpen, createSchedule, data }) => {
               <div className="w-full flex items-center gap-3 ">
                 <p className=" capitalize w-[25px] text-[13px]"> start time</p>
                 <div className="w-[240px] ">
-                  <StartTimePicker control={control} />
+                  <StartTimePicker
+                    openTimer={openTimer}
+                    setOpenTimer={setOpenTimer}
+                    control={control}
+                  />
                   {errors.startTime && (
                     <p className="error"> {errors.startTime.message}</p>
                   )}
@@ -127,14 +138,18 @@ const ScheduleModal = ({ isOpen, setIsOpen, createSchedule, data }) => {
               <div className="w-full flex items-center gap-3 ">
                 <p className=" capitalize text-[13px] w-[25px]"> end time</p>
                 <div className="w-[240px]">
-                  <EndTimePicker control={control} />
+                  <EndTimePicker
+                    openTimer={openTimer}
+                    setOpenTimer={setOpenTimer}
+                    control={control}
+                  />
                   {errors.endTime && (
                     <p className="error"> {errors.endTime.message}</p>
                   )}
                 </div>
               </div>
               {/* btns  */}
-              <div className=" flex justify-between">
+              <div className=" flex justify-between gap-3">
                 <button
                   onClick={() => {
                     setIsOpen(false);
@@ -148,7 +163,7 @@ const ScheduleModal = ({ isOpen, setIsOpen, createSchedule, data }) => {
                   className="bg-[#132928]  text-[12px] lg:text-[0.8w] cursor-pointer hover:bg-[#375f5d] rounded-2xl w-37 px-3 py-1 text-white"
                 >
                   {/* {profileEditMutation.isPending ? <Loader /> : "Save Changes"} */}
-                  create scehdule
+                  create schedule
                 </button>
               </div>
             </div>

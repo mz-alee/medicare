@@ -1,9 +1,18 @@
 "use client";
 import InputField from "@/app/components/InputField";
+import Loader from "@/app/components/Loader";
+import { yupResolver } from "@hookform/resolvers/yup";
+import moment from "moment";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosClose } from "react-icons/io";
 import Modal from "react-modal";
+import * as yup from "yup";
+const reminderSchema = yup.object({
+  appointment: yup.string().required("Appointment key is a required field"),
+  date: yup.string().required("Date is a required field"),
+  reminder_time: yup.string().required("Time is a required field"),
+});
 const ReminderModal = ({
   // btnName,
   // handleAddseat,
@@ -25,24 +34,29 @@ const ReminderModal = ({
     register,
     formState: { errors },
   } = useForm({
+    resolver: yupResolver(reminderSchema),
     defaultValues: {},
   });
   const value = getValues();
+  console.log(errors);
+
   useEffect(() => {
     Modal.setAppElement("#root");
   }, []);
   const handleData = (data) => {
-
-    const combined = `${date}T${time}`;
-    const datetime = moment.utc(combined).format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z';
+    const combined = `${data.date}T${data.reminder_time}`;
+    const datetime =
+      moment.utc(combined).format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z";
     console.log(datetime);
-    
-    PatientReminder.mutate(data);
-    
+    const payload = {
+      appointment: data.appointment,
+      datetime: datetime,
+    };
+    PatientReminder.mutate(payload);
     console.log("react hook form data", data);
   };
   useEffect(() => {
-    if (PatientReminder.isSuccess) {s
+    if (PatientReminder.isSuccess) {
       reset();
     }
     console.log("/////// reset ");
@@ -85,7 +99,7 @@ const ReminderModal = ({
               appointment reminder
             </h2>
             <div className="flex  flex-col gap-2">
-              <div className="w-full">
+              {/* <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
                   <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
                     Doctor name
@@ -96,9 +110,8 @@ const ReminderModal = ({
                     type="text"
                     name="Doctor_name"
                   />
-                  {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
                 </div>
-              </div>
+              </div> */}
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
                   <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
@@ -110,10 +123,12 @@ const ReminderModal = ({
                     type="number"
                     name="appointment"
                   />
-                  {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
+                  {errors.appointment && (
+                    <p className="error">{errors.appointment.message}</p>
+                  )}
                 </div>
               </div>
-              <div className="w-full">
+              {/* <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
                   <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
                     location
@@ -125,10 +140,8 @@ const ReminderModal = ({
                     name="location"
                   />
                 </div>
-                {/* {errors.addSeat && (
-              <p className="error">{errors.addSeat.message}</p>
-            )} */}
-              </div>
+               
+              </div> */}
               <div className="w-full">
                 <div className="w-full  flex flex-col gap-1 items-start">
                   <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
@@ -140,9 +153,9 @@ const ReminderModal = ({
                     type="date"
                     name="date"
                   />
-                  {/* {errors.category && (
-                <p className="error">{errors.category.message}</p>
-              )} */}
+                  {errors.date && (
+                    <p className="error">{errors.date.message}</p>
+                  )}
                 </div>
               </div>
               <div className="w-full">
@@ -153,13 +166,16 @@ const ReminderModal = ({
                   <input
                     {...register("reminder_time")}
                     type="time"
+                    className="border  border-gray-300 w-full rounded-sm px-2 py-1 outline-none"
                     onChange={(e) => {
-                      setValue("reminder_time", e.target.value);
+                      setValue("reminder_time", e.target.value, {
+                        shouldValidate: true,
+                      });
                     }}
                   />
-                  {/* {errors.category && (
-                <p className="error">{errors.category.message}</p>
-              )} */}
+                  {errors.reminder_time && (
+                    <p className="error">{errors.reminder_time.message}</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -178,7 +194,7 @@ const ReminderModal = ({
                 // onClick={handleAddseat}
                 className="bg-[#132928] text-[12px] lg:text-[0.8w] cursor-pointer hover:bg-[#375f5d] rounded-2xl w-37 px-3 py-1 text-white"
               >
-                Add
+                {PatientReminder.isPending ? <Loader color="white" /> : "Add"}
               </button>
             </div>
           </form>

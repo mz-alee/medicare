@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { FaRegEdit } from "react-icons/fa";
-// import CertificateModal from "./CertificateModal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   AwardDelApi,
@@ -20,6 +19,9 @@ import { toast } from "react-toastify";
 // import AwardModal from "./AwardModal";
 import * as yup from "yup";
 import Loader from "@/app/components/Loader";
+import CertificateModal from "./CertificateModal";
+import AwardModal from "./AwardModal";
+import PublicationModal from './publicationModal';
 const Achiements = ({ profiledata, isLoading }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isPublicationOpen, setIsPublicationOpen] = useState(false);
@@ -136,7 +138,7 @@ const Achiements = ({ profiledata, isLoading }) => {
   return (
     <>
       <div id="root">
-        {/* <CertificateModal
+        <CertificateModal
           certificateMutation={certificateMutation}
           certificateEditMutation={certificateEditMutation}
           isOpen={isOpen}
@@ -157,7 +159,7 @@ const Achiements = ({ profiledata, isLoading }) => {
           isOpen={isAwardOpen}
           setIsOpen={setIsAwardOpen}
           isEdit={isEdit}
-        /> */}
+        />
       </div>
       <div className="w-full  flex flex-col  gap-3 py-2">
         <div className=" border border-gray-200  gap-2 flex-col rounded-2xl w-full flex items-center py-2 px-8 min-h-28">

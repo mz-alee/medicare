@@ -113,11 +113,12 @@ const EditScheduleModal = ({
               <p className="error">{errors.addSeat.message}</p>
             )} */}
               </div>
-              <div className="w-full flex items-center gap-3 ">
+              <div className="w-full  flex items-center gap-3 ">
                 <p className=" capitalize text-[13px]"> start time</p>
                 <input
                   {...register("start_time")}
                   // defaultValue={start_time}
+                  className=" w-full border border-gray-300 rounded-sm py-1 px-2"
                   onChange={(e) => {
                     setValue("start_time", e.target.value);
                     console.log(data?.data?.start_time);
@@ -132,6 +133,7 @@ const EditScheduleModal = ({
                 <p className=" capitalize text-[13px]"> end time</p>
                 <input
                   {...register("end_time")}
+                  className="w-full border border-gray-300 rounded-sm py-1 px-2"
                   // defaultValue={endTime}
                   onChange={(e) => {
                     setValue("end_time", e.target.value);

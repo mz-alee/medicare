@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useState } from "react";
-import profile from "../../../../public/Images/person1.png";
+import profile from "../../../../public/Images/empty.webp";
 import { FaRegEdit } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { deleteCookie, getCookie } from "cookies-next";

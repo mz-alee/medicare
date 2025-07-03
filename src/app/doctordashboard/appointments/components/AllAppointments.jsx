@@ -1,12 +1,14 @@
+"use client";
 import Loader from "@/app/components/Loader";
 import moment from "moment";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
-import { VscReport } from "react-icons/vsc";
+import { TbReportSearch } from "react-icons/tb";
 const AllAppointments = ({ data, isLoading }) => {
   console.log(data?.data?.results);
   console.log(moment(data?.data?.date_time, "YYYY-MM-DD HH:mm:ss"));
-
+  const router = useRouter();
   return (
     <>
       <div className="header flex flex-wrap gap-3 items-center ">
@@ -143,34 +145,47 @@ const AllAppointments = ({ data, isLoading }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.data?.results.map((items, index) => (
+                  {Array.from({ length: 1 }).map((items, index) => (
                     <tr
                       key={index}
                       className="border-b hover:bg-black/10 cursor-default text-[10px] lg:text-[0.9vw] border-gray-200"
                     >
                       <td className="px-4 py-2 text-gray-600">
-                        {moment(items.date_time).format("MMMM Do YYYY")}
+                        {moment(items?.date_time).format("MMMM Do YYYY") ||
+                          "null"}
                       </td>
                       <td className="px-4 py-2 text-gray-600">
-                        {moment(items.date_time).format("LT")}
+                        {moment(items?.date_time).format("LT") || "null"}
                       </td>
-                      <td className="px-4 py-2 flex items-center gap-1">
+                      <td className="px-4 py-2   flex items-center gap-1">
                         <span className="block border border-gray-600 w-7 h-7 rounded-full"></span>
-                        {items.patient}
+                        {items?.patient || "null"}
                       </td>
-                      <td className="px-4 py-2 text-gray-600">{items.note}</td>
+                      <td className="px-4 py-2 text-gray-600">
+                        {items?.note || "null"}
+                      </td>
                       <td className="px-4 py-2 flex text-lg justify-center gap-6 text-gray-600">
-                        <IoChatbubbleEllipsesOutline className="hover:text-purple-600" />
-                        <VscReport className="text-blue-600 hover:text-red-600" />
+                        <button>
+                          <IoChatbubbleEllipsesOutline className=" cursor-pointer" />
+                        </button>
+                        <button
+                          onClick={() => {
+                            router.push(
+                              "/doctordashboard/appointments/patientreports"
+                            );
+                          }}
+                        >
+                          <TbReportSearch className="text-gray-600 cursor-pointer" />
+                        </button>
                       </td>
                       <td
-                        className={`${
-                          items.status === "cancelled"
-                            ? "text-red-600"
-                            : "text-green-400"
-                        } px-4 py-2`}
+                      // className={`${
+                      //   items.status === "cancelled"
+                      //     ? "text-red-600"
+                      //     : "text-green-400"
+                      // } px-4 py-2`}
                       >
-                        {items.status}
+                        {/* {items.status} */}
                       </td>
                     </tr>
                   ))}

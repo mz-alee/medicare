@@ -13,6 +13,20 @@ import moment from "moment";
 import Loader from "@/app/components/Loader";
 import dayjs from "dayjs";
 import { Datepicker } from "@/app/components/Datepicker";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { toast, ToastContainer } from "react-toastify";
+const AppointmentSchema = yup.object({
+  patientName: yup.string().required("patient name is a required field"),
+  phone_number: yup.string().required("phone number is a required field"),
+  date: yup.string().required("date is a required field"),
+  buttonSelect: yup
+    .bool()
+    .oneOf([true], "appointment type is a required")
+    .required("appointment type is a required"),
+  timeStamp: yup.string().required("time stamp is a required"),
+});
+
 const AppointmentModal = ({
   isOpen,
   setIsOpen,
@@ -36,14 +50,19 @@ const AppointmentModal = ({
   // const [doctorID, setDoctorID] = useState(null);
 
   const {
+    control,
     register,
     setValue,
     getValues,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
+    mode: "onChange",
+    resolver: yupResolver(AppointmentSchema),
     defaultValues: {
       timeStamp: null,
+      buttonSelect: false,
     },
   });
   const value = getValues();
@@ -78,24 +97,9 @@ const AppointmentModal = ({
     };
 
     patientAppointmentPost.mutate(mainData);
-    // console.log("momentDate_____", momentDate);
-
-    // patientAppointmentPost.mutate(data);
-    // patientAppointmentPost.mutate({
-    //   doctor: "ce99ddb9-f16d-4100-b384-d93ebcb8978d",
-    //   patient: "heyfsadf",
-    //   created_by: "05f85e09-c7f4-430b-8072-5131d7d35864",
-    //   appointment_type: "regular check_up",
-    //   phone_number: "03123456789",
-    //   age: 28,
-    //   gender: "male",
-    //   email: "patient@example.com",
-    //   blood_group: "A+",
-    //   marital_status: "single",
-    //   date_time: "2025-06-24T14:30:00Z",
-    //   note: "Feeling mild chest pain",
-    // });
   };
+  console.log(errors);
+  watch("timeStamp");
   return (
     <div>
       <Modal
@@ -108,7 +112,7 @@ const AppointmentModal = ({
             zIndex: 1000,
           },
           content: {
-            height: "540px",
+            minheight: "540px",
             width: "380px",
             top: "50%",
             left: "50%",
@@ -219,7 +223,9 @@ const AppointmentModal = ({
                     type="text"
                     name="patientName"
                   />
-                  {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
+                  {errors.patientName && (
+                    <p className="error">{errors.patientName.message}</p>
+                  )}
                 </div>
               </div>
               <div className="w-full">
@@ -234,9 +240,9 @@ const AppointmentModal = ({
                     name="phone_number"
                   />
                 </div>
-                {/* {errors.addSeat && (
-              <p className="error">{errors.addSeat.message}</p>
-            )} */}
+                {errors.phone_number && (
+                  <p className="error">{errors.phone_number.message}</p>
+                )}
               </div>
               <div className="flex gap-3 justify-center">
                 <div className="w-1/2">
@@ -245,6 +251,7 @@ const AppointmentModal = ({
                       Date
                     </p>
                     <Datepicker
+                      control={control}
                       refetch={refetch}
                       value={selectedDate}
                       setValue={setSelectedDate}
@@ -269,7 +276,12 @@ const AppointmentModal = ({
                     </h1>
                     <button
                       type="button"
-                      onClick={() => setSelectedBtn("regular check_up")}
+                      onClick={() => {
+                        setSelectedBtn("regular check_up");
+                        setValue("buttonSelect", true, {
+                          shouldValidate: true,
+                        });
+                      }}
                       className={`${
                         selectedBtn === "regular check_up"
                           ? "bg-[#498382] text-white"
@@ -280,7 +292,12 @@ const AppointmentModal = ({
                     </button>
                     <button
                       type="button"
-                      onClick={() => setSelectedBtn("urgent check_up")}
+                      onClick={() => {
+                        setSelectedBtn("urgent check_up");
+                        setValue("buttonSelect", true, {
+                          shouldValidate: true,
+                        });
+                      }}
                       className={`${
                         selectedBtn === "urgent check_up"
                           ? "bg-[#498382] text-white"
@@ -289,6 +306,12 @@ const AppointmentModal = ({
                     >
                       urgent check up
                     </button>
+                    {errors.buttonSelect && (
+                      <p className="error"> {errors.buttonSelect.message}</p>
+                    )}
+                    {errors.timeStamp && (
+                      <p className="error"> {errors.timeStamp.message}</p>
+                    )}
                   </div>
                 </div>
                 <div className="w-1/2">
@@ -324,7 +347,9 @@ const AppointmentModal = ({
                                 type="button"
                                 onClick={() => {
                                   setIndx(index);
-                                  setValue("timeStamp", items);
+                                  setValue("timeStamp", items, {
+                                    shouldValidate: true,
+                                  });
                                 }}
                                 key={index}
                                 className={`${
@@ -390,6 +415,8 @@ const AppointmentModal = ({
                   if (doctorId) {
                     setSelectedDoctor("true");
                     refetch();
+                  } else {
+                    toast.error("select docter");
                   }
                 }}
                 // onClick={handleAddseat}
@@ -402,6 +429,7 @@ const AppointmentModal = ({
           )}
         </div>
       </Modal>
+        <ToastContainer />
     </div>
   );
 };

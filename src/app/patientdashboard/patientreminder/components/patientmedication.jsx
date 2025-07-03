@@ -7,6 +7,8 @@ import { PiCalendarCheckLight } from "react-icons/pi";
 import ToggleBtn from "../../components/ToggleBtn";
 import { FaRegEdit } from "react-icons/fa";
 import MedicationReminderModal from "./MedicationReminderModal";
+import Swal from "sweetalert2";
+import ReminderEditModal from "./ReminderEditModal";
 const PatientMedication = ({
   data,
   isLoading,
@@ -15,6 +17,8 @@ const PatientMedication = ({
   setMedicationModalOpen,
   MedicationReminderDelete,
 }) => {
+  const [reminderEditOpen, setReminderEditOpen] = useState(false);
+
   return (
     <>
       <div id="root">
@@ -24,6 +28,11 @@ const PatientMedication = ({
           MedicationReminder={MedicationReminder}
         />
       </div>
+      <ReminderEditModal
+        isOpen={reminderEditOpen}
+        setIsOpen={setReminderEditOpen}
+        name="Edit medication remidner "
+      />
       <div className="w-full flex justify-between  items-center ">
         {/* <div className="header flex flex-wrap gap-3 items-center ">
           <button className="border border-gray-400 rounded-lg hover:bg-[#41797a] md:text-[0.8vw] hover:text-white px-6 text-[8px] text-gray-400 capitalize p-0.5">
@@ -168,10 +177,33 @@ const PatientMedication = ({
                           done
                         </td>
                         <td className="px-4 py-2 flex  text-lg justify-center items-center gap-6 text-gray-600">
-                          <FaRegEdit className="cursor-pointer text-black font-bold  hover:text-gray-600" />
                           <button
                             onClick={() => {
-                              MedicationReminderDelete.mutate(items.id);
+                              setReminderEditOpen(true);
+                            }}
+                          >
+                            <FaRegEdit className="cursor-pointer text-black font-bold  hover:text-gray-600" />
+                          </button>
+                          <button
+                            onClick={() => {
+                              Swal.fire({
+                                title: "Are you sure?",
+                                text: "You won't be able to revert this!",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Yes, delete it!",
+                              }).then((result) => {
+                                if (result.isConfirmed) {
+                                  MedicationReminderDelete.mutate(items.id);
+                                  Swal.fire({
+                                    title: "Deleted!",
+                                    text: "Your file has been deleted.",
+                                    icon: "success",
+                                  });
+                                }
+                              });
                             }}
                           >
                             <MdCancelPresentation className="text-red-400   cursor-pointer hover:text-red-600" />

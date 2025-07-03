@@ -9,17 +9,12 @@ import { getCookie } from "cookies-next";
 import Image from "next/image";
 import Loader from "@/app/components/Loader";
 import { PatientprofileEditApi } from "@/app/Api";
-const ModalEditProfile = ({
-  // btnName,
-  // handleAddseat,
-  // register,
-  // series,
-  // errors,
-  isOpen,
-  setIsOpen,
-  PatientProfileEdit,
-  data,
-}) => {
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+const profileSchema = yup.object().shape({
+  username: yup.string().required("username is a required field"),
+});
+const ModalEditProfile = ({ isOpen, setIsOpen, PatientProfileEdit, data }) => {
   const [file, setFile] = useState();
 
   const {
@@ -30,6 +25,7 @@ const ModalEditProfile = ({
     getValues,
     formState: { errors },
   } = useForm({
+    resolver: yupResolver(profileSchema),
     defaultValues: {
       image: null,
     },
@@ -49,10 +45,10 @@ const ModalEditProfile = ({
   const handleProfileData = (data) => {
     const formData = data;
     if (formData.image) {
-      profileEditMutation.mutate(data);
+      PatientProfileEdit.mutate(data);
     } else {
       const username = { username: data.username };
-      profileEditMutation.mutate(username);
+      PatientProfileEdit.mutate(username);
     }
   };
   return (
@@ -103,7 +99,17 @@ const ModalEditProfile = ({
                 htmlFor="profile"
                 className="border-dashed hover:bg-gray-100 bg-gray-50 cursor-pointer border rounded-lg flex flex-col items-center justify-center gap-2 border-gray-300 h-30  w-full"
               >
-                {!file && !data?.data?.user_details?.image && (
+                {file || data?.data?.user_details?.image ? (
+                  <div className="bg-gray-400 rounded-full overflow-hidden w-25 h-25 flex justify-center items-center">
+                    <Image
+                      src={file || data?.data?.user_details?.image}
+                      alt="srf"
+                      width={60}
+                      height={60}
+                      className="object-fit "
+                    />
+                  </div>
+                ) : (
                   <>
                     <LuImagePlus className="text-lg" />
                     <p className="text-[12px]">
@@ -112,19 +118,6 @@ const ModalEditProfile = ({
                     <p className="text-gray-500 text-[12px]">PNG,JPG,SVG</p>
                   </>
                 )}
-
-                {file ||
-                  (data?.data?.user_details && (
-                    <div className="bg-gray-400 rounded-full overflow-hidden w-25 h-25 flex justify-center items-center">
-                      <Image
-                        src={file || data?.data?.user_details?.image}
-                        alt="srf"
-                        width={60}
-                        height={60}
-                        className="object-fit "
-                      />
-                    </div>
-                  ))}
               </label>
               <input
                 type="file"
@@ -138,17 +131,19 @@ const ModalEditProfile = ({
               <div className="w-full">
                 <div className="w-full flex items-center gap-3 ">
                   <p className=" capitalize text-[13px]"> username</p>
-                  <InputField
-                    register={register}
-                    placeholder="username"
-                    type="text"
-                    name="username"
-                    values={data?.data?.user_details?.username}
-                  />
+                  <div className="flex flex-col w-full">
+                    <InputField
+                      register={register}
+                      placeholder="username"
+                      type="text"
+                      name="username"
+                      values={data?.data?.user_details?.username}
+                    />
+                    {errors.username && (
+                      <p className="error">{errors.username.message}</p>
+                    )}
+                  </div>
                 </div>
-                {/* {errors.addSeat && (
-              <p className="error">{errors.addSeat.message}</p>
-            )} */}
               </div>
             </div>
             {/* btns  */}

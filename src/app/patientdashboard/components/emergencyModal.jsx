@@ -1,10 +1,20 @@
 "use client";
 import InputField from "@/app/components/InputField";
 import Loader from "@/app/components/Loader";
+import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosClose } from "react-icons/io";
 import Modal from "react-modal";
+import * as yup from "yup";
+const personalSchema = yup.object({
+  full_name: yup.string().required("username is a required field"),
+  relation: yup.string().required("relation is a required field"),
+  phone_number: yup.string().required("phone number is a required field"),
+  address: yup.string().required("address is a required field"),
+  email: yup.string().required("email is a required field"),
+});
+
 const EmergencyModal = ({ isOpen, setIsOpen, data, PatientEmergency }) => {
   const {
     handleSubmit,
@@ -13,6 +23,7 @@ const EmergencyModal = ({ isOpen, setIsOpen, data, PatientEmergency }) => {
     getValues,
     formState: { errors },
   } = useForm({
+    resolver: yupResolver(personalSchema),
     defaultValues: {},
   });
 
@@ -74,7 +85,9 @@ const EmergencyModal = ({ isOpen, setIsOpen, data, PatientEmergency }) => {
                     name="full_name"
                     values={data?.data?.emergency_contact_details?.full_name}
                   />
-                  {/* {errors.type && <p className="error">{errors.type.message}</p>} */}
+                  {errors.full_name && (
+                    <p className="error">{errors.full_name.message}</p>
+                  )}
                 </div>
               </div>
               <div className="w-full">
@@ -88,9 +101,9 @@ const EmergencyModal = ({ isOpen, setIsOpen, data, PatientEmergency }) => {
                     values={data?.data?.emergency_contact_details?.relation}
                   />
                 </div>
-                {/* {errors.addSeat && (
-              <p className="error">{errors.addSeat.message}</p>
-            )} */}
+                {errors.relation && (
+                  <p className="error">{errors.relation.message}</p>
+                )}
               </div>
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
@@ -103,8 +116,10 @@ const EmergencyModal = ({ isOpen, setIsOpen, data, PatientEmergency }) => {
                     values={data?.data?.emergency_contact_details?.phone_number}
                   />
                 </div>
+                {errors.phone_number && (
+                  <p className="error">{errors.phone_number.message}</p>
+                )}
               </div>
-              {/* series  */}
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
                   <p className=" capitalize text-[13px]"> adress</p>
@@ -115,9 +130,9 @@ const EmergencyModal = ({ isOpen, setIsOpen, data, PatientEmergency }) => {
                     name="address"
                     values={data?.data?.emergency_contact_details?.address}
                   />
-                  {/* {errors.category && (
-                <p className="error">{errors.category.message}</p>
-              )} */}
+                  {errors.address && (
+                    <p className="error">{errors.address.message}</p>
+                  )}
                 </div>
               </div>
               <div className="w-full">
@@ -130,9 +145,9 @@ const EmergencyModal = ({ isOpen, setIsOpen, data, PatientEmergency }) => {
                     name="email"
                     values={data?.data?.emergency_contact_details?.email}
                   />
-                  {/* {errors.category && (
-                <p className="error">{errors.category.message}</p>
-              )} */}
+                  {errors.email && (
+                    <p className="error">{errors.email.message}</p>
+                  )}
                 </div>
               </div>
             </div>
