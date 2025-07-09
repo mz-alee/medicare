@@ -179,13 +179,13 @@ const AllAppointments = ({ data, isLoading }) => {
                         </button>
                       </td>
                       <td
-                      // className={`${
-                      //   items.status === "cancelled"
-                      //     ? "text-red-600"
-                      //     : "text-green-400"
-                      // } px-4 py-2`}
+                        className={`${
+                          items?.status === "cancelled"
+                            ? "text-red-600"
+                            : "text-green-400"
+                        } px-4 py-2`}
                       >
-                        {/* {items.status} */}
+                        {items?.status}
                       </td>
                     </tr>
                   ))}

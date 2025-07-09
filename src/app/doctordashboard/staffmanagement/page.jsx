@@ -23,7 +23,7 @@ const StaffManagement = () => {
         pageNum={pageNum}
       />
       <ToastContainer />
-      <div>
+      <div className=''>
         {pageNum === 0 && (
           <AllStaff
           // data={data}

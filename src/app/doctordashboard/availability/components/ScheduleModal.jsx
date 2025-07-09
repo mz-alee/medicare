@@ -44,18 +44,36 @@ const ScheduleModal = ({ isOpen, setIsOpen, createSchedule, data }) => {
 
   const handleData = (data) => {
     console.log("form data ", data);
+    const start = moment(data.startTime, ["h:mm A"]);
+    const end = moment(data.endTime, ["h:mm A"]);
 
-    console.log(data.start_time);
-
+    const duration = moment.duration(end.diff(start));
+    console.log(
+      "Duration:",
+      duration.hours(),
+      "hours",
+      duration.minutes(),
+      "minutes"
+    );
+    if (duration.hours() < 1) {
+      toast.error("plese select atleast one hour ");
+      return;
+    }
+    if (start > end || duration.hours() > 24) {
+      toast.error("start time equal to or less than to the end time  ");
+      return;
+    }
     const mainData = {
       day: data.day,
-      start_time: moment(data.startTime, ["h:mm A"]).format("HH:mm"),
-      end_time: moment(data.endTime, ["h:mm A"]).format("HH:mm"),
+      start_time: start.format("HH:mm"),
+      end_time: end.format("HH:mm"),
     };
-    console.log(mainData);
+
+    console.log("mainData:", mainData);
 
     createSchedule.mutate(mainData);
   };
+
   useEffect(() => {
     if (createSchedule.isSuccess) {
       reset();
@@ -141,6 +159,7 @@ const ScheduleModal = ({ isOpen, setIsOpen, createSchedule, data }) => {
                   <EndTimePicker
                     openTimer={openTimer}
                     setOpenTimer={setOpenTimer}
+                    startTime={value.startTime}
                     control={control}
                   />
                   {errors.endTime && (

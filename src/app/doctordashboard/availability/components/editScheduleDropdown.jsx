@@ -16,7 +16,7 @@ export const EditScheduleDropdown = ({
   };
 
   return (
-    <Box sx={{ minWidth: 280 }}>
+    <Box sx={{ minWidth: 273 }}>
       <FormControl fullWidth size="small">
         <InputLabel
           id="demo-simple-select-label"

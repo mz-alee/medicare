@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { ChartComponent } from "./Piechart";
-const Chart = ({data}) => {
+const Chart = ({ data }) => {
   return (
     <div
       // data-aos="zoom-in-right"
@@ -15,29 +15,29 @@ const Chart = ({data}) => {
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-blue-400 block"></span>
             <p className="capitalize text-[10px] xl:text-[0.7vw]">
-              completed appoitments
+              total appointments
             </p>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-purple-400 block"></span>
             <p className="capitalize text-[10px] xl:text-[0.7vw]">
-              recoverd patient
+              new patients
             </p>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-green-400 block"></span>
             <p className="capitalize text-[10px] xl:text-[0.7vw]">
-              upcoming Appointments
+              pending appointments
             </p>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-yellow-400 block"></span>
             <p className="capitalize text-[10px] xl:text-[0.7vw]">
-              pending Appointments
+              active staff
             </p>
           </div>
         </div>
-        <ChartComponent data={data} />
+        <ChartComponent alldata={data} />
       </div>
     </div>
   );

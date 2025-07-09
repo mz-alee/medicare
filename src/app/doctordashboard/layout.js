@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
           <div className="hidden md:flex">
             <Navbar />
           </div>
-          <div className={`${exo.className} w-full  overflow-y-scroll px-6`}>
+          <div className={`${exo.className} w-full hide-scrollbar overflow-y-scroll px-4`}>
             {/* <Header name="Dashboard" /> */}
             <div className="  flex-col md:flex-row gap-3  flex-wrap md:justify-between  flex items-center md:items-start "></div>
             {children}

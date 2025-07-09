@@ -73,3 +73,11 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+.Toastify__toast::first-letter {
+  text-transform: uppercase;
+}
+
+.Toastify__toast {
+  font-weight: 400;
+  font-style: italic;
+}

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getCookie } from "cookies-next";
 const api = axios.create({
-  baseURL: "https://cc42-110-39-164-238.ngrok-free.app",
+  baseURL: "https://aa7b-72-255-28-104.ngrok-free.app",
   // baseURL: process.env.NEXT_API_KEY,
   headers: {
     "Content-Type": "multipart/form-data",
@@ -35,6 +35,11 @@ export const resetUpdatePassword = (forgetData) => {
 };
 export const verifyResendOtp = (data) => {
   return api.post("/regenerateotp/", data);
+};
+
+// social api
+export const googlePost = (data) => {
+  return api.post(`/google/`, data);
 };
 
 // docter profile

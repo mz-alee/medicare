@@ -15,12 +15,14 @@ import FAQ from "./components/FAQ";
 import Footer from "./components/Footer";
 import Aos from "aos";
 import Link from "next/link";
+import Navbar from "./components/Navbar";
 const LandingPage = () => {
   useEffect(() => {
     Aos.init({ once: false });
   }, []);
   return (
     <div className="w-full min-h-[200vh] ">
+      <Navbar />npm install @auth0/auth0-react
       {/* hero section  */}
       <div className=" heroSection h-[100vh]  bg-[#205454]">
         <div className="leftSection lg:w-1/2   h-full flex flex-col gap-4 items-center  justify-center ">

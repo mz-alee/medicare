@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 import ScheduleModal from "./ScheduleModal";
 import EditScheduleModal from "./editScheduleModal";
 import Loader from "@/app/components/Loader";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 const AllSchedule = () => {
   const [scheduleModal, setScheduleModal] = useState(false);
   const [editScheduleModal, setEditScheduleModal] = useState(false);

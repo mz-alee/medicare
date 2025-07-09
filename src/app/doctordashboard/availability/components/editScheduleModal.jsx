@@ -102,7 +102,7 @@ const EditScheduleModal = ({
             <div className="flex flex-col gap-2">
               <div className="w-full">
                 <div className="w-full flex items-center gap-3 ">
-                  <p className=" capitalize text-[13px]"> Day</p>
+                  <p className=" capitalize text-[13px] w-[23px]"> Day</p>
                   <EditScheduleDropdown
                     day={day}
                     selectedDay={selectedDay}
@@ -114,7 +114,7 @@ const EditScheduleModal = ({
             )} */}
               </div>
               <div className="w-full  flex items-center gap-3 ">
-                <p className=" capitalize text-[13px]"> start time</p>
+                <p className=" capitalize text-[13px] w-[23px]"> start time</p>
                 <input
                   {...register("start_time")}
                   // defaultValue={start_time}
@@ -127,10 +127,9 @@ const EditScheduleModal = ({
                   name=""
                   id=""
                 />
-                <div className="w-full"></div>
               </div>
               <div className="w-full flex items-center gap-3 ">
-                <p className=" capitalize text-[13px]"> end time</p>
+                <p className=" capitalize w-[23px] text-[13px]"> end time</p>
                 <input
                   {...register("end_time")}
                   className="w-full border border-gray-300 rounded-sm py-1 px-2"
@@ -142,7 +141,6 @@ const EditScheduleModal = ({
                   name=""
                   id=""
                 />
-                <div className="w-full"></div>
               </div>
               {/* btns  */}
               <div className=" flex justify-between">

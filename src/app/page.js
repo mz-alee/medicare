@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 const Home = () => {
   const router = useRouter();
- 
+
   const handleOnChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -19,8 +19,8 @@ const Home = () => {
   return (
     <div className="w-full  min-h-screen  ">
       <ToastContainer />
-
-      {getCookie("token") ? router.push("/doctordashboard") : <LandingPage />}
+    
+      <LandingPage />
     </div>
   );
 };

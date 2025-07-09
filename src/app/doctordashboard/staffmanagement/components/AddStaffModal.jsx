@@ -17,10 +17,14 @@ import { useQuery } from "@tanstack/react-query";
 import { StaffListGetApi } from "@/app/Api";
 import MyDateRangePicker from "@/app/components/DateRangePicker";
 import TimerangePicker from "@/app/components/TimeRangePicker";
+import { toast, ToastContainer } from "react-toastify";
+import StartTimePicker from "../../availability/components/StartTimePicker";
+import EndTimePicker from "../../availability/components/EndTimePicker";
 const AddStaffSchema = yup.object({
-  // Staff_name: yup.string().required("staff name is a required field"),
-  // phone_number: yup.string().required("phone number is a required field"),
+  staff_role: yup.string().required("staff name is a required field"),
   duty: yup.string().required("duty is a required field"),
+  startTime: yup.string().required("start time is a required field"),
+  endTime: yup.string().required("end time is a required field"),
 });
 const AddStaffModal = ({
   isOpen,
@@ -35,7 +39,7 @@ const AddStaffModal = ({
   const [selectedStaff, setSelectedStaff] = useState(false);
   const [role, setRole] = React.useState("");
   const [timeValue, setTimeValue] = useState(["8:00", "05:00"]);
-
+  const [openTimer, setOpenTimer] = useState(false);
   const { data, isLoading } = useQuery({
     queryKey: ["staff list"],
     queryFn: StaffListGetApi,
@@ -51,6 +55,7 @@ const AddStaffModal = ({
   const {
     register,
     setValue,
+    control,
     reset,
     getValues,
     handleSubmit,
@@ -58,9 +63,7 @@ const AddStaffModal = ({
   } = useForm({
     resolver: yupResolver(AddStaffSchema),
     mode: "onChange",
-    defaultValues: {
-      timeStamp: null,
-    },
+    defaultValues: {},
   });
   const value = getValues();
   useEffect(() => {
@@ -78,7 +81,6 @@ const AddStaffModal = ({
     console.log("react hook from data", data);
     data.staff = staffId;
     data.doctor = getCookie("user_id");
-    data.staff_role = role;
     createStaffMutation.mutate(data);
   };
   useEffect(() => {
@@ -97,7 +99,9 @@ const AddStaffModal = ({
     <div>
       <Modal
         isOpen={isOpen}
-        onRequestClose={() => setIsOpen(false)}
+        onRequestClose={() => {
+          if (!openTimer) setIsOpen(false);
+        }}
         contentLabel="My Modal"
         style={{
           overlay: {
@@ -214,38 +218,51 @@ const AddStaffModal = ({
                   {/* <p className=" capitalize text-[12px]  text-gray-800 italic lg:text-[0.9vw]">
                     role
                   </p> */}
-                  <Dropdown role={role} setRole={setRole} data={data} />
-                  {/* <InputField
-                    register={register}
-                    placeholder="role"
-                    type="text"
-                    name="staff_role"
-                  /> */}
+                  <Dropdown
+                    control={control}
+                    role={role}
+                    setRole={setRole}
+                    data={data}
+                  />
                 </div>
                 {errors.staff_role && (
                   <p className="error">{errors.staff_role.message}</p>
                 )}
               </div>
-              {/* <div className="w-full">
-                <div className="w-full flex flex-col gap-1 items-start">
-                  <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    select date
-                  </p>
-                  <MyDateRangePicker />
-                </div>
-                {/* {errors.duty && <p className="error">{errors.duty.message}</p>} */}
-              {/* </div>  */}
+
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
                   <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
-                    select time
+                    select start time
                   </p>
-                  <TimerangePicker
-                    timeValue={timeValue}
-                    setTimeValue={setTimeValue}
-                  />
+                  <div className="w-full">
+                    <StartTimePicker
+                      openTimer={openTimer}
+                      setOpenTimer={setOpenTimer}
+                      control={control}
+                    />
+                  </div>
                 </div>
-                {/* {errors.duty && <p className="error">{errors.duty.message}</p>} */}
+                {errors.startTime && (
+                  <p className="error">{errors.startTime.message}</p>
+                )}
+              </div>
+              <div className="w-full">
+                <div className="w-full flex flex-col gap-1 items-start">
+                  <p className=" capitalize text-[12px] text-gray-800 italic lg:text-[0.9vw]">
+                    select end time
+                  </p>
+                  <div className="w-full">
+                    <EndTimePicker
+                      openTimer={openTimer}
+                      setOpenTimer={setOpenTimer}
+                      control={control}
+                    />
+                  </div>
+                </div>
+                {errors.endTime && (
+                  <p className="error">{errors.endTime.message}</p>
+                )}
               </div>
               <div className="w-full">
                 <div className="w-full flex flex-col gap-1 items-start">
@@ -278,11 +295,7 @@ const AddStaffModal = ({
                   onClick={() => {}}
                   className="bg-[#132928] text-[12px] lg:text-[0.8w] cursor-pointer hover:bg-[#375f5d] rounded-2xl w-37 px-3 py-1 text-white"
                 >
-                  {/* {patientAppointmentPost.isPending ? (
-                    <Loader />
-                  ) : (
-                  )} */}
-                  {isLoading ? <Loader /> : "Add Staff"}
+                  {createStaffMutation.isPending ? <Loader /> : "Add staff"}
                 </button>
               </div>
             )}
@@ -303,6 +316,8 @@ const AddStaffModal = ({
                 onClick={() => {
                   if (staffId) {
                     setSelectedStaff("true");
+                  } else {
+                    toast.error("Select staff member ");
                   }
                 }}
                 className="bg-[#132928] text-[12px] lg:text-[0.8w] cursor-pointer hover:bg-[#375f5d] rounded-2xl w-37 px-3 py-1 text-white"
@@ -313,6 +328,7 @@ const AddStaffModal = ({
           )}
         </div>
       </Modal>
+      <ToastContainer />
     </div>
   );
 };

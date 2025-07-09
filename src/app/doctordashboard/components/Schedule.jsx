@@ -30,7 +30,7 @@ const Schedule = ({ data, isLoading }) => {
               />
               <AppointmentBox
                 color="#fffacf"
-                number={data?.data?.overview?.total_appointments}
+                number={data?.data?.overview?.pending_appointments}
                 text="Pending Appointments"
                 icon={pendingAppointments}
               />

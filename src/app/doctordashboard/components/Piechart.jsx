@@ -3,11 +3,18 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
-export const ChartComponent = (alldata) => {
+export const ChartComponent = ({ alldata }) => {
+  console.log("all data from chart", alldata?.data);
+  // console.log(
+  //   "all data from chart",
+  //   alldata?.data?.overview?.total_appointments
+
+  // );
+
   const data = [
     { name: "Group A", value: alldata?.data?.overview?.total_appointments },
-    { name: "Group B", value: alldata?.data?.overview?.total_appointments },
-    { name: "Group C", value: alldata?.data?.overview?.new_patients },
+    { name: "Group B", value: alldata?.data?.overview?.new_patients },
+    { name: "Group C", value: alldata?.data?.overview?.pending_appointments },
     { name: "Group D", value: alldata?.data?.overview?.active_staff },
   ];
   return (
@@ -24,7 +31,7 @@ export const ChartComponent = (alldata) => {
             paddingAngle={5}
             dataKey="value"
           >
-            { data.map((entry, index) => (
+            {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={COLORS[index % COLORS.length]}

@@ -8,7 +8,7 @@ import logo from "../../../public/Images/Logo.png";
 import { overpass } from "../components/Fonts";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
-import { loginPostData } from "../Api";
+import { googlePost, loginPostData } from "../Api";
 import { toast, ToastContainer } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -17,6 +17,8 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { getCookie, getCookies, setCookie } from "cookies-next";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { GoogleLogin } from "@react-oauth/google";
+import { signIn, signOut, useSession } from "next-auth/react";
 const loginSchema = yup.object({
   email: yup.string().required(),
   password: yup.string().max(20).required(),
@@ -35,6 +37,13 @@ const Login = () => {
     mode: "onChange",
     resolver: yupResolver(loginSchema),
     defaultValues: {},
+  });
+
+  const googleMutation = useMutation({
+    mutationFn: (data) => googlePost(data),
+    onError: (err) => {
+      console.log("google login error", err);
+    },
   });
 
   const loginMutation = useMutation({
@@ -106,7 +115,7 @@ const Login = () => {
           <div className="bg-white p-6 sm:p-10 py-8 w-[80vw] md:w-[40vw]  lg:h-[90vh]  z-10 rounded-xl shadow-md ">
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col w-full items-center justify-center h-full gap-4"
+              className="flex flex-col w-full items-center justify-center h-[330px]  gap-4"
             >
               <div className="flex flex-col  w-full gap-4 px-3  ">
                 <div>
@@ -219,6 +228,25 @@ const Login = () => {
                 </button>
               </div>
             </form>
+            <div>
+              <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                  googleMutation.mutate({
+                    token: credentialResponse.credential,
+                  });
+                  console.log("on success", credentialResponse);
+                }}
+                onError={(error) => {
+                  console.log(error);
+                }}
+              />
+              <button
+                onClick={() => signIn("facebook")}
+                className="bg-[#1877f2] text-white px-4 py-2 rounded mt-3"
+              >
+                Login with Facebook
+              </button>
+            </div>
           </div>
         </div>
       </div>

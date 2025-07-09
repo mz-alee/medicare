@@ -8,6 +8,7 @@ import { CiMenuFries } from "react-icons/ci";
 import { overpass, ubuntu } from './Fonts';
 const Navbar = () => {
   const [isActive, setIsActive] = useState(false);
+  
   return (
     <div className="fixed z-100 flex justify-between  items-center px-8 bg-[#f9f9f9] text-black min-h-[8vh] w-full text-sm md:text-[12px] lg:text-[1vw]">
       {/* logo */}

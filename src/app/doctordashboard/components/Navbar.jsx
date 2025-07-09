@@ -23,7 +23,7 @@ const font = Space_Grotesk({
   subsets: ["latin"],
   width: ["300,400,500,600"],
 });
-const Navbar = () => {
+const Navbar = ({ isActive, setIsActive }) => {
   const path = usePathname();
   const router = useRouter();
 
@@ -38,12 +38,22 @@ const Navbar = () => {
       console.error(error);
     },
   });
+  useEffect(() => {
+window.scrollTo(0, 0);
+    if (isActive) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden"; // mobile fix
+    } else {
+      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "auto";
+    }
+  }, [isActive]);
 
   return (
     <div
       data-aos="fade-right"
       data-aos-duration="500"
-      className={`${font.className} md:relative  w-50  md:w-50 lg:w-[20vw] xl:w-[14vw] h-screen bg-[#f9f9f9] md:flex flex-col justify-between py-4 lg:py-[2vh] items-center px-3 lg:px-[1vw]  `}
+      className={`${font.className} md:relative border-r border-gray-200 w-50  md:w-50 lg:w-[15vw] xl:w-[15vw] h-screen bg-[#f9f9f9] md:flex flex-col justify-between py-4 lg:py-[2vh] items-center px-4 lg:px-[1.2vw]  `}
     >
       <div>
         <div
@@ -116,15 +126,9 @@ const Navbar = () => {
             availability
           </Link>
           <Link
-            href={` ${
-              "/doctordashboard/appointments" &&
-              " /doctordashboard/appointments/patientreports"
-            }`}
+            href={` ${"/doctordashboard/appointments"}`}
             className={`${
-              path ===
-              "/doctordashboard/appointments" &&
-              " /doctordashboard/appointments/patientreports"
-            &&
+              path === "/doctordashboard/appointments" &&
               "border-l-4 border-[#417978] rounded-lg bg-[#d8e6e5]"
             }  w-full h-11 flex capitalize text-[13px] lg:text-[0.9vw] hover:bg-[#d8e6e5] rounded text-[#282828] gap-2 items-center pl-4 `}
           >

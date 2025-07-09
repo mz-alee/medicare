@@ -20,7 +20,7 @@ const StartTimePicker = ({ control, openTimer, setOpenTimer }) => {
               setOpenTimer(true);
             }}
             {...field}
-            className="w-[240px]"
+            className="w-full"
             use12Hours
             showSecond={false}
             inputReadOnly

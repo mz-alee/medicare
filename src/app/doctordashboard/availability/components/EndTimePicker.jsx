@@ -7,7 +7,7 @@ import { Controller } from "react-hook-form";
 
 dayjs.extend(customParseFormat);
 
-const EndTimePicker = ({ openTimer, setOpenTimer, control }) => {
+const EndTimePicker = ({ openTimer, setOpenTimer, control, startTime }) => {
   return (
     <Controller
       name="endTime"
@@ -20,7 +20,7 @@ const EndTimePicker = ({ openTimer, setOpenTimer, control }) => {
             setOpenTimer(true);
           }}
           {...field}
-          className="w-[240px]"
+          className="w-full"
           use12Hours
           showSecond={false}
           inputReadOnly
